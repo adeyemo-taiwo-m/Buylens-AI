@@ -581,16 +581,19 @@ Do not use bounce animations.
 Three steps:
 
 ### 01
+
 **Give us the listing**
 
 Paste information or upload an image.
 
 ### 02
+
 **BuyLens analyzes it**
 
 AI evaluates price, value, risks and missing information.
 
 ### 03
+
 **Make a smarter decision**
 
 Understand what to verify before paying.
@@ -942,15 +945,19 @@ Do not animate indefinitely.
 Four metrics:
 
 ### Price
+
 92
 
 ### Value
+
 84
 
 ### Risk
+
 34
 
 ### Information
+
 64
 
 Important:
@@ -1110,16 +1117,19 @@ Section:
 Example:
 
 ### 01
+
 What is the battery's cycle life?
 
 **Copy**
 
 ### 02
+
 What exactly does the warranty cover?
 
 **Copy**
 
 ### 03
+
 Is installation included in the quoted price?
 
 **Copy**
@@ -1830,7 +1840,7 @@ Required:
 If:
 
 ```css
-prefers-reduced-motion: reduce
+prefers-reduced-motion: reduce;
 ```
 
 is enabled:

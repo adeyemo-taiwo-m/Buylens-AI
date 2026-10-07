@@ -3,25 +3,28 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Header } from "@/components/layout/Header";
+import { saveStoredReport } from "@/lib/storage/reports";
+import { ProductCategory } from "@/types/analysis";
 import {
   ArrowRight,
   Sparkles,
   AlertCircle,
-  FileText,
   UploadCloud,
+  FileText,
+  Info,
 } from "lucide-react";
 
 export default function AnalyzePage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
-  const [category, setCategory] = useState("solar_power");
+  const [category, setCategory] = useState<ProductCategory>("solar_power");
   const [price, setPrice] = useState("");
   const [platform, setPlatform] = useState("whatsapp");
   const [description, setDescription] = useState("");
   const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) {
       setError("Please provide the product or quotation title.");
@@ -30,10 +33,33 @@ export default function AnalyzePage() {
     setError(null);
     setLoading(true);
 
-    // Simulate analysis processing pipeline
-    setTimeout(() => {
-      router.push("/report/demo");
-    }, 1200);
+    try {
+      const response = await fetch("/api/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: name.trim(),
+          category,
+          price: price ? parseFloat(price) : undefined,
+          sellerPlatform: platform,
+          description: description.trim(),
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Analysis failed. Please check inputs and try again.");
+      }
+
+      const report = await response.json();
+      saveStoredReport(report);
+      router.push(`/report/${report.id}`);
+    } catch (err: unknown) {
+      console.error(err);
+      setError(
+        err instanceof Error ? err.message : "Failed to run analysis. Please try again."
+      );
+      setLoading(false);
+    }
   };
 
   const handleFillDemo = () => {
@@ -59,16 +85,17 @@ export default function AnalyzePage() {
             <button
               type="button"
               onClick={handleFillDemo}
-              className="text-xs text-indigo-600 hover:text-indigo-800 font-medium underline"
+              className="text-xs text-zinc-900 hover:text-zinc-700 font-semibold underline"
             >
-              Fill with sample solar data
+              Fill sample solar quotation
             </button>
           </div>
           <h1 className="text-3xl font-bold tracking-tight text-zinc-950">
             Analyze a Proposed Purchase
           </h1>
           <p className="mt-1 text-sm text-zinc-600">
-            Provide the details or quotation from your seller. BuyLens will evaluate market pricing, risks, and missing specs.
+            Provide the details or quotation from your seller. BuyLens will evaluate market pricing,
+            risks, and missing specs before you pay.
           </p>
         </div>
 
@@ -79,7 +106,10 @@ export default function AnalyzePage() {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-zinc-200 p-6 sm:p-8 shadow-sm space-y-6">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white rounded-2xl border border-zinc-200 p-6 sm:p-8 shadow-sm space-y-6"
+        >
           <div>
             <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-700 mb-2">
               Product / System Name *
@@ -101,7 +131,7 @@ export default function AnalyzePage() {
               </label>
               <select
                 value={category}
-                onChange={(e) => setCategory(e.target.value)}
+                onChange={(e) => setCategory(e.target.value as ProductCategory)}
                 className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 bg-white text-zinc-900 text-sm focus:outline-none focus:border-zinc-900"
               >
                 <option value="solar_power">Solar & Power Systems</option>
@@ -147,11 +177,11 @@ export default function AnalyzePage() {
 
             <div>
               <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-700 mb-2">
-                Quotation Screenshot (Optional)
+                Quotation Attachment
               </label>
-              <div className="border border-dashed border-zinc-300 rounded-xl px-4 py-2.5 text-center text-xs text-zinc-500 hover:border-zinc-400 cursor-pointer flex items-center justify-center gap-2">
+              <div className="border border-dashed border-zinc-300 rounded-xl px-4 py-2 text-center text-xs text-zinc-500 hover:border-zinc-400 cursor-pointer flex items-center justify-center gap-2">
                 <UploadCloud className="h-4 w-4 text-zinc-400" />
-                <span>Upload receipt / quotation image</span>
+                <span>Upload quotation / screenshot</span>
               </div>
             </div>
           </div>
@@ -164,9 +194,16 @@ export default function AnalyzePage() {
               rows={4}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Paste the seller's text, included accessories, warranty promise, model numbers, or any specific details..."
+              placeholder="Paste the seller's text, warranty promise, included cables, model numbers, or installation commitments..."
               className="w-full px-4 py-3 rounded-xl border border-zinc-200 text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-zinc-900 text-sm"
             />
+          </div>
+
+          <div className="bg-zinc-50 p-4 rounded-xl border border-zinc-200 text-xs text-zinc-600 flex items-start gap-2">
+            <Info className="h-4 w-4 text-zinc-500 shrink-0 mt-0.5" />
+            <span>
+              BuyLens AI does not share your quotation with sellers or third-party stores. Your analysis is evaluated against independent market benchmarks.
+            </span>
           </div>
 
           <button
@@ -177,7 +214,7 @@ export default function AnalyzePage() {
             {loading ? (
               <>
                 <Sparkles className="h-4 w-4 animate-spin" />
-                <span>Analyzing Market Pricing & Risks...</span>
+                <span>Analyzing Pricing, Risks & Questions...</span>
               </>
             ) : (
               <>
