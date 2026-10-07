@@ -11,7 +11,7 @@ import { UploadDropzone } from "@/components/ui/UploadDropzone";
 import { ProductCategory } from "@/types/analysis";
 import { saveStoredReport } from "@/lib/storage/reports";
 import { useToast } from "@/components/ui/Toast";
-import { ArrowRight, Sparkles, AlertCircle, Info, Link as LinkIcon } from "lucide-react";
+import { ArrowRight, AlertCircle, Info } from "lucide-react";
 
 export default function AppAnalyzePage() {
   const router = useRouter();
@@ -20,7 +20,7 @@ export default function AppAnalyzePage() {
   const [name, setName] = useState("");
   const [category, setCategory] = useState<ProductCategory>("solar_power");
   const [price, setPrice] = useState("");
-  const [currency, setCurrency] = useState("NGN");
+  const currency = "NGN";
   const [productUrl, setProductUrl] = useState("");
   const [platform, setPlatform] = useState("whatsapp");
   const [description, setDescription] = useState("");

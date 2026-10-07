@@ -1,27 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { Header } from "@/components/layout/Header";
-import { DecisionReport, ProductCategory } from "@/types/analysis";
+import { DecisionReport } from "@/types/analysis";
 import { getStoredReports, deleteStoredReport } from "@/lib/storage/reports";
 import {
   Search,
   Trash2,
-  ExternalLink,
   PlusCircle,
   FileText,
   Filter,
 } from "lucide-react";
 
 export default function HistoryPage() {
-  const [reports, setReports] = useState<DecisionReport[]>([]);
+  const [reports, setReports] = useState<DecisionReport[]>(() => getStoredReports());
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
-
-  useEffect(() => {
-    setReports(getStoredReports());
-  }, []);
 
   const handleDelete = (id: string, e: React.MouseEvent) => {
     e.preventDefault();

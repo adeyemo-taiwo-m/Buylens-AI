@@ -10,7 +10,6 @@ import {
   Sparkles,
   AlertCircle,
   UploadCloud,
-  FileText,
   Info,
 } from "lucide-react";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, use } from "react";
+import { useState, use } from "react";
 import Link from "next/link";
 import { getStoredReportById } from "@/lib/storage/reports";
 import { DecisionReport } from "@/types/analysis";
@@ -17,13 +17,8 @@ export default function QuestionsForSellerPage({
 }) {
   const { id } = use(params);
   const { toast } = useToast();
-  const [report, setReport] = useState<DecisionReport>(DEMO_SOLAR_REPORT);
+  const [report] = useState<DecisionReport>(() => getStoredReportById(id) || DEMO_SOLAR_REPORT);
   const [copiedId, setCopiedId] = useState<string | null>(null);
-
-  useEffect(() => {
-    const found = getStoredReportById(id);
-    if (found) setReport(found);
-  }, [id]);
 
   const handleCopyQuestion = (qid: string, text: string) => {
     navigator.clipboard.writeText(text);

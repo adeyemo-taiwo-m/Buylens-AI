@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight, BarChart2, History, Scale } from "lucide-react";
+import { ArrowUpRight, History, Scale } from "lucide-react";
 
 export function Header() {
   return (

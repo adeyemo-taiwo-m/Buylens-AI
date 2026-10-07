@@ -1,13 +1,12 @@
 "use client";
 
-import { useEffect, useState, use } from "react";
+import { useState, use } from "react";
 import Link from "next/link";
 import { getStoredReportById } from "@/lib/storage/reports";
 import { DecisionReport, AlternativeOption } from "@/types/analysis";
 import { DEMO_SOLAR_REPORT } from "@/data/demo";
 import { Card } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
-import { ArrowLeft, Check, CheckCircle2, X, Scale, Info } from "lucide-react";
+import { ArrowLeft, Check, CheckCircle2, Info } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default function CompareAlternativesPage({
@@ -16,13 +15,8 @@ export default function CompareAlternativesPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = use(params);
-  const [report, setReport] = useState<DecisionReport>(DEMO_SOLAR_REPORT);
+  const [report] = useState<DecisionReport>(() => getStoredReportById(id) || DEMO_SOLAR_REPORT);
   const [selectedAltId, setSelectedAltId] = useState<string>("current");
-
-  useEffect(() => {
-    const found = getStoredReportById(id);
-    if (found) setReport(found);
-  }, [id]);
 
   const alternatives: AlternativeOption[] = report.alternatives || [];
 

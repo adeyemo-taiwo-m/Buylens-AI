@@ -1,30 +1,23 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { Header } from "@/components/layout/Header";
 import { DecisionReport } from "@/types/analysis";
 import { getStoredReports } from "@/lib/storage/reports";
 import { DEMO_SOLAR_REPORT } from "@/data/demo";
-import { ArrowLeft, CheckCircle2, ShieldAlert, TrendingDown } from "lucide-react";
+import { ArrowLeft, ShieldAlert } from "lucide-react";
 
 export default function ComparePage() {
-  const [reports, setReports] = useState<DecisionReport[]>([]);
-  const [leftId, setLeftId] = useState<string>("");
-  const [rightId, setRightId] = useState<string>("");
-
-  useEffect(() => {
+  const [reports] = useState<DecisionReport[]>(() => getStoredReports());
+  const [leftId, setLeftId] = useState<string>(() => {
     const list = getStoredReports();
-    setReports(list);
-    if (list.length > 0) {
-      setLeftId(list[0].id);
-      if (list.length > 1) {
-        setRightId(list[1].id);
-      } else {
-        setRightId(list[0].id);
-      }
-    }
-  }, []);
+    return list.length > 0 ? list[0].id : DEMO_SOLAR_REPORT.id;
+  });
+  const [rightId, setRightId] = useState<string>(() => {
+    const list = getStoredReports();
+    return list.length > 1 ? list[1].id : list.length > 0 ? list[0].id : DEMO_SOLAR_REPORT.id;
+  });
 
   const leftReport = reports.find((r) => r.id === leftId) || DEMO_SOLAR_REPORT;
   const rightReport = reports.find((r) => r.id === rightId) || DEMO_SOLAR_REPORT;

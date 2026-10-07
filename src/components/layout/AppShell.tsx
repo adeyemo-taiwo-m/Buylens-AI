@@ -8,8 +8,6 @@ import {
   ScanSearch,
   History,
   Settings,
-  Bell,
-  User,
   Plus,
   Scale,
   Menu,

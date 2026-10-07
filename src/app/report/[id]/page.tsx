@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, use } from "react";
+import { useState, use } from "react";
 import Link from "next/link";
 import { Header } from "@/components/layout/Header";
 import { ReportView } from "@/components/report/ReportView";
@@ -15,26 +15,11 @@ export default function ReportDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = use(params);
-  const [report, setReport] = useState<DecisionReport | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [report] = useState<DecisionReport>(() => {
+    if (id === "demo" || id === DEMO_SOLAR_REPORT.id) return DEMO_SOLAR_REPORT;
+    return getStoredReportById(id) || DEMO_SOLAR_REPORT;
+  });
   const [copiedLink, setCopiedLink] = useState(false);
-
-  useEffect(() => {
-    if (id === "demo" || id === DEMO_SOLAR_REPORT.id) {
-      setReport(DEMO_SOLAR_REPORT);
-      setLoading(false);
-      return;
-    }
-
-    const found = getStoredReportById(id);
-    if (found) {
-      setReport(found);
-    } else {
-      // Fallback to demo report if not found in storage
-      setReport(DEMO_SOLAR_REPORT);
-    }
-    setLoading(false);
-  }, [id]);
 
   const handlePrint = () => {
     window.print();
@@ -46,16 +31,6 @@ export default function ReportDetailPage({
     setTimeout(() => setCopiedLink(false), 2000);
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex flex-col justify-between bg-[#F7F8FA]">
-        <Header />
-        <div className="flex-1 flex items-center justify-center">
-          <div className="text-zinc-500 text-sm">Loading Decision Report...</div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen flex flex-col justify-between bg-[#F7F8FA] text-[#111318]">

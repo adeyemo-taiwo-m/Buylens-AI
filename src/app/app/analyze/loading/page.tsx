@@ -8,7 +8,6 @@ import { DEMO_SOLAR_REPORT } from "@/data/demo";
 
 export default function AnalysisLoadingPage() {
   const router = useRouter();
-  const [currentStep, setCurrentStep] = useState(0);
 
   const initialSteps: StepItem[] = [
     { id: "1", label: "Understanding the product", status: "current" },

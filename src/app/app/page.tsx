@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { getStoredReports } from "@/lib/storage/reports";
 import { DecisionReport } from "@/types/analysis";
@@ -9,26 +9,20 @@ import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import {
   Plus,
-  ArrowRight,
-  TrendingDown,
-  ShieldCheck,
   FileText,
-  Clock,
   Sparkles,
   ChevronRight,
 } from "lucide-react";
 
 export default function AppHomePage() {
-  const [reports, setReports] = useState<DecisionReport[]>([]);
-  const [greeting, setGreeting] = useState("Good day");
-
-  useEffect(() => {
-    setReports(getStoredReports());
+  const [reports] = useState<DecisionReport[]>(() => getStoredReports());
+  const [greeting] = useState(() => {
+    if (typeof window === "undefined") return "Good day";
     const hour = new Date().getHours();
-    if (hour < 12) setGreeting("Good morning");
-    else if (hour < 17) setGreeting("Good afternoon");
-    else setGreeting("Good evening");
-  }, []);
+    if (hour < 12) return "Good morning";
+    if (hour < 17) return "Good afternoon";
+    return "Good evening";
+  });
 
   const getVerdictBadge = (verdict: string) => {
     switch (verdict) {

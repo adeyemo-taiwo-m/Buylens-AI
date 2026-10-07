@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useRef, useState } from "react";
-import { UploadCloud, X, RefreshCw, FileText } from "lucide-react";
+import { useRef, useState } from "react";
+import { UploadCloud, X, RefreshCw } from "lucide-react";
 import { Button } from "./Button";
 import { cn } from "@/lib/utils";
 
@@ -81,6 +81,7 @@ export function UploadDropzone({ onImageChange, className }: UploadDropzoneProps
       {preview ? (
         <div className="relative rounded-[12px] border border-[#E4E7EC] bg-white p-3 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3 overflow-hidden">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={preview}
               alt="Listing preview"

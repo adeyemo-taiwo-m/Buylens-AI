@@ -6,11 +6,7 @@ import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import {
   CheckCircle2,
-  ShieldAlert,
-  HelpCircle,
-  TrendingDown,
   ThumbsUp,
-  Zap,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 

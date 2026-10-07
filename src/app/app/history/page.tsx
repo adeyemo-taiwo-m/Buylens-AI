@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { getStoredReports, deleteStoredReport } from "@/lib/storage/reports";
 import { DecisionReport } from "@/types/analysis";
@@ -13,8 +13,6 @@ import {
   Trash2,
   Plus,
   FileText,
-  Filter,
-  ArrowRight,
   ChevronRight,
 } from "lucide-react";
 
@@ -22,13 +20,9 @@ type FilterType = "ALL" | "BUY" | "WORTH_CONSIDERING" | "WAIT" | "AVOID";
 
 export default function AppHistoryPage() {
   const { toast } = useToast();
-  const [reports, setReports] = useState<DecisionReport[]>([]);
+  const [reports, setReports] = useState<DecisionReport[]>(() => getStoredReports());
   const [activeFilter, setActiveFilter] = useState<FilterType>("ALL");
   const [search, setSearch] = useState("");
-
-  useEffect(() => {
-    setReports(getStoredReports());
-  }, []);
 
   const handleDelete = (id: string, e: React.MouseEvent) => {
     e.preventDefault();

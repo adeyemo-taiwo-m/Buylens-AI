@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, use } from "react";
+import { useState, use } from "react";
 import Link from "next/link";
 import { ReportView } from "@/components/report/ReportView";
 import { DecisionReport } from "@/types/analysis";
@@ -14,7 +14,6 @@ import {
   Share2,
   Scale,
   HelpCircle,
-  Check,
 } from "lucide-react";
 
 export default function AppReportDetailPage({
@@ -24,14 +23,7 @@ export default function AppReportDetailPage({
 }) {
   const { id } = use(params);
   const { toast } = useToast();
-  const [report, setReport] = useState<DecisionReport | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const found = getStoredReportById(id);
-    setReport(found || DEMO_SOLAR_REPORT);
-    setLoading(false);
-  }, [id]);
+  const [report] = useState<DecisionReport>(() => getStoredReportById(id) || DEMO_SOLAR_REPORT);
 
   const handleShare = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -42,13 +34,6 @@ export default function AppReportDetailPage({
     window.print();
   };
 
-  if (loading || !report) {
-    return (
-      <div className="py-20 text-center text-sm text-[#667085]">
-        Loading Decision Report...
-      </div>
-    );
-  }
 
   return (
     <div className="space-y-6">

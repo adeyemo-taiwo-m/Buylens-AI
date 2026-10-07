@@ -12,8 +12,6 @@ import {
   TrendingDown,
   CheckCircle2,
   FileText,
-  ThumbsUp,
-  Zap,
 } from "lucide-react";
 
 export default function Home() {
