@@ -13,8 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "BuyLens AI — Smart Product Insights & Deal Discovery",
-  description: "AI-powered product intelligence, smart price analysis, and authentic review synthesis.",
+  title: "BuyLens AI — Purchase Decision Support",
+  description:
+    "Know what you're buying before you pay. AI-powered decision reports to help you evaluate prices, risks, and specifications before high-value purchases.",
 };
 
 export default function RootLayout({
@@ -23,9 +24,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full antialiased">
+    <html lang="en" className="h-full">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} min-h-full flex flex-col font-sans bg-zinc-950 text-zinc-100 selection:bg-indigo-500 selection:text-white`}
+        className={`${geistSans.variable} ${geistMono.variable} min-h-full flex flex-col font-sans bg-[var(--background)] text-[var(--foreground)] selection:bg-zinc-800 selection:text-white`}
       >
         {children}
       </body>
