@@ -1,44 +1,89 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f7f8fa;
-  --surface: #ffffff;
-  --surface-subtle: #f1f3f6;
-  --foreground: #111318;
-  --foreground-secondary: #626a73;
-  --foreground-muted: #8b929b;
-  --border: #e5e7eb;
-  --border-subtle: #edf0f3;
-  --accent-primary: #111827;
+  --bg-canvas: #F7F8F5;
+  --bg-surface: #FFFFFF;
+  --bg-surface-subtle: #F2F4F0;
+  --bg-navy: #0B1220;
+  --bg-navy-raised: #111A2B;
 
-  /* Semantic Status Colors */
-  --status-success: #16834b;
-  --status-warning: #b7791f;
-  --status-danger: #c0392b;
-  --status-info: #356ae6;
+  --border: #E4E7EC;
+  --border-strong: #D0D5DD;
+  --border-navy: rgba(255, 255, 255, 0.10);
+
+  --text-primary: #101828;
+  --text-secondary: #667085;
+  --text-tertiary: #98A2B3;
+  --text-on-navy: #FFFFFF;
+  --text-on-navy-muted: #A8B3C7;
+
+  --accent-lime: #B8F34A;
+  --accent-lime-hover: #A7E932;
+  --accent-lime-dark: #84CC16;
+
+  /* Status Tokens */
+  --status-success: #16A34A;
+  --status-success-text: #15803D;
+  --status-success-bg: #ECFDF3;
+  --status-success-border: #ABEFC6;
+
+  --status-consider: #84CC16;
+  --status-consider-text: #4D7C0F;
+  --status-consider-bg: #F7FEE7;
+  --status-consider-border: #D9F99D;
+
+  --status-warning: #F59E0B;
+  --status-warning-text: #B45309;
+  --status-warning-bg: #FFFAEB;
+  --status-warning-border: #FEDF89;
+
+  --status-danger: #DC2626;
+  --status-danger-text: #B42318;
+  --status-danger-bg: #FEF3F2;
+  --status-danger-border: #FECDCA;
+
+  --status-neutral: #64748B;
+  --status-neutral-text: #475467;
+  --status-neutral-bg: #F2F4F7;
+  --status-neutral-border: #E4E7EC;
+
+  --radius-sm: 8px;
+  --radius-input: 10px;
+  --radius-card: 14px;
+  --radius-panel: 18px;
+  --radius-modal: 20px;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-surface: var(--surface);
-  --color-surface-subtle: var(--surface-subtle);
-  --color-foreground: var(--foreground);
-  --color-foreground-secondary: var(--foreground-secondary);
-  --color-foreground-muted: var(--foreground-muted);
-  --color-border: var(--border);
-  --color-border-subtle: var(--border-subtle);
-  --color-accent-primary: var(--accent-primary);
-  --color-status-success: var(--status-success);
-  --color-status-warning: var(--status-warning);
-  --color-status-danger: var(--status-danger);
-  --color-status-info: var(--status-info);
-  --font-sans: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --color-canvas: var(--bg-canvas);
+  --color-surface: var(--bg-surface);
+  --color-surface-subtle: var(--bg-surface-subtle);
+  --color-navy: var(--bg-navy);
+  --color-navy-raised: var(--bg-navy-raised);
+  --color-primary-950: #0B1220;
+
+  --color-line: var(--border);
+  --color-line-strong: var(--border-strong);
+  --color-navy-line: var(--border-navy);
+
+  --color-ink: var(--text-primary);
+  --color-ink-muted: var(--text-secondary);
+  --color-ink-faint: var(--text-tertiary);
+  --color-on-navy: var(--text-on-navy);
+  --color-on-navy-muted: var(--text-on-navy-muted);
+
+  --color-lime: var(--accent-lime);
+  --color-lime-hover: var(--accent-lime-hover);
+
+  --font-sans: var(--font-inter), 'Geist', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: var(--font-geist-mono), monospace;
 }
 
 body {
-  background-color: var(--background);
-  color: var(--foreground);
+  background-color: var(--bg-canvas);
+  color: var(--text-primary);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
