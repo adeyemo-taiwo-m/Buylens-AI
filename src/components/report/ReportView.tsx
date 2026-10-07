@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { DecisionReport } from "@/types/analysis";
 import { DecisionCard } from "@/components/report/DecisionCard";
 import { MetricCard } from "@/components/report/MetricCard";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
+import { useToast } from "@/components/ui/Toast";
 import {
   ShieldAlert,
   HelpCircle,
@@ -15,8 +17,9 @@ import {
   Copy,
   Check,
   Info,
-  Layers,
+  Scale,
   ArrowRight,
+  Share2,
 } from "lucide-react";
 
 interface ReportViewProps {
@@ -24,11 +27,13 @@ interface ReportViewProps {
 }
 
 export function ReportView({ report }: ReportViewProps) {
+  const { toast } = useToast();
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
   const copyQuestion = (id: string, text: string) => {
     navigator.clipboard.writeText(text);
     setCopiedId(id);
+    toast("Question copied to clipboard", "success");
     setTimeout(() => setCopiedId(null), 2000);
   };
 
@@ -39,6 +44,7 @@ export function ReportView({ report }: ReportViewProps) {
     const fullMsg = `Hello, regarding the ${report.productName} (₦${report.price.toLocaleString()}):\n\n${questionsText}\n\nKindly clarify these points so we can finalize. Thanks!`;
     navigator.clipboard.writeText(fullMsg);
     setCopiedId("all");
+    toast("All questions copied formatted for WhatsApp", "success");
     setTimeout(() => setCopiedId(null), 2500);
   };
 
@@ -49,7 +55,6 @@ export function ReportView({ report }: ReportViewProps) {
     return `${cur} ${val.toLocaleString()}`;
   };
 
-  // Determine highest risk level for metric card
   const highestRisk = report.risks.some((r) => r.severity === "critical")
     ? "Critical"
     : report.risks.some((r) => r.severity === "high")
@@ -59,7 +64,7 @@ export function ReportView({ report }: ReportViewProps) {
     : "Low";
 
   return (
-    <div className="max-w-5xl mx-auto px-6 py-8 space-y-8">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 space-y-8">
       {/* Product Snapshot Header */}
       <div className="border-b border-[#E4E7EC] pb-6">
         <div className="flex flex-wrap items-center gap-2 text-xs text-[#667085] mb-2 font-medium">
@@ -165,10 +170,10 @@ export function ReportView({ report }: ReportViewProps) {
         <div className="flex items-center justify-between pb-4 border-b border-[#E4E7EC]">
           <h2 className="text-lg font-bold text-[#101828] flex items-center gap-2">
             <ShieldAlert className="h-5 w-5 text-[#DC2626]" />
-            Risk Factors to Verify Before Payment
+            What Concerns Us (Risk Factors)
           </h2>
           <span className="text-xs text-[#667085]">
-            {report.risks.length} issue{report.risks.length > 1 ? "s" : ""} detected
+            {report.risks.length} issue{report.risks.length > 1 ? "s" : ""} to verify
           </span>
         </div>
 
@@ -243,9 +248,8 @@ export function ReportView({ report }: ReportViewProps) {
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-start gap-3">
-                  {/* Style guide numeral chip: Navy with Lime text */}
                   <span className="h-6 w-6 rounded-[6px] bg-[#0B1220] text-[#B8F34A] flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
-                    {idx + 1}
+                    0{idx + 1}
                   </span>
                   <p className="text-sm font-semibold text-[#101828]">{q.question}</p>
                 </div>
@@ -284,7 +288,7 @@ export function ReportView({ report }: ReportViewProps) {
         <Card variant="status" padding="md" className="bg-[#ECFDF3] border border-[#ABEFC6] space-y-3">
           <h3 className="text-sm font-bold text-[#15803D] flex items-center gap-2">
             <CheckCircle2 className="h-4 w-4 text-[#16A34A]" />
-            Verified Technical Strengths
+            Why This Looks Promising
           </h3>
           <ul className="space-y-2 text-xs text-[#475467]">
             {report.positiveFindings.map((item, idx) => (
@@ -299,13 +303,18 @@ export function ReportView({ report }: ReportViewProps) {
         <Card variant="status" padding="md" className="bg-[#FFFAEB] border border-[#FEDF89] space-y-3">
           <h3 className="text-sm font-bold text-[#B45309] flex items-center gap-2">
             <AlertTriangle className="h-4 w-4 text-[#F59E0B]" />
-            Missing Information / Details
+            What&apos;s Missing (Checklist)
           </h3>
           <ul className="space-y-2 text-xs text-[#475467]">
             {report.missingInformation.map((item, idx) => (
-              <li key={idx} className="flex items-start gap-2">
-                <span className="text-[#F59E0B] font-bold">•</span>
-                <span>{item}</span>
+              <li key={idx} className="flex items-start justify-between gap-2">
+                <span className="flex items-start gap-2">
+                  <span className="text-[#F59E0B] font-bold">○</span>
+                  <span>{item}</span>
+                </span>
+                <span className="text-[10px] text-[#667085] bg-white/70 px-1.5 py-0.5 rounded border border-[#FEDF89] shrink-0">
+                  Not provided
+                </span>
               </li>
             ))}
           </ul>
@@ -315,7 +324,17 @@ export function ReportView({ report }: ReportViewProps) {
       {/* 7. Alternative Market Options */}
       {report.alternatives && report.alternatives.length > 0 && (
         <Card variant="default" padding="lg" className="space-y-4">
-          <h2 className="text-lg font-bold text-[#101828]">Alternative Market Comparisons</h2>
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-bold text-[#101828]">Alternative Market Comparisons</h2>
+            <Link
+              href={`/app/report/${report.id}/compare`}
+              className="text-xs font-semibold text-[#0B1220] hover:underline flex items-center gap-1"
+            >
+              <span>Full trade-off comparison</span>
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {report.alternatives.map((alt) => (
               <div
@@ -329,32 +348,88 @@ export function ReportView({ report }: ReportViewProps) {
                   </span>
                 </div>
                 <p className="text-xs text-[#667085] leading-relaxed">{alt.comparisonSummary}</p>
-                <div className="pt-2 flex flex-wrap gap-2 text-[11px]">
-                  {alt.pros.map((p, i) => (
-                    <span key={i} className="text-[#15803D] bg-[#ECFDF3] px-2 py-0.5 rounded font-medium">
-                      + {p}
-                    </span>
-                  ))}
-                  {alt.cons.map((c, i) => (
-                    <span key={i} className="text-[#B42318] bg-[#FEF3F2] px-2 py-0.5 rounded font-medium">
-                      - {c}
-                    </span>
-                  ))}
-                </div>
               </div>
             ))}
           </div>
         </Card>
       )}
 
-      {/* 8. Recommendation Panel (Deep Navy with Lime Accent) */}
-      <Card variant="recommendation" padding="lg" className="space-y-4">
-        <div className="text-xs font-black uppercase tracking-wider text-[#B8F34A]">
-          BUYLENS RECOMMENDS
+      {/* 8. SCREEN 09: FINAL DECISION PANEL per PRD Section 40 */}
+      <Card variant="recommendation" padding="lg" className="space-y-6">
+        <div className="space-y-2">
+          <div className="text-xs font-bold uppercase tracking-wider text-[#B8F34A]">
+            FINAL DECISION GUIDANCE
+          </div>
+          <h3 className="text-xl sm:text-2xl font-black text-white">
+            {report.verdict === "STRONG_BUY"
+              ? "BUY — Verified value and low risk profile."
+              : report.verdict === "BUY_WITH_CAUTION"
+              ? "WORTH CONSIDERING — Verify key details before payment."
+              : report.verdict === "OVERPRICED"
+              ? "WAIT — Don't pay yet, price is elevated."
+              : "INVESTIGATE — Crucial omissions detected."}
+          </h3>
+          <p className="text-sm text-[#E4E9F2] leading-relaxed">
+            {report.finalRecommendation}
+          </p>
         </div>
-        <p className="text-base sm:text-lg leading-relaxed text-[#E4E9F2]">
-          {report.finalRecommendation}
-        </p>
+
+        {/* Final verification checklist per Section 40 */}
+        <div className="p-4 rounded-[12px] bg-[#111A2B] border border-[rgba(255,255,255,0.08)] space-y-2.5 text-xs">
+          <div className="text-[11px] font-bold uppercase tracking-wider text-[#A8B3C7]">
+            Immediate Verification Checklist
+          </div>
+          <div className="space-y-1.5 text-[#E4E9F2]">
+            <div className="flex items-center gap-2">
+              <span className="text-[#16A34A] font-bold">✓</span>
+              <span>Price evaluated against Lagos/Abuja retail corridor</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-[#16A34A] font-bold">✓</span>
+              <span>Capacity and specification suitability analyzed</span>
+            </div>
+            {report.sellerQuestions.slice(0, 2).map((q, i) => (
+              <div key={i} className="flex items-center gap-2 text-[#FEDF89]">
+                <span className="text-[#F59E0B] font-bold">⚠</span>
+                <span>Ask seller: {q.question}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Action button row per Section 40 */}
+        <div className="flex flex-wrap items-center gap-3 pt-2">
+          <Link href={`/app/report/${report.id}/questions`}>
+            <Button variant="accent" size="md">
+              <HelpCircle className="h-4 w-4 mr-1 text-[#0B1220]" />
+              <span>Ask seller</span>
+            </Button>
+          </Link>
+
+          <Link href={`/app/report/${report.id}/compare`}>
+            <Button
+              variant="secondary"
+              size="md"
+              className="bg-transparent text-white border-[rgba(255,255,255,0.20)] hover:bg-[rgba(255,255,255,0.08)]"
+            >
+              <Scale className="h-4 w-4 mr-1 text-white" />
+              <span>Compare alternatives</span>
+            </Button>
+          </Link>
+
+          <Button
+            variant="secondary"
+            size="md"
+            onClick={() => {
+              navigator.clipboard.writeText(window.location.href);
+              toast("Report link copied to clipboard", "success");
+            }}
+            className="bg-transparent text-white border-[rgba(255,255,255,0.20)] hover:bg-[rgba(255,255,255,0.08)]"
+          >
+            <Share2 className="h-4 w-4 mr-1 text-white" />
+            <span>Save & Share report</span>
+          </Button>
+        </div>
       </Card>
     </div>
   );

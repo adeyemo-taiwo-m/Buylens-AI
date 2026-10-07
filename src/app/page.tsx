@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Header } from "@/components/layout/Header";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { InteractiveExampleReport } from "@/components/home/InteractiveExampleReport";
 import {
   ArrowRight,
   ShieldAlert,
@@ -34,21 +35,27 @@ export default function Home() {
           </h1>
 
           <p className="max-w-2xl mx-auto text-base sm:text-lg text-[#667085] mb-10 leading-relaxed font-normal">
-            Turn informal WhatsApp quotations, social media vendor listings, and complex technical specs into an objective decision report. Uncover fair market prices, unstated risks, and critical questions to ask the merchant.
+            BuyLens AI analyzes product information, highlights risks, and helps you make a more informed purchase decision before spending significant money.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <Link href="/analyze">
+            <Link href="/app/analyze">
               <Button variant="primary" size="lg" className="w-full sm:w-auto">
-                <span>Analyze a Purchase</span>
+                <span>Analyze a purchase</span>
                 <ArrowRight className="h-4 w-4 text-[#B8F34A]" />
               </Button>
             </Link>
 
-            <Link href="/report/demo">
+            <Link href="#how-it-works">
               <Button variant="secondary" size="lg" className="w-full sm:w-auto">
+                <span>See how it works</span>
+              </Button>
+            </Link>
+
+            <Link href="/app/report/demo">
+              <Button variant="ghost" size="lg" className="w-full sm:w-auto">
                 <FileText className="h-4 w-4 text-[#667085]" />
-                <span>View Sample Solar Report</span>
+                <span>Try a sample analysis</span>
               </Button>
             </Link>
           </div>
@@ -70,68 +77,21 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Featured Live Sample Teaser: Signature Decision Card */}
+        {/* Interactive Example Report Section per PRD Section 20 & INTERACTIONS.md Section 1.4 */}
         <section className="max-w-4xl mx-auto px-6 pb-20">
           <div className="text-center mb-6">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#667085]">
-              Live Sample Analysis Preview
-            </span>
+            <h2 className="text-sm font-bold uppercase tracking-wider text-[#667085]">
+              Explore an Interactive Decision Report
+            </h2>
           </div>
-
-          <div className="relative overflow-hidden rounded-[18px] bg-[#0B1220] text-white p-6 sm:p-8 border border-[rgba(255,255,255,0.08)] shadow-[0_20px_40px_-16px_rgba(11,18,32,0.35)]">
-            <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#B8F34A]/50 to-transparent pointer-events-none" />
-
-            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-6 pb-6 border-b border-[rgba(255,255,255,0.10)]">
-              <div>
-                <div className="text-xs font-bold uppercase tracking-wider text-[#B8F34A] mb-1 flex items-center gap-1.5">
-                  <Zap className="h-3.5 w-3.5" />
-                  <span>Solar & Power System Evaluation</span>
-                </div>
-                <h3 className="text-xl font-bold text-white">
-                  Felicity Solar 5kVA Inverter + 10kWh LiFePO4 Battery Pack
-                </h3>
-                <p className="text-sm text-[#A8B3C7] mt-1">
-                  Quoted Price: ₦4,850,000 via WhatsApp
-                </p>
-              </div>
-
-              <div className="flex items-center gap-4 bg-[rgba(255,255,255,0.06)] px-4 py-2.5 rounded-[12px] border border-[rgba(255,255,255,0.10)] shrink-0">
-                <div className="text-center">
-                  <div className="text-3xl font-black text-white">84</div>
-                  <div className="text-[10px] text-[#A8B3C7] uppercase font-semibold">BUY SCORE</div>
-                </div>
-                <div className="h-8 w-px bg-[rgba(255,255,255,0.15)]" />
-                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#B8F34A]">
-                  <ThumbsUp className="h-3.5 w-3.5" />
-                  <span>Worth Considering</span>
-                </div>
-              </div>
-            </div>
-
-            <p className="text-sm text-[#E4E9F2] pt-6 leading-relaxed">
-              &ldquo;Competitive pricing at 6% below Alaba market averages with authentic Grade-A cells. Proceed once written confirmation is secured regarding certified installer sign-off and local warranty servicing.&rdquo;
-            </p>
-
-            <div className="mt-6 pt-4 border-t border-[rgba(255,255,255,0.08)] flex items-center justify-between">
-              <span className="text-xs text-[#A8B3C7]">
-                Full 4-tier risk & specification breakdown available
-              </span>
-              <Link
-                href="/report/demo"
-                className="text-xs font-semibold text-[#B8F34A] hover:underline inline-flex items-center gap-1"
-              >
-                <span>Inspect full report</span>
-                <ArrowRight className="h-3.5 w-3.5" />
-              </Link>
-            </div>
-          </div>
+          <InteractiveExampleReport />
         </section>
 
-        {/* How It Works: 3 Steps */}
-        <section className="max-w-5xl mx-auto px-6 py-16 border-t border-[#E4E7EC]">
+        {/* How It Works: 3 Steps per PRD Section 19 */}
+        <section id="how-it-works" className="max-w-5xl mx-auto px-6 py-16 border-t border-[#E4E7EC]">
           <div className="text-center max-w-xl mx-auto mb-14">
             <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#101828]">
-              How BuyLens AI Works
+              How it works
             </h2>
             <p className="mt-2 text-sm text-[#667085]">
               Three simple steps to protect your capital before making any significant payment.
@@ -143,9 +103,9 @@ export default function Home() {
               <div className="text-xs font-bold text-[#0B1220] bg-[#F2F4F0] w-7 h-7 rounded-[8px] flex items-center justify-center">
                 01
               </div>
-              <h3 className="text-base font-bold text-[#101828]">Provide Quotation Details</h3>
+              <h3 className="text-base font-bold text-[#101828]">Give us the listing</h3>
               <p className="text-xs sm:text-sm text-[#667085] leading-relaxed">
-                Paste the vendor&apos;s WhatsApp quotation, Jiji listing, or spec sheet. Enter the quoted price and platform.
+                Paste information or upload an image from WhatsApp, Jiji, or an in-store quotation.
               </p>
             </Card>
 
@@ -153,9 +113,9 @@ export default function Home() {
               <div className="text-xs font-bold text-[#0B1220] bg-[#F2F4F0] w-7 h-7 rounded-[8px] flex items-center justify-center">
                 02
               </div>
-              <h3 className="text-base font-bold text-[#101828]">AI Market & Risk Audit</h3>
+              <h3 className="text-base font-bold text-[#101828]">BuyLens analyzes it</h3>
               <p className="text-xs sm:text-sm text-[#667085] leading-relaxed">
-                We benchmark against real market data in Lagos and Abuja, scanning for missing accessories, parallel imports, and durability risks.
+                AI evaluates price, value, risks, and missing information against real market data.
               </p>
             </Card>
 
@@ -163,9 +123,9 @@ export default function Home() {
               <div className="text-xs font-bold text-[#0B1220] bg-[#F2F4F0] w-7 h-7 rounded-[8px] flex items-center justify-center">
                 03
               </div>
-              <h3 className="text-base font-bold text-[#101828]">Receive Decision Report</h3>
+              <h3 className="text-base font-bold text-[#101828]">Make a smarter decision</h3>
               <p className="text-xs sm:text-sm text-[#667085] leading-relaxed">
-                Get an instant Buy Score, clear verdict, and a copyable WhatsApp checklist of questions to send the seller before paying.
+                Understand what to verify before paying, with ready questions to ask the merchant.
               </p>
             </Card>
           </div>
@@ -175,7 +135,7 @@ export default function Home() {
         <section className="max-w-5xl mx-auto px-6 py-16 border-t border-[#E4E7EC]">
           <div className="text-center max-w-xl mx-auto mb-12">
             <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#101828]">
-              The Decision Framework
+              The decision framework
             </h2>
             <p className="mt-2 text-sm text-[#667085]">
               Every analysis directly answers the core question: &ldquo;Should I buy this?&rdquo;
@@ -215,19 +175,19 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Final CTA Band */}
+        {/* Final CTA Band per PRD Section 21 */}
         <section className="bg-[#0B1220] text-white py-16 px-6 text-center border-t border-[rgba(255,255,255,0.08)]">
           <div className="max-w-2xl mx-auto space-y-6">
             <h2 className="text-3xl font-extrabold tracking-tight">
-              Ready to verify your next major purchase?
+              Don&apos;t just buy. Understand first.
             </h2>
             <p className="text-sm text-[#A8B3C7] leading-relaxed">
-              Don&apos;t risk millions of Naira on unverified seller claims. Run a free instant intelligence report now.
+              Don&apos;t risk your capital on unverified claims. Run a free instant decision report now.
             </p>
             <div className="pt-2">
-              <Link href="/analyze">
+              <Link href="/app/analyze">
                 <Button variant="accent" size="lg">
-                  <span>Start Free Analysis</span>
+                  <span>Analyze a purchase</span>
                   <ArrowRight className="h-4 w-4 text-[#0B1220]" />
                 </Button>
               </Link>
@@ -241,16 +201,19 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#667085]">
           <p>© {new Date().getFullYear()} BuyLens AI. Know what you&apos;re buying before you pay.</p>
           <div className="flex items-center gap-6">
-            <Link href="/analyze" className="hover:text-[#101828] transition-colors">
+            <Link href="/app" className="hover:text-[#101828] transition-colors">
+              App Home
+            </Link>
+            <Link href="/app/analyze" className="hover:text-[#101828] transition-colors">
               Analyze
             </Link>
-            <Link href="/history" className="hover:text-[#101828] transition-colors">
+            <Link href="/app/history" className="hover:text-[#101828] transition-colors">
               History
             </Link>
             <Link href="/compare" className="hover:text-[#101828] transition-colors">
               Compare
             </Link>
-            <Link href="/report/demo" className="hover:text-[#101828] transition-colors">
+            <Link href="/app/report/demo" className="hover:text-[#101828] transition-colors">
               Sample Report
             </Link>
           </div>

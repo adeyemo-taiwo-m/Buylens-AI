@@ -1,34 +1,37 @@
 import { DecisionReport } from "@/types/analysis";
-import { DEMO_SOLAR_REPORT } from "@/data/demo";
+import { INITIAL_DEMO_REPORTS, DEMO_SOLAR_REPORT } from "@/data/demo";
 
 const STORAGE_KEY = "buylens_reports";
 
 export function getStoredReports(): DecisionReport[] {
   if (typeof window === "undefined") {
-    return [DEMO_SOLAR_REPORT];
+    return INITIAL_DEMO_REPORTS;
   }
 
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) {
-      // Seed with demo report on initial run
-      localStorage.setItem(STORAGE_KEY, JSON.stringify([DEMO_SOLAR_REPORT]));
-      return [DEMO_SOLAR_REPORT];
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_DEMO_REPORTS));
+      return INITIAL_DEMO_REPORTS;
     }
     const parsed = JSON.parse(raw);
     if (Array.isArray(parsed) && parsed.length > 0) {
       return parsed;
     }
-    return [DEMO_SOLAR_REPORT];
+    return INITIAL_DEMO_REPORTS;
   } catch (err) {
     console.error("Failed to load reports from localStorage", err);
-    return [DEMO_SOLAR_REPORT];
+    return INITIAL_DEMO_REPORTS;
   }
 }
 
 export function getStoredReportById(id: string): DecisionReport | undefined {
   const reports = getStoredReports();
-  return reports.find((r) => r.id === id);
+  const match = reports.find((r) => r.id === id);
+  if (match) return match;
+  // Also match fallback IDs
+  if (id === "demo" || id === "demo-solar") return DEMO_SOLAR_REPORT;
+  return reports[0];
 }
 
 export function saveStoredReport(report: DecisionReport): void {

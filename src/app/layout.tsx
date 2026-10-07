@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { ToastProvider } from "@/components/ui/Toast";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -13,9 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "BuyLens AI — Purchase Decision Support",
+  title: "BuyLens AI — Know What You're Buying Before You Pay",
   description:
-    "Know what you're buying before you pay. AI-powered decision reports to help you evaluate prices, risks, and specifications before high-value purchases.",
+    "BuyLens AI analyzes product information, highlights risks and missing details, and helps you make more informed purchase decisions.",
 };
 
 export default function RootLayout({
@@ -26,9 +27,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} min-h-full flex flex-col font-sans bg-[var(--background)] text-[var(--foreground)] selection:bg-zinc-800 selection:text-white`}
+        className={`${geistSans.variable} ${geistMono.variable} min-h-full flex flex-col font-sans bg-[#F7F8F5] text-[#101828] selection:bg-[#0B1220] selection:text-[#B8F34A]`}
       >
-        {children}
+        <ToastProvider>{children}</ToastProvider>
       </body>
     </html>
   );
