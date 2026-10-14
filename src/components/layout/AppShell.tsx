@@ -35,7 +35,7 @@ export function AppShell({ children }: AppShellProps) {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-[#F7F8F5] text-[#101828]">
+    <div className="min-h-screen flex flex-col md:flex-row bg-[#F6F8FC] text-[#101828]">
       {/* 1. Desktop & Laptop Sidebar: Full Sidebar (lg:w-64) */}
       {/* 2. Tablet Sidebar: Icon-Denoted Rail (md:w-20 lg:w-64) */}
       <aside className="hidden md:flex flex-col justify-between border-r border-[#E4E7EC] bg-white sticky top-0 h-screen shrink-0 transition-all duration-200 md:w-20 lg:w-64 md:p-3 lg:p-5">

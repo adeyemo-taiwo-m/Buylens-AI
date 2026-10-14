@@ -5,6 +5,7 @@ import { Header } from "@/components/layout/Header";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { InteractiveExampleReport } from "@/components/home/InteractiveExampleReport";
+import { HeroMagnifier } from "@/components/home/HeroMagnifier";
 import {
   ArrowRight,
   ShieldAlert,
@@ -16,7 +17,7 @@ import {
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-[#F7F8F5] text-[#101828]">
+    <div className="min-h-screen flex flex-col justify-between bg-white text-[#101828]">
       <Header />
 
       <main className="flex-1">
@@ -73,6 +74,11 @@ export default function Home() {
               No Seller Kickbacks or Affiliates
             </span>
           </div>
+        </section>
+
+        {/* Hero Magnifier Card */}
+        <section className="max-w-5xl mx-auto px-6 pb-20">
+          <HeroMagnifier />
         </section>
 
         {/* Interactive Example Report Section per PRD Section 20 & INTERACTIONS.md Section 1.4 */}

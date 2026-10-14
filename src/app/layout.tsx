@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, Geist_Mono } from "next/font/google";
 import { ToastProvider } from "@/components/ui/Toast";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
@@ -27,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} min-h-full flex flex-col font-sans bg-[#F7F8F5] text-[#101828] selection:bg-[#0B1220] selection:text-[#B8F34A]`}
+        className={`${inter.variable} ${geistMono.variable} min-h-full flex flex-col font-sans bg-white text-[#101828] selection:bg-[#0B1220] selection:text-[#B8F34A]`}
       >
         <ToastProvider>{children}</ToastProvider>
       </body>

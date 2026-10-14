@@ -7,189 +7,191 @@ import React, {
   type ReactNode,
 } from "react";
 
-/* ─────────────────────────────────────────────────────────
-   MagnifierCard — reusable interactive magnifying-lens effect
-   ───────────────────────────────────────────────────────── */
+/* ─────────────────────────────────────────────────────────────────────────────
+ * MagnifierCard
+ * ─────────────────────────────────────────────────────────────────────────────
+ * A reusable interactive magnifying-lens overlay.
+ *
+ * HOW THE TWO LAYERS STAY ALIGNED
+ * ────────────────────────────────
+ * Both layers render the *exact same* children inside absolutely-positioned
+ * containers that share identical `inset: 0` bounds. The sharp (magnified)
+ * layer uses `transform-origin` set to the lens centre and `scale(mag)` so
+ * the content directly under the lens stays fixed while its surroundings
+ * enlarge. A `clip-path: circle(R at X Y)` on the sharp layer reveals only
+ * the circular region. Because both layers render from the same (0,0)
+ * origin and the transform-origin matches the clip centre, the sharp
+ * content is always visually aligned with the blurred content beneath it.
+ * ───────────────────────────────────────────────────────────────────────── */
 
 export interface MagnifierCardProps {
-  /** The card content to render in both layers. */
+  /** Card content rendered in both layers.                      */
   children: ReactNode;
-  /** Lens circle radius in px                      (default 110) */
+  /** Lens circle radius in px.                        @default 100 */
   lensRadius?: number;
-  /** Scale factor for the sharp layer              (default 1.6) */
+  /** Scale factor for the sharp layer.                @default 1.6 */
   magnification?: number;
-  /** Blur amount for the base layer in px          (default 8)   */
+  /** Gaussian blur for the base layer (px).           @default 8   */
   blurAmount?: number;
-  /** Multiplier for idle-drift speed (1 = normal)  (default 1)   */
+  /** Speed multiplier for the idle drift (1 = normal).@default 1   */
   idleSpeed?: number;
-  /** Extra classes forwarded to the outer wrapper */
+  /** Extra CSS classes on the outer wrapper.                       */
   className?: string;
 }
 
-/* ── helpers ─────────────────────────────────────────────── */
+/* ── tiny helpers ─────────────────────────────────────────────────────────── */
 
-/** Linear interpolation */
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
-/** Clamp between min and max */
 const clamp = (v: number, lo: number, hi: number) =>
   v < lo ? lo : v > hi ? hi : v;
 
+/* ═════════════════════════════════════════════════════════════════════════ */
+
 export function MagnifierCard({
   children,
-  lensRadius = 110,
+  lensRadius = 100,
   magnification = 1.6,
   blurAmount = 8,
   idleSpeed = 1,
   className,
 }: MagnifierCardProps) {
-  /* ── refs ─────────────────────────────────────────────── */
+  /* ── refs (no React state → zero re-renders on move) ───────────────── */
   const containerRef = useRef<HTMLDivElement>(null);
-  const sharpLayerRef = useRef<HTMLDivElement>(null);
-  const lensGroupRef = useRef<HTMLDivElement>(null);
-  const rafId = useRef(0);
+  const sharpRef     = useRef<HTMLDivElement>(null);
+  const lensRef      = useRef<HTMLDivElement>(null);
+  const rafId        = useRef(0);
 
-  // Mutable position state (no re-renders)
-  const pos = useRef({ x: 0, y: 0 }); // current lens centre
-  const target = useRef({ x: 0, y: 0 }); // mouse target (card-relative)
-  const rect = useRef({ w: 0, h: 0, top: 0, left: 0 });
-  const isHovering = useRef(false);
-  const hoverWeight = useRef(0); // 0 = idle, 1 = following cursor
-  const startTime = useRef(0);
-  const isVisible = useRef(true);
-  const prefersReducedMotion = useRef(false);
+  // Mutable animation state
+  const pos          = useRef({ x: 0, y: 0 });   // current lens centre
+  const mouseTarget  = useRef({ x: 0, y: 0 });   // cursor position (card-relative)
+  const box          = useRef({ w: 0, h: 0, top: 0, left: 0 });
+  const hovering     = useRef(false);
+  const hoverBlend   = useRef(0);                 // 0 = idle only, 1 = cursor only
+  const t0           = useRef(0);
+  const visible      = useRef(true);
+  const reducedMotion = useRef(false);
 
-  /* ── idle drift maths ─────────────────────────────────── */
-  const idlePos = useCallback(
-    (t: number) => {
-      // Two sine waves with different periods → organic loop
-      const periodX = 7000 / idleSpeed;
-      const periodY = 9000 / idleSpeed;
-      const { w, h } = rect.current;
-      const ampX = w * 0.1; // ~10% of card width
-      const ampY = h * 0.1;
+  /* ── idle drift: two sine waves with different periods ─────────────── */
+  const idleXY = useCallback(
+    (elapsed: number) => {
+      const pX = 7000 / idleSpeed;          // period X ~7 s
+      const pY = 9000 / idleSpeed;          // period Y ~9 s
+      const { w, h } = box.current;
+      const ampX = w * 0.10;                // ~10 % of card width
+      const ampY = h * 0.08;                // ~8 % of card height
       return {
-        x: w / 2 + Math.sin((t / periodX) * Math.PI * 2) * ampX,
-        y: h / 2 + Math.cos((t / periodY) * Math.PI * 2) * ampY,
+        x: w / 2 + Math.sin((elapsed / pX) * Math.PI * 2) * ampX,
+        y: h / 2 + Math.cos((elapsed / pY) * Math.PI * 2) * ampY,
       };
     },
     [idleSpeed],
   );
 
-  /* ── apply position to DOM (no state, no re-render) ──── */
-  const applyPosition = useCallback(
+  /* ── push position straight to the DOM ─────────────────────────────── */
+  const paint = useCallback(
     (x: number, y: number) => {
-      const sharp = sharpLayerRef.current;
-      const lens = lensGroupRef.current;
+      const sharp = sharpRef.current;
+      const lens  = lensRef.current;
       if (!sharp || !lens) return;
 
-      // Clip the sharp layer to a circle at (x, y)
+      // Clip the sharp layer to a circle
       sharp.style.clipPath = `circle(${lensRadius}px at ${x}px ${y}px)`;
-
-      // Scale transform: keep content under lens centre fixed
+      // Scale around the lens centre so content under it stays fixed
       sharp.style.transformOrigin = `${x}px ${y}px`;
       sharp.style.transform = `scale(${magnification})`;
 
-      // Move the lens visual (ring + handle) so its centre is at (x, y)
+      // Move the decorative lens overlay (ring + handle)
       lens.style.transform = `translate(${x - lensRadius}px, ${y - lensRadius}px)`;
     },
     [lensRadius, magnification],
   );
 
-  /* ── animation loop ───────────────────────────────────── */
-  const tick = useCallback(
+  /* ── animation loop ────────────────────────────────────────────────── */
+  const loop = useCallback(
     (now: number) => {
-      if (!isVisible.current) {
-        rafId.current = requestAnimationFrame(tick);
+      if (!visible.current) {
+        // Still schedule so we pick back up immediately when visible
+        rafId.current = requestAnimationFrame(loop);
         return;
       }
 
-      const elapsed = now - startTime.current;
+      const elapsed = now - t0.current;
 
-      // Smoothly animate hover weight
-      const hoverTarget = isHovering.current ? 1 : 0;
-      // ~600ms transition: per-frame step depends on frame rate; 0.06 at 60fps ≈ 600ms
-      const weightStep = 0.06;
-      hoverWeight.current = lerp(
-        hoverWeight.current,
-        hoverTarget,
-        weightStep,
-      );
-      // Snap to exact 0 / 1 to avoid infinite micro-lerp
-      if (Math.abs(hoverWeight.current - hoverTarget) < 0.001) {
-        hoverWeight.current = hoverTarget;
+      /* Smoothly animate the blend weight toward 0 (idle) or 1 (hover).
+         A step of ~0.055/frame at 60 fps ≈ 600 ms full transition.       */
+      const goal = hovering.current ? 1 : 0;
+      hoverBlend.current = lerp(hoverBlend.current, goal, 0.055);
+      if (Math.abs(hoverBlend.current - goal) < 0.002) {
+        hoverBlend.current = goal;
       }
 
-      const idle = prefersReducedMotion.current
-        ? { x: rect.current.w / 2, y: rect.current.h / 2 }
-        : idlePos(elapsed);
+      // Compute the idle position (or static centre if reduced-motion)
+      const idle = reducedMotion.current
+        ? { x: box.current.w / 2, y: box.current.h / 2 }
+        : idleXY(elapsed);
 
-      // Blend between idle and cursor-following
-      const w = hoverWeight.current;
-      const blendX = lerp(idle.x, target.current.x, w);
-      const blendY = lerp(idle.y, target.current.y, w);
+      // Blend idle ↔ cursor
+      const w = hoverBlend.current;
+      const bx = lerp(idle.x, mouseTarget.current.x, w);
+      const by = lerp(idle.y, mouseTarget.current.y, w);
 
-      // Smooth trailing (lerp towards blended target)
-      const lerpFactor = w > 0.5 ? 0.15 : 0.08;
-      pos.current.x = lerp(pos.current.x, blendX, lerpFactor);
-      pos.current.y = lerp(pos.current.y, blendY, lerpFactor);
+      // Lerp current position toward blended target (smooth trailing)
+      const factor = w > 0.5 ? 0.14 : 0.07;
+      pos.current.x = lerp(pos.current.x, bx, factor);
+      pos.current.y = lerp(pos.current.y, by, factor);
 
-      // Clamp so the lens ring stays roughly inside
-      const pad = lensRadius * 0.15; // allow slight overflow
-      pos.current.x = clamp(pos.current.x, -pad, rect.current.w + pad);
-      pos.current.y = clamp(pos.current.y, -pad, rect.current.h + pad);
+      // Clamp so the ring stays mostly within the card (allow ~15 % overshoot)
+      const pad = lensRadius * 0.15;
+      pos.current.x = clamp(pos.current.x, -pad, box.current.w + pad);
+      pos.current.y = clamp(pos.current.y, -pad, box.current.h + pad);
 
-      applyPosition(pos.current.x, pos.current.y);
-
-      rafId.current = requestAnimationFrame(tick);
+      paint(pos.current.x, pos.current.y);
+      rafId.current = requestAnimationFrame(loop);
     },
-    [applyPosition, idlePos, lensRadius],
+    [paint, idleXY, lensRadius],
   );
 
-  /* ── lifecycle ────────────────────────────────────────── */
+  /* ── lifecycle setup ───────────────────────────────────────────────── */
   useEffect(() => {
-    // Reduced-motion check
+    /* prefers-reduced-motion */
     const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
-    prefersReducedMotion.current = mql.matches;
-    const onMotionChange = (e: MediaQueryListEvent) => {
-      prefersReducedMotion.current = e.matches;
-    };
-    mql.addEventListener("change", onMotionChange);
+    reducedMotion.current = mql.matches;
+    const onMql = (e: MediaQueryListEvent) => { reducedMotion.current = e.matches; };
+    mql.addEventListener("change", onMql);
 
-    // Initial rect
+    /* measure card rect */
     const measure = () => {
       const el = containerRef.current;
       if (!el) return;
       const r = el.getBoundingClientRect();
-      rect.current = { w: r.width, h: r.height, top: r.top, left: r.left };
+      box.current = { w: r.width, h: r.height, top: r.top + window.scrollY, left: r.left + window.scrollX };
     };
     measure();
 
     // Initialise position to card centre
-    pos.current = { x: rect.current.w / 2, y: rect.current.h / 2 };
-    target.current = { ...pos.current };
+    pos.current        = { x: box.current.w / 2, y: box.current.h / 2 };
+    mouseTarget.current = { ...pos.current };
 
-    // ResizeObserver keeps rect fresh
+    /* ResizeObserver keeps rect fresh */
     const ro = new ResizeObserver(measure);
     if (containerRef.current) ro.observe(containerRef.current);
 
-    // Also re-measure on scroll (rect.top/left shift)
+    /* scroll + resize → re-measure client rect offsets */
     const onScroll = () => measure();
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", measure, { passive: true });
+    window.addEventListener("resize", measure,  { passive: true });
 
-    // IntersectionObserver — pause when off-screen
+    /* IntersectionObserver — pause rAF work when off-screen */
     const io = new IntersectionObserver(
-      ([entry]) => {
-        isVisible.current = entry.isIntersecting;
-      },
+      ([entry]) => { visible.current = entry.isIntersecting; },
       { threshold: 0 },
     );
     if (containerRef.current) io.observe(containerRef.current);
 
-    // Start the loop
-    startTime.current = performance.now();
-    rafId.current = requestAnimationFrame(tick);
+    /* kick off the loop */
+    t0.current = performance.now();
+    rafId.current = requestAnimationFrame(loop);
 
     return () => {
       cancelAnimationFrame(rafId.current);
@@ -197,31 +199,24 @@ export function MagnifierCard({
       io.disconnect();
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", measure);
-      mql.removeEventListener("change", onMotionChange);
+      mql.removeEventListener("change", onMql);
     };
-  }, [tick]);
+  }, [loop]);
 
-  /* ── pointer handlers (no setState) ───────────────────── */
-  const onPointerEnter = useCallback(() => {
-    isHovering.current = true;
-  }, []);
-
+  /* ── pointer handlers ──────────────────────────────────────────────── */
   const onPointerMove = useCallback((e: React.PointerEvent) => {
     const el = containerRef.current;
     if (!el) return;
-    // Use cached rect — refresh only on scroll/resize
-    const r = rect.current;
-    target.current = {
-      x: e.clientX - r.left,
-      y: e.clientY - r.top,
-    };
+    const r = el.getBoundingClientRect();
+    mouseTarget.current = { x: e.clientX - r.left, y: e.clientY - r.top };
   }, []);
 
-  const onPointerLeave = useCallback(() => {
-    isHovering.current = false;
-  }, []);
+  const onPointerEnter = useCallback(() => { hovering.current = true; }, []);
+  const onPointerLeave = useCallback(() => { hovering.current = false; }, []);
 
-  /* ── render ───────────────────────────────────────────── */
+  /* ── render ────────────────────────────────────────────────────────── */
+  const diameter = lensRadius * 2;
+
   return (
     <div
       ref={containerRef}
@@ -231,73 +226,63 @@ export function MagnifierCard({
       className={`relative overflow-hidden select-none ${className ?? ""}`}
       style={{ touchAction: "pan-y" }}
     >
-      {/* ── Layer 1: Blurred base ────────────────────────── */}
+      {/* ── Layer 1 — blurred base ──────────────────────────────────── */}
       <div
         aria-hidden="true"
         className="will-change-[filter]"
-        style={{
-          filter: `blur(${blurAmount}px)`,
-          opacity: 0.7,
-        }}
+        style={{ filter: `blur(${blurAmount}px)`, opacity: 0.65 }}
       >
         {children}
       </div>
 
-      {/* ── Layer 2: Sharp magnified copy ────────────────── */}
+      {/* ── Layer 2 — sharp magnified copy (clipped to circle) ─────── */}
       <div
-        ref={sharpLayerRef}
+        ref={sharpRef}
         aria-hidden="true"
         className="absolute inset-0 will-change-[clip-path,transform]"
         style={{
-          /* initial values — immediately overwritten by rAF */
-          clipPath: `circle(${lensRadius}px at 50% 50%)`,
+          clipPath:       `circle(${lensRadius}px at 50% 50%)`,
           transformOrigin: "50% 50%",
-          transform: `scale(${magnification})`,
+          transform:       `scale(${magnification})`,
         }}
       >
         {children}
       </div>
 
-      {/* ── Layer 3: Lens visual (ring + handle) ─────────── */}
+      {/* ── Layer 3 — decorative lens visual (ring + handle) ───────── */}
       <div
-        ref={lensGroupRef}
+        ref={lensRef}
         aria-hidden="true"
         className="absolute top-0 left-0 pointer-events-none will-change-transform"
-        style={{
-          width: lensRadius * 2,
-          height: lensRadius * 2,
-        }}
+        style={{ width: diameter, height: diameter }}
       >
         {/* Glass ring */}
         <div
           className="absolute inset-0 rounded-full"
           style={{
-            border: "2.5px solid rgba(147, 197, 253, 0.6)", // light blue
+            border: "2.5px solid rgba(147, 197, 253, 0.55)",
             boxShadow: [
-              "inset 0 0 30px 4px rgba(147, 197, 253, 0.12)", // inner glow
-              "0 4px 24px -4px rgba(30, 64, 175, 0.18)",       // outer shadow
-              "0 0 0 1px rgba(255, 255, 255, 0.45)",           // thin white rim
+              "inset 0 0 24px 4px rgba(147, 197, 253, 0.10)",   // inner glow
+              "0 4px 20px -4px rgba(30, 64, 175, 0.15)",         // soft drop shadow
+              "0 0 0 1px rgba(255, 255, 255, 0.40)",             // thin white rim
             ].join(", "),
+            background: "radial-gradient(circle at 35% 30%, rgba(255,255,255,0.12) 0%, transparent 60%)",
           }}
         />
 
-        {/* Handle — rounded rectangle at ~45° bottom-right */}
+        {/* Handle — rounded rectangle attached at ~45° bottom-right */}
         <div
           className="absolute"
           style={{
-            /* Position the handle at the bottom-right edge of the ring.
-               The handle starts at the ring perimeter and extends outward
-               along a 45° diagonal. */
-            width: 18,
-            height: 80,
-            bottom: -30,
-            right: -30,
+            width: 16,
+            height: 72,
+            bottom: -24,
+            right: -24,
             transform: "rotate(-45deg)",
             transformOrigin: "top center",
-            borderRadius: 9,
-            background:
-              "linear-gradient(180deg, #60a5fa 0%, #2563eb 50%, #1d4ed8 100%)",
-            boxShadow: "0 4px 12px rgba(37, 99, 235, 0.35)",
+            borderRadius: 8,
+            background: "linear-gradient(180deg, #60a5fa 0%, #2563eb 45%, #1d4ed8 100%)",
+            boxShadow: "0 4px 14px rgba(37, 99, 235, 0.35)",
           }}
         />
       </div>
