@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { InteractiveExampleReport } from "@/components/home/InteractiveExampleReport";
 import { HeroMagnifier } from "@/components/home/HeroMagnifier";
+import { ProblemSection } from "@/components/home/ProblemSection";
 import {
   ArrowRight,
   ShieldAlert,
@@ -46,6 +47,8 @@ export default function Home() {
         <section className="relative z-10 mx-auto mt-10 w-full px-5 pb-16">
           <HeroMagnifier />
         </section>
+
+        <ProblemSection />
 
         {/* Interactive Example Report Section per PRD Section 20 & INTERACTIONS.md Section 1.4 */}
         <section className="max-w-4xl mx-auto px-6 pb-20">
