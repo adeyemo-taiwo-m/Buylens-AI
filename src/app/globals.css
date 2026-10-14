@@ -1,83 +1,251 @@
 @import "tailwindcss";
 
 :root {
-  --bg-canvas: #F7F8F5;
-  --bg-surface: #FFFFFF;
-  --bg-surface-subtle: #F2F4F0;
-  --bg-navy: #0B1220;
-  --bg-navy-raised: #111A2B;
+  /* Backgrounds */
+  --bg-canvas: #f6f8fc;
+  --bg-surface: #ffffff;
+  --bg-surface-subtle: #f6f6f6;
+  --bg-navy: #172554;
+  --bg-navy-raised: #1e3a8a;
 
-  --border: #E4E7EC;
-  --border-strong: #D0D5DD;
-  --border-navy: rgba(255, 255, 255, 0.10);
+  /* Primary Colors */
+  --primary-50: #eff6ff;
+  --primary-100: #dbeafe;
+  --primary-200: #bfdbfe;
+  --primary-300: #93c5fd;
+  --primary-400: #60a5fa;
+  --primary-500: #3b82f6;
+  --primary-600: #2563eb;
+  --primary-700: #1d4ed8;
+  --primary-800: #1e40af;
+  --primary-900: #1e3a8a;
+  --primary-950: #172554;
 
-  --text-primary: #101828;
-  --text-secondary: #667085;
-  --text-tertiary: #98A2B3;
-  --text-on-navy: #FFFFFF;
-  --text-on-navy-muted: #A8B3C7;
+  /* Secondary Colors */
+  --secondary-50: #f0f9ff;
+  --secondary-100: #e0f2fe;
+  --secondary-200: #bae6fd;
+  --secondary-300: #7dd3fc;
+  --secondary-400: #38bdf8;
+  --secondary-500: #0ea5e9;
+  --secondary-600: #0284c7;
+  --secondary-700: #0369a1;
+  --secondary-800: #075985;
+  --secondary-900: #0c4a6e;
+  --secondary-950: #082f49;
 
-  --accent-lime: #B8F34A;
-  --accent-lime-hover: #A7E932;
-  --accent-lime-dark: #84CC16;
+  /* Secondary Accent */
+  --secondary-accent-50: #f8fbfe;
+  --secondary-accent-100: #e0f2fe;
+  --secondary-accent-200: #bae6fd;
+  --secondary-accent-300: #7dd3fc;
+  --secondary-accent-400: #38bdf8;
+  --secondary-accent-500: #0ea5e9;
+  --secondary-accent-600: #0284c7;
+  --secondary-accent-700: #0369a1;
+  --secondary-accent-800: #075985;
+  --secondary-accent-900: #0c4a6e;
+  --secondary-accent-950: #082f49;
+
+  /* Neutral Colors */
+  --neutral-100: #f6f6f6;
+  --neutral-200: #eaeaea;
+  --neutral-300: #d2d3d3;
+  --neutral-400: #b1b2b2;
+  --neutral-500: #8e9090;
+  --neutral-600: #797a7b;
+  --neutral-700: #57595a;
+  --neutral-800: #363939;
+  --neutral-900: #1f2223;
+  --neutral-white: #ffffff;
+
+  /* Borders */
+  --border: #eaeaea;
+  --border-strong: #d2d3d3;
+  --border-navy: rgba(255, 255, 255, 0.1);
+
+  /* Text */
+  --text-primary: #1f2223;
+  --text-secondary: #57595a;
+  --text-tertiary: #8e9090;
+  --text-on-navy: #ffffff;
+  --text-on-navy-muted: #bfdbfe;
+
+  /* Accent */
+  --accent-lime: #3b82f6;
+  --accent-lime-hover: #2563eb;
+  --accent-lime-dark: #1d4ed8;
+
+  /* Warning Colors */
+  --warning-100: #fef3c7;
+  --warning-300: #fcd34d;
+  --warning-500: #f59e0b;
+
+  /* Error Colors */
+  --error-100: #fee2e2;
+  --error-300: #fca5a5;
+  --error-500: #ef4444;
+
+  /* Success Colors */
+  --success-100: #dcfce7;
+  --success-300: #4ade80;
+  --success-500: #22c55e;
 
   /* Status Tokens */
-  --status-success: #16A34A;
-  --status-success-text: #15803D;
-  --status-success-bg: #ECFDF3;
-  --status-success-border: #ABEFC6;
+  --status-success: #22c55e;
+  --status-success-text: #15803d;
+  --status-success-bg: #dcfce7;
+  --status-success-border: #4ade80;
 
-  --status-consider: #84CC16;
-  --status-consider-text: #4D7C0F;
-  --status-consider-bg: #F7FEE7;
-  --status-consider-border: #D9F99D;
+  --status-consider: #0ea5e9;
+  --status-consider-text: #0369a1;
+  --status-consider-bg: #f0f9ff;
+  --status-consider-border: #7dd3fc;
 
-  --status-warning: #F59E0B;
-  --status-warning-text: #B45309;
-  --status-warning-bg: #FFFAEB;
-  --status-warning-border: #FEDF89;
+  --status-warning: #f59e0b;
+  --status-warning-text: #b45309;
+  --status-warning-bg: #fef3c7;
+  --status-warning-border: #fcd34d;
 
-  --status-danger: #DC2626;
-  --status-danger-text: #B42318;
-  --status-danger-bg: #FEF3F2;
-  --status-danger-border: #FECDCA;
+  --status-danger: #ef4444;
+  --status-danger-text: #b91c1c;
+  --status-danger-bg: #fee2e2;
+  --status-danger-border: #fca5a5;
 
-  --status-neutral: #64748B;
-  --status-neutral-text: #475467;
-  --status-neutral-bg: #F2F4F7;
-  --status-neutral-border: #E4E7EC;
+  --status-neutral: #797a7b;
+  --status-neutral-text: #57595a;
+  --status-neutral-bg: #f6f6f6;
+  --status-neutral-border: #d2d3d3;
 
+  /* Border Radius */
   --radius-sm: 8px;
   --radius-input: 10px;
   --radius-card: 14px;
   --radius-panel: 18px;
   --radius-modal: 20px;
 
+  /* Animation */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @theme inline {
+  /* Backgrounds */
   --color-canvas: var(--bg-canvas);
   --color-surface: var(--bg-surface);
   --color-surface-subtle: var(--bg-surface-subtle);
   --color-navy: var(--bg-navy);
   --color-navy-raised: var(--bg-navy-raised);
-  --color-primary-950: #0B1220;
 
+  /* Primary Palette */
+  --color-primary-50: var(--primary-50);
+  --color-primary-100: var(--primary-100);
+  --color-primary-200: var(--primary-200);
+  --color-primary-300: var(--primary-300);
+  --color-primary-400: var(--primary-400);
+  --color-primary-500: var(--primary-500);
+  --color-primary-600: var(--primary-600);
+  --color-primary-700: var(--primary-700);
+  --color-primary-800: var(--primary-800);
+  --color-primary-900: var(--primary-900);
+  --color-primary-950: var(--primary-950);
+
+  /* Secondary Palette */
+  --color-secondary-50: var(--secondary-50);
+  --color-secondary-100: var(--secondary-100);
+  --color-secondary-200: var(--secondary-200);
+  --color-secondary-300: var(--secondary-300);
+  --color-secondary-400: var(--secondary-400);
+  --color-secondary-500: var(--secondary-500);
+  --color-secondary-600: var(--secondary-600);
+  --color-secondary-700: var(--secondary-700);
+  --color-secondary-800: var(--secondary-800);
+  --color-secondary-900: var(--secondary-900);
+  --color-secondary-950: var(--secondary-950);
+
+  /* Secondary Accent Palette */
+  --color-secondary-accent-50: var(--secondary-accent-50);
+  --color-secondary-accent-100: var(--secondary-accent-100);
+  --color-secondary-accent-200: var(--secondary-accent-200);
+  --color-secondary-accent-300: var(--secondary-accent-300);
+  --color-secondary-accent-400: var(--secondary-accent-400);
+  --color-secondary-accent-500: var(--secondary-accent-500);
+  --color-secondary-accent-600: var(--secondary-accent-600);
+  --color-secondary-accent-700: var(--secondary-accent-700);
+  --color-secondary-accent-800: var(--secondary-accent-800);
+  --color-secondary-accent-900: var(--secondary-accent-900);
+  --color-secondary-accent-950: var(--secondary-accent-950);
+
+  /* Neutral Palette */
+  --color-neutral-100: var(--neutral-100);
+  --color-neutral-200: var(--neutral-200);
+  --color-neutral-300: var(--neutral-300);
+  --color-neutral-400: var(--neutral-400);
+  --color-neutral-500: var(--neutral-500);
+  --color-neutral-600: var(--neutral-600);
+  --color-neutral-700: var(--neutral-700);
+  --color-neutral-800: var(--neutral-800);
+  --color-neutral-900: var(--neutral-900);
+  --color-neutral-white: var(--neutral-white);
+
+  /* Borders */
   --color-line: var(--border);
   --color-line-strong: var(--border-strong);
   --color-navy-line: var(--border-navy);
 
+  /* Text */
   --color-ink: var(--text-primary);
   --color-ink-muted: var(--text-secondary);
   --color-ink-faint: var(--text-tertiary);
   --color-on-navy: var(--text-on-navy);
   --color-on-navy-muted: var(--text-on-navy-muted);
 
+  /* Accent */
   --color-lime: var(--accent-lime);
   --color-lime-hover: var(--accent-lime-hover);
 
-  --font-sans: var(--font-inter), 'Geist', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  /* Status Colors */
+  --color-status-success: var(--status-success);
+  --color-status-success-text: var(--status-success-text);
+  --color-status-success-bg: var(--status-success-bg);
+  --color-status-success-border: var(--status-success-border);
+
+  --color-status-consider: var(--status-consider);
+  --color-status-consider-text: var(--status-consider-text);
+  --color-status-consider-bg: var(--status-consider-bg);
+  --color-status-consider-border: var(--status-consider-border);
+
+  --color-status-warning: var(--status-warning);
+  --color-status-warning-text: var(--status-warning-text);
+  --color-status-warning-bg: var(--status-warning-bg);
+  --color-status-warning-border: var(--status-warning-border);
+
+  --color-status-danger: var(--status-danger);
+  --color-status-danger-text: var(--status-danger-text);
+  --color-status-danger-bg: var(--status-danger-bg);
+  --color-status-danger-border: var(--status-danger-border);
+
+  --color-status-neutral: var(--status-neutral);
+  --color-status-neutral-text: var(--status-neutral-text);
+  --color-status-neutral-bg: var(--status-neutral-bg);
+  --color-status-neutral-border: var(--status-neutral-border);
+
+  /* Warning, Error & Success Palettes */
+  --color-warning-100: var(--warning-100);
+  --color-warning-300: var(--warning-300);
+  --color-warning-500: var(--warning-500);
+
+  --color-error-100: var(--error-100);
+  --color-error-300: var(--error-300);
+  --color-error-500: var(--error-500);
+
+  --color-success-100: var(--success-100);
+  --color-success-300: var(--success-300);
+  --color-success-500: var(--success-500);
+
+  /* Typography */
+  --font-sans:
+    var(--font-inter), "Geist", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, sans-serif;
   --font-mono: var(--font-geist-mono), monospace;
 }
 

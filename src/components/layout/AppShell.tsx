@@ -13,6 +13,7 @@ import {
   Menu,
   X,
   LogOut,
+  Layers,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -29,6 +30,7 @@ export function AppShell({ children }: AppShellProps) {
     { label: "Analyze Purchase", shortLabel: "Analyze", href: "/app/analyze", icon: ScanSearch },
     { label: "Analysis History", shortLabel: "History", href: "/app/history", icon: History },
     { label: "Compare Alternatives", shortLabel: "Compare", href: "/compare", icon: Scale },
+    { label: "Button Components", shortLabel: "Buttons", href: "/app/buttons", icon: Layers },
     { label: "Settings", shortLabel: "Settings", href: "/app/settings", icon: Settings },
   ];
 
