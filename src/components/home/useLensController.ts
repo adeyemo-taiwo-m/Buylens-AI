@@ -41,11 +41,25 @@ export function useLensController(
 
   const clipPath = useTransform(
     [displayX, displayY, radius],
-    ([x, y, r]) => `circle(${r}px at ${x}px ${y}px)`,
+    (values) => {
+      const [x, y, r] = values as number[];
+      return `circle(${r}px at ${x}px ${y}px)`;
+    },
   );
   const lensTransform = useTransform(
     [displayX, displayY, radius],
-    ([x, y, r]) => `translate3d(${x - r}px, ${y - r}px, 0)`,
+    (values) => {
+      const [x, y, r] = values as number[];
+      return `translate3d(${x - r}px, ${y - r}px, 0)`;
+    },
+  );
+  const blurMask = useTransform(
+    [displayX, displayY, radius],
+    (values) => {
+      const [x, y, r] = values as number[];
+      const inner = Math.max(r - 2, 0);
+      return `radial-gradient(circle ${r}px at ${x}px ${y}px, transparent 0, transparent ${inner}px, #000 ${r}px)`;
+    },
   );
 
   const cardHovered = useRef(false);
@@ -295,6 +309,7 @@ export function useLensController(
     displayY,
     clipPath,
     lensTransform,
+    blurMask,
     activeId,
     pinnedId,
     onCardPointerEnter,

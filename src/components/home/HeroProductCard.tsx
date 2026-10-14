@@ -20,7 +20,8 @@ export function HeroProductCard() {
         <div className="w-full aspect-[4/3] rounded-2xl border border-white bg-[#eff6ff] flex items-center justify-center overflow-hidden p-3">
           <Image
             src="/main-laptop.png"
-            alt="Aero 14 Pro laptop with Windows display"
+            alt=""
+            aria-hidden="true"
             width={480}
             height={360}
             className="w-full h-full object-contain"
@@ -42,7 +43,8 @@ export function HeroProductCard() {
             >
               <Image
                 src={thumb.src}
-                alt={thumb.alt}
+                alt=""
+                aria-hidden="true"
                 width={48}
                 height={48}
                 className="w-full h-full object-cover"
