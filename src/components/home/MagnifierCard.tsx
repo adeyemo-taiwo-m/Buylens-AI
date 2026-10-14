@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, {
   useRef,
@@ -7,13 +7,13 @@ import React, {
   type ReactNode,
 } from "react";
 
-/* ─────────────────────────────────────────────────────────────────────────────
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
  * MagnifierCard
- * ─────────────────────────────────────────────────────────────────────────────
+ * â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
  * A reusable interactive magnifying-lens overlay.
  *
  * HOW THE TWO LAYERS STAY ALIGNED
- * ────────────────────────────────
+ * â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
  * Both layers render the *exact same* children inside absolutely-positioned
  * containers that share identical `inset: 0` bounds. The sharp (magnified)
  * layer uses `transform-origin` set to the lens centre and `scale(mag)` so
@@ -22,7 +22,7 @@ import React, {
  * the circular region. Because both layers render from the same (0,0)
  * origin and the transform-origin matches the clip centre, the sharp
  * content is always visually aligned with the blurred content beneath it.
- * ───────────────────────────────────────────────────────────────────────── */
+ * â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 export interface MagnifierCardProps {
   /** Card content rendered in both layers.                      */
@@ -39,14 +39,14 @@ export interface MagnifierCardProps {
   className?: string;
 }
 
-/* ── tiny helpers ─────────────────────────────────────────────────────────── */
+/* â”€â”€ tiny helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
 const clamp = (v: number, lo: number, hi: number) =>
   v < lo ? lo : v > hi ? hi : v;
 
-/* ═════════════════════════════════════════════════════════════════════════ */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 export function MagnifierCard({
   children,
@@ -56,7 +56,7 @@ export function MagnifierCard({
   idleSpeed = 1,
   className,
 }: MagnifierCardProps) {
-  /* ── refs (no React state → zero re-renders on move) ───────────────── */
+  /* â”€â”€ refs (no React state â†’ zero re-renders on move) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   const containerRef = useRef<HTMLDivElement>(null);
   const sharpRef     = useRef<HTMLDivElement>(null);
   const lensRef      = useRef<HTMLDivElement>(null);
@@ -72,7 +72,7 @@ export function MagnifierCard({
   const visible      = useRef(true);
   const reducedMotion = useRef(false);
 
-  /* ── idle drift: two sine waves with different periods ─────────────── */
+  /* â”€â”€ idle drift: two sine waves with different periods â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   const idleXY = useCallback(
     (elapsed: number) => {
       const pX = 7000 / idleSpeed;          // period X ~7 s
@@ -81,14 +81,14 @@ export function MagnifierCard({
       const ampX = w * 0.10;                // ~10 % of card width
       const ampY = h * 0.08;                // ~8 % of card height
       return {
-        x: w / 2 + Math.sin((elapsed / pX) * Math.PI * 2) * ampX,
-        y: h / 2 + Math.cos((elapsed / pY) * Math.PI * 2) * ampY,
+        x: w * 0.48 + Math.sin((elapsed / pX) * Math.PI * 2) * ampX * 0.2,
+        y: h * 0.25 + Math.cos((elapsed / pY) * Math.PI * 2) * ampY * 0.2,
       };
     },
     [idleSpeed],
   );
 
-  /* ── push position straight to the DOM ─────────────────────────────── */
+  /* â”€â”€ push position straight to the DOM â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   const paint = useCallback(
     (x: number, y: number) => {
       const sharp = sharpRef.current;
@@ -107,7 +107,7 @@ export function MagnifierCard({
     [lensRadius, magnification],
   );
 
-  /* ── animation loop ────────────────────────────────────────────────── */
+  /* â”€â”€ animation loop â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   const loop = useCallback(
     (now: number) => {
       if (!visible.current) {
@@ -119,7 +119,7 @@ export function MagnifierCard({
       const elapsed = now - t0.current;
 
       /* Smoothly animate the blend weight toward 0 (idle) or 1 (hover).
-         A step of ~0.055/frame at 60 fps ≈ 600 ms full transition.       */
+         A step of ~0.055/frame at 60 fps â‰ˆ 600 ms full transition.       */
       const goal = hovering.current ? 1 : 0;
       hoverBlend.current = lerp(hoverBlend.current, goal, 0.055);
       if (Math.abs(hoverBlend.current - goal) < 0.002) {
@@ -131,7 +131,7 @@ export function MagnifierCard({
         ? { x: box.current.w / 2, y: box.current.h / 2 }
         : idleXY(elapsed);
 
-      // Blend idle ↔ cursor
+      // Blend idle â†” cursor
       const w = hoverBlend.current;
       const bx = lerp(idle.x, mouseTarget.current.x, w);
       const by = lerp(idle.y, mouseTarget.current.y, w);
@@ -152,7 +152,7 @@ export function MagnifierCard({
     [paint, idleXY, lensRadius],
   );
 
-  /* ── lifecycle setup ───────────────────────────────────────────────── */
+  /* â”€â”€ lifecycle setup â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   useEffect(() => {
     /* prefers-reduced-motion */
     const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -177,12 +177,12 @@ export function MagnifierCard({
     const ro = new ResizeObserver(measure);
     if (containerRef.current) ro.observe(containerRef.current);
 
-    /* scroll + resize → re-measure client rect offsets */
+    /* scroll + resize â†’ re-measure client rect offsets */
     const onScroll = () => measure();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", measure,  { passive: true });
 
-    /* IntersectionObserver — pause rAF work when off-screen */
+    /* IntersectionObserver â€” pause rAF work when off-screen */
     const io = new IntersectionObserver(
       ([entry]) => { visible.current = entry.isIntersecting; },
       { threshold: 0 },
@@ -203,7 +203,7 @@ export function MagnifierCard({
     };
   }, [loop]);
 
-  /* ── pointer handlers ──────────────────────────────────────────────── */
+  /* â”€â”€ pointer handlers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   const onPointerMove = useCallback((e: React.PointerEvent) => {
     const el = containerRef.current;
     if (!el) return;
@@ -214,7 +214,7 @@ export function MagnifierCard({
   const onPointerEnter = useCallback(() => { hovering.current = true; }, []);
   const onPointerLeave = useCallback(() => { hovering.current = false; }, []);
 
-  /* ── render ────────────────────────────────────────────────────────── */
+  /* â”€â”€ render â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   const diameter = lensRadius * 2;
 
   return (
@@ -226,7 +226,7 @@ export function MagnifierCard({
       className={`relative overflow-hidden select-none ${className ?? ""}`}
       style={{ touchAction: "pan-y" }}
     >
-      {/* ── Layer 1 — blurred base ──────────────────────────────────── */}
+      {/* â”€â”€ Layer 1 â€” blurred base â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <div
         aria-hidden="true"
         className="will-change-[filter]"
@@ -235,7 +235,7 @@ export function MagnifierCard({
         {children}
       </div>
 
-      {/* ── Layer 2 — sharp magnified copy (clipped to circle) ─────── */}
+      {/* â”€â”€ Layer 2 â€” sharp magnified copy (clipped to circle) â”€â”€â”€â”€â”€â”€â”€ */}
       <div
         ref={sharpRef}
         aria-hidden="true"
@@ -249,7 +249,7 @@ export function MagnifierCard({
         {children}
       </div>
 
-      {/* ── Layer 3 — decorative lens visual (ring + handle) ───────── */}
+      {/* â”€â”€ Layer 3 â€” decorative lens visual (ring + handle) â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <div
         ref={lensRef}
         aria-hidden="true"
@@ -270,17 +270,17 @@ export function MagnifierCard({
           }}
         />
 
-        {/* Handle — rounded rectangle attached at ~45° bottom-right */}
+        {/* Handle â€” rounded rectangle attached at ~45Â° bottom-right */}
         <div
           className="absolute"
           style={{
-            width: 16,
-            height: 72,
-            bottom: -24,
-            right: -24,
+            width: 45,
+            height: 230,
+            bottom: -74,
+            right: -64,
             transform: "rotate(-45deg)",
             transformOrigin: "top center",
-            borderRadius: 8,
+            borderRadius: 999,
             background: "linear-gradient(180deg, #60a5fa 0%, #2563eb 45%, #1d4ed8 100%)",
             boxShadow: "0 4px 14px rgba(37, 99, 235, 0.35)",
           }}
@@ -289,3 +289,5 @@ export function MagnifierCard({
     </div>
   );
 }
+
+

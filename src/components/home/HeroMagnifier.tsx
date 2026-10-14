@@ -1,100 +1,46 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 import { MagnifierCard } from "./MagnifierCard";
 import { HeroProductCard } from "./HeroProductCard";
-import {
-  ShieldCheck,
-  Scale,
-  MessageSquareText,
-  CircleDollarSign,
-} from "lucide-react";
+import { BadgeCheck, Scale, MessageSquareText, ReceiptText } from "lucide-react";
 
-/**
- * HeroMagnifier — full hero section composition.
- *
- * Renders:
- *  1. The magnifying-lens product card (MagnifierCard → HeroProductCard)
- *  2. Four static insight chips beneath (Verdict, Main Trade-Off, …)
- *
- * The four chips are *outside* MagnifierCard so they stay completely
- * static and unaffected by the lens.
- */
+const insights = [
+  { icon: BadgeCheck, title: "VERDICT", value: "Worth considering" },
+  { icon: Scale, title: "MAIN TRADE-OFF", value: "9h battery vs 14h" },
+  { icon: MessageSquareText, title: "REVIEW PATTERN", value: "Fan noise complaints" },
+  { icon: ReceiptText, title: "TRUE COST", value: "$1,399" },
+];
+
 export function HeroMagnifier() {
   return (
-    <div className="flex flex-col items-center gap-8 w-full">
-      {/* ── Magnifier Card ───────────────────────────────────────── */}
-      <div className="relative w-full max-w-[640px] mx-auto">
-        {/* Subtle background glow behind card */}
-        <div
-          aria-hidden="true"
-          className="absolute -inset-6 rounded-3xl opacity-40 blur-2xl pointer-events-none"
-          style={{
-            background:
-              "radial-gradient(ellipse at 50% 40%, rgba(59,130,246,0.12) 0%, transparent 70%)",
-          }}
-        />
-
-        <div className="relative rounded-2xl bg-white/90 backdrop-blur-sm border border-[#E4E7EC] shadow-[0_8px_40px_-12px_rgba(37,99,235,0.10)]">
-          <MagnifierCard
-            lensRadius={100}
-            magnification={1.6}
-            blurAmount={8}
-            idleSpeed={1}
-            className="rounded-2xl"
-          >
+    <div className="hero-visual mx-auto flex w-full flex-col items-center">
+      <div className="hero-card-wrap relative w-full max-w-[800px]">
+        <div className="hero-card relative overflow-hidden rounded-[36px] border border-white/80 bg-white/75 shadow-[0_20px_70px_-28px_rgba(37,99,235,.25)] backdrop-blur-sm">
+          <MagnifierCard lensRadius={138} magnification={1} blurAmount={8} idleSpeed={0.35} className="min-h-[504px] rounded-[36px]">
             <HeroProductCard />
           </MagnifierCard>
         </div>
+        <svg className="hero-connectors pointer-events-none absolute inset-0 z-[4] h-full w-full overflow-visible" viewBox="0 0 800 610" preserveAspectRatio="none" aria-hidden="true">
+          <g fill="none" stroke="#7FB0F5" strokeWidth="1.2">
+            <polyline points="85,570 130,500 214,305" />
+            <polyline points="294,570 335,470 390,165" />
+            <polyline points="504,570 440,488 410,320" />
+            <polyline points="715,570 650,475 522,285" />
+          </g>
+          <g fill="#fff" stroke="#7FB0F5" strokeWidth="1.5">
+            <circle cx="214" cy="305" r="3" /><circle cx="390" cy="165" r="3" />
+            <circle cx="410" cy="320" r="3" /><circle cx="522" cy="285" r="3" />
+          </g>
+        </svg>
       </div>
-
-      {/* ── Static Insight Chips (outside the lens) ─────────────── */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full max-w-[720px]">
-        {(
-          [
-            {
-              icon: ShieldCheck,
-              title: "VERDICT",
-              value: "Worth considering",
-              accent: "#16a34a",
-            },
-            {
-              icon: Scale,
-              title: "MAIN TRADE-OFF",
-              value: "9h battery vs 14h",
-              accent: "#2563eb",
-            },
-            {
-              icon: MessageSquareText,
-              title: "REVIEW PATTERN",
-              value: "Fan noise complaints",
-              accent: "#7c3aed",
-            },
-            {
-              icon: CircleDollarSign,
-              title: "TRUE COST",
-              value: "$1,399",
-              accent: "#0ea5e9",
-            },
-          ] as const
-        ).map(({ icon: Icon, title, value, accent }) => (
-          <div
-            key={title}
-            className="flex items-center gap-2.5 px-3.5 py-3 rounded-xl bg-white border border-[#E4E7EC] shadow-xs"
-          >
-            <div
-              className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
-              style={{ backgroundColor: `${accent}14` }}
-            >
-              <Icon className="w-4 h-4" style={{ color: accent }} />
-            </div>
-            <div className="min-w-0">
-              <p className="text-[10px] font-bold uppercase tracking-wider text-[#667085] leading-none">
-                {title}
-              </p>
-              <p className="text-xs font-medium text-[#101828] mt-0.5 truncate">
-                {value}
-              </p>
+      <div className="hero-insights relative z-[6] -mt-1 grid w-full max-w-[890px] grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 lg:gap-5">
+        {insights.map(({ icon: Icon, title, value }, index) => (
+          <div key={title} className="animate-fade-up flex min-h-[66px] items-center gap-3 rounded-2xl border border-[#D6E6FC] bg-[#EEF5FF] px-3 sm:px-4 lg:px-4" style={{ animationDelay: `${320 + index * 80}ms` }}>
+            <Icon className="h-[22px] w-[22px] shrink-0 text-[#2563EB]" strokeWidth={1.8} />
+            <div className="min-w-0 text-left">
+              <p className="truncate text-[11px] font-medium tracking-[.04em] text-[#2563EB] sm:text-xs">{title}</p>
+              <p className="truncate text-[11px] text-[#6F9BE8] sm:text-[13px]">{value}</p>
             </div>
           </div>
         ))}

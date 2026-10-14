@@ -1,10 +1,10 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 import Image from "next/image";
 
 /**
- * HeroProductCard — the shared inner content of the magnifier hero.
+ * HeroProductCard â€” the shared inner content of the magnifier hero.
  *
  * Rendered twice inside MagnifierCard (blurred base + sharp magnified copy).
  * Both copies must produce identical DOM so the clip-path alignment stays
@@ -14,7 +14,7 @@ import Image from "next/image";
 export function HeroProductCard() {
   return (
     <div className="flex flex-col sm:flex-row gap-5 sm:gap-6 p-5 sm:p-7">
-      {/* ── Left: Product Image Gallery ──────────────────── */}
+      {/* â”€â”€ Left: Product Image Gallery â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <div className="flex flex-col items-center gap-2.5 sm:w-[42%] shrink-0">
         {/* Main product visual */}
         <div className="w-full aspect-[4/3] rounded-2xl bg-gradient-to-br from-[#edf1f8] to-[#dde4ef] flex items-center justify-center overflow-hidden p-3">
@@ -52,7 +52,7 @@ export function HeroProductCard() {
         </div>
       </div>
 
-      {/* ── Right: Product Info ──────────────────────────── */}
+      {/* â”€â”€ Right: Product Info â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <div className="flex-1 flex flex-col gap-2.5 min-w-0">
         <h3 className="text-base sm:text-lg font-bold text-[#101828] leading-snug">
           Aero 14 Pro:{"\u00A0"}
@@ -83,7 +83,7 @@ export function HeroProductCard() {
         {/* Old price (strikethrough) */}
         <div className="flex items-baseline gap-1 mt-0.5">
           <span className="text-[10px] text-[#98a2b3] line-through">
-            $1,499.00
+            $399.00
           </span>
         </div>
 
@@ -173,3 +173,4 @@ export function HeroProductCard() {
     </div>
   );
 }
+

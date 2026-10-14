@@ -1,0 +1,13 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1050" viewBox="0 0 1440 1050" fill="none">
+  <defs>
+    <radialGradient id="glow" cx="720" cy="585" r="600" gradientUnits="userSpaceOnUse"><stop stop-color="#6B9BF2" stop-opacity=".34"/><stop offset=".55" stop-color="#8DB4F8" stop-opacity=".20"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+    <linearGradient id="fade" x1="720" y1="340" x2="720" y2="1010" gradientUnits="userSpaceOnUse"><stop stop-color="#8DB4F8" stop-opacity="0"/><stop offset=".38" stop-color="#8DB4F8" stop-opacity=".12"/><stop offset=".78" stop-color="#6B9BF2" stop-opacity=".19"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="edgeL" x1="0" y1="510" x2="330" y2="760" gradientUnits="userSpaceOnUse"><stop stop-color="#6B9BF2" stop-opacity=".64"/><stop offset="1" stop-color="#8DB4F8" stop-opacity=".08"/></linearGradient>
+    <linearGradient id="edgeR" x1="1440" y1="510" x2="1110" y2="760" gradientUnits="userSpaceOnUse"><stop stop-color="#6B9BF2" stop-opacity=".64"/><stop offset="1" stop-color="#8DB4F8" stop-opacity=".08"/></linearGradient>
+  </defs>
+  <rect width="1440" height="1050" fill="url(#glow)"/><rect width="1440" height="1050" fill="url(#fade)"/>
+  <path d="M0 470C95 480 140 530 177 597C220 676 261 718 330 751V912C246 899 197 867 153 805C103 735 65 713 0 710V470Z" fill="url(#edgeL)"/>
+  <path d="M0 500C76 515 124 558 160 620C205 698 252 748 326 777M0 535C66 548 107 588 141 645C186 720 239 775 326 805M0 575C55 590 91 620 123 672C169 747 225 800 326 833M0 619C44 633 73 660 105 704C148 765 207 825 326 862" stroke="#F5FAFF" stroke-opacity=".88" stroke-width="1"/>
+  <path d="M1440 470C1345 480 1300 530 1263 597C1220 676 1179 718 1110 751V912C1194 899 1243 867 1287 805C1337 735 1375 713 1440 710V470Z" fill="url(#edgeR)"/>
+  <path d="M1440 500C1364 515 1316 558 1280 620C1235 698 1188 748 1114 777M1440 535C1374 548 1333 588 1299 645C1254 720 1201 775 1114 805M1440 575C1385 590 1349 620 1317 672C1271 747 1215 800 1114 833M1440 619C1396 633 1367 660 1335 704C1292 765 1233 825 1114 862" stroke="#F5FAFF" stroke-opacity=".88" stroke-width="1"/>
+</svg>

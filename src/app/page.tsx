@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { Header } from "@/components/layout/Header";
@@ -22,62 +22,28 @@ export default function Home() {
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="max-w-5xl mx-auto px-6 pt-16 sm:pt-24 pb-16 text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#E4E7EC] bg-white text-xs font-semibold text-[#101828] mb-8 shadow-xs">
-            <span className="h-2 w-2 rounded-full bg-[#16A34A]" />
-            <span>Independent Purchase Intelligence for High-Value Buys</span>
-          </div>
-
-          <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-[#101828] mb-6 leading-tight">
-            Know what you&apos;re buying <br className="hidden sm:inline" />
-            <span className="text-[#667085]">before you pay.</span>
-          </h1>
-
-          <p className="max-w-2xl mx-auto text-base sm:text-lg text-[#667085] mb-10 leading-relaxed font-normal">
-            BuyLens AI analyzes product information, highlights risks, and helps you make a more informed purchase decision before spending significant money.
-          </p>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <Link href="/app/analyze">
-              <Button variant="primary" size="lg" className="w-full sm:w-auto">
-                <span>Analyze a purchase</span>
-                <ArrowRight className="h-4 w-4 text-[#B8F34A]" />
-              </Button>
-            </Link>
-
-            <Link href="#how-it-works">
-              <Button variant="secondary" size="lg" className="w-full sm:w-auto">
-                <span>See how it works</span>
-              </Button>
-            </Link>
-
-            <Link href="/app/report/demo">
-              <Button variant="ghost" size="lg" className="w-full sm:w-auto">
-                <FileText className="h-4 w-4 text-[#667085]" />
-                <span>Try a sample analysis</span>
-              </Button>
-            </Link>
-          </div>
-
-          {/* Micro Trust Strip */}
-          <div className="mt-12 pt-8 border-t border-[#E4E7EC] flex flex-wrap items-center justify-center gap-8 text-xs font-medium text-[#667085]">
-            <span className="flex items-center gap-1.5">
-              <CheckCircle2 className="h-4 w-4 text-[#16A34A]" />
-              100% Independent & Unbiased
-            </span>
-            <span className="flex items-center gap-1.5">
-              <CheckCircle2 className="h-4 w-4 text-[#16A34A]" />
-              Tailored for Nigerian Market Realities
-            </span>
-            <span className="flex items-center gap-1.5">
-              <CheckCircle2 className="h-4 w-4 text-[#16A34A]" />
-              No Seller Kickbacks or Affiliates
-            </span>
+        <section className="buyhero relative px-5 pt-12 sm:pt-[90px] pb-10 text-center">
+          <div className="buyhero-bg" aria-hidden="true" />
+          <div className="relative z-10 mx-auto max-w-[1000px]">
+            <div className="inline-flex h-[43px] items-center gap-2 rounded-full border border-[var(--border-blue)] bg-white/90 px-2.5 mb-7 shadow-sm">
+              <span className="inline-flex h-[26px] items-center gap-1 rounded-full bg-[#E3EEFF] px-2 text-[11px] font-medium text-[var(--blue-600)]"><span className="text-sm">⟳</span>New</span>
+              <span className="pr-2 text-[12px] font-medium tracking-[0.02em] text-[var(--blue-600)]">AI-POWERED PURCHASE INTELLIGENCE</span>
+            </div>
+            <h1 className="animate-fade-up text-hero-title buyhero-title text-[var(--hero-text-heading)]">
+              <span className="block font-medium">Know What You&apos;re Buying</span>
+              <span className="block font-bold text-[var(--blue-600)]">Before You Pay.</span>
+            </h1>
+            <p className="animate-fade-up stagger-1 mx-auto mt-6 max-w-[830px] text-title-1 text-[var(--hero-text-body)]">
+              Make smarter purchase decisions with AI that helps you evaluate products, uncover trade-offs, and understand whether something is truly worth your money.
+            </p>
+            <div className="animate-fade-up stagger-2 mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row">
+              <Link href="#how-it-works" className="inline-flex h-12 w-full max-w-[220px] items-center justify-center gap-2 rounded-full bg-[var(--blue-100)] px-6 text-title-4-medium text-[var(--blue-500)] transition hover:bg-[#cfe0fb] sm:w-[200px]">See how it works <span aria-hidden="true" className="text-lg">↓</span></Link>
+              <Link href="/app/analyze" className="inline-flex h-[50px] w-full max-w-[240px] items-center justify-center gap-2 rounded-full bg-[var(--blue-500)] px-6 text-title-4-medium text-white shadow-[0_8px_22px_-8px_rgba(47,111,235,.55)] transition hover:bg-[#2563eb] sm:w-[220px]">Analyze a purchase <ArrowRight className="h-[18px] w-[18px]" /></Link>
+            </div>
           </div>
         </section>
 
-        {/* Hero Magnifier Card */}
-        <section className="max-w-5xl mx-auto px-6 pb-20">
+        <section className="relative z-10 mx-auto mt-10 w-full px-5 pb-16">
           <HeroMagnifier />
         </section>
 
@@ -244,7 +210,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="border-t border-[#E4E7EC] bg-white py-8">
         <div className="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#667085]">
-          <p>© {new Date().getFullYear()} BuyLens AI. Know what you&apos;re buying before you pay.</p>
+          <p>Â© {new Date().getFullYear()} BuyLens AI. Know what you&apos;re buying before you pay.</p>
           <div className="flex items-center gap-6">
             <Link href="/app" className="hover:text-[#101828] transition-colors">
               App Home
@@ -267,3 +233,6 @@ export default function Home() {
     </div>
   );
 }
+
+
+

@@ -1,6 +1,28 @@
 @import "tailwindcss";
 
 :root {
+  /* â”€â”€ Hero Section Tokens (swap exact Figma hex values here) â”€â”€â”€ */
+  --hero-blue-600: #2563EB;
+  --blue-600: #2563EB;
+  --blue-500: #2F6FEB;
+  --blue-100: #DDEAFF;
+  --blue-50: #EEF5FF;
+  --border-blue: #C9DDFB;
+  --text-dark: #2B2B2B;
+  --hero-blue-500: #2F6FEB;
+  --hero-blue-400: #6FA0F7;
+  --hero-blue-300: #8DB4F5;
+  --hero-blue-200: #7FB0F5;
+  --hero-blue-150: #C9DDFB;
+  --hero-blue-100: #DDEAFF;
+  --hero-blue-75: #D6E6FC;
+  --hero-blue-50: #EEF5FF;
+  --hero-blue-25: #E3EEFF;
+  --hero-text-dark: #2B2B2B;
+  --hero-text-heading: #333333;
+  --hero-text-body: #4B4B4B;
+  --hero-chip-value: #6F9BE8;
+
   /* Backgrounds */
   --bg-canvas: #f6f8fc;
   --bg-surface: #ffffff;
@@ -258,7 +280,7 @@ body {
 }
 
 /* ==========================================================================
-   Motion System & Keyframe Animations (Style Guide §12)
+   Motion System & Keyframe Animations (Style Guide Â§12)
    ========================================================================== */
 
 @keyframes fade-up {
@@ -328,62 +350,117 @@ body {
 
 
 /* ==========================================================================
-   Typography System — Figma text-style tokens (Inter)
+   Typography System â€” Figma text-style tokens (Inter)
    Usage:  className="text-h1-bold"
-   Values are exact Figma exports — do not normalize.
+   Values are exact Figma exports â€” do not normalize.
    ========================================================================== */
 
 @layer components {
-  /* ── Hero ────────────────────────────────────────── */
+  /* â”€â”€ Hero â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   .text-hero-title       { font-size: 3.9625rem;  line-height: 1.06; font-weight: 400; }
 
-  /* ── H1 ─────────────────────────────────────────── */
+  /* â”€â”€ H1 â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   .text-h1               { font-size: 3rem;       line-height: 1.4;  font-weight: 400; }
   .text-h1-bold          { font-size: 3rem;       line-height: 1.25; font-weight: 700; }
   .text-h1-semibold      { font-size: 3rem;       line-height: 1.25; font-weight: 600; }
   .text-h1-medium        { font-size: 3rem;       line-height: 1.25; font-weight: 500; }
 
-  /* ── H2 ─────────────────────────────────────────── */
+  /* â”€â”€ H2 â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   .text-h2               { font-size: 2.5rem;     line-height: 1.4;  font-weight: 400; }
   .text-h2-bold          { font-size: 2.5rem;     line-height: 1.4;  font-weight: 700; }
   .text-h2-semibold      { font-size: 2.5rem;     line-height: 1.4;  font-weight: 600; }
   .text-h2-medium        { font-size: 2.5rem;     line-height: 1.4;  font-weight: 500; }
 
-  /* ── H3 ─────────────────────────────────────────── */
+  /* â”€â”€ H3 â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   .text-h3               { font-size: 2.0625rem;  line-height: 1.4;  font-weight: 400; }
   .text-h3-bold          { font-size: 2.0625rem;  line-height: 1.4;  font-weight: 700; }
   .text-h3-semibold      { font-size: 2.0625rem;  line-height: 1.4;  font-weight: 600; }
   .text-h3-medium        { font-size: 2.0625rem;  line-height: 1.4;  font-weight: 500; }
 
-  /* ── H4 ─────────────────────────────────────────── */
+  /* â”€â”€ H4 â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   .text-h4               { font-size: 1.75rem;    line-height: 1.4;  font-weight: 400; }
   .text-h4-bold          { font-size: 1.75rem;    line-height: 1.4;  font-weight: 700; }
   .text-h4-semibold      { font-size: 1.75rem;    line-height: 1.25; font-weight: 600; }
   .text-h4-medium        { font-size: 1.75rem;    line-height: 1.4;  font-weight: 500; }
 
-  /* ── H5 ─────────────────────────────────────────── */
+  /* â”€â”€ H5 â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   .text-h5-semibold      { font-size: 1.4375rem;  line-height: 1.4;  font-weight: 600; }
   .text-h5-medium        { font-size: 1.4375rem;  line-height: 1.4;  font-weight: 500; }
 
-  /* ── Title 19px ─────────────────────────────────── */
+  /* â”€â”€ Title 19px â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   .text-title-1          { font-size: 1.1875rem;  line-height: 1.4;  font-weight: 400; }
   .text-title-7-bold     { font-size: 1.1875rem;  line-height: 1.4;  font-weight: 700; }
   .text-title-5-semibold { font-size: 1.1875rem;  line-height: 1.4;  font-weight: 600; }
   .text-title-3-medium   { font-size: 1.1875rem;  line-height: 1.4;  font-weight: 500; }
 
-  /* ── Title 16px ─────────────────────────────────── */
+  /* â”€â”€ Title 16px â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   .text-title-2          { font-size: 1rem;       line-height: 1.4;  font-weight: 400; }
   .text-title-8-bold     { font-size: 1rem;       line-height: 1.4;  font-weight: 700; }
   .text-title-6-semibold { font-size: 1rem;       line-height: 1.4;  font-weight: 600; }
   .text-title-4-medium   { font-size: 1rem;       line-height: 1.4;  font-weight: 500; }
 
-  /* ── Body 14px ──────────────────────────────────── */
+  /* â”€â”€ Body 14px â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   .text-body             { font-size: 0.875rem;   line-height: 1.4;  font-weight: 400; }
   .text-body-bold        { font-size: 0.875rem;   line-height: 1.4;  font-weight: 700; }
   .text-body-semibold    { font-size: 0.875rem;   line-height: 1.4;  font-weight: 600; }
   .text-body-medium      { font-size: 0.875rem;   line-height: 1.4;  font-weight: 500; }
 
-  /* ── Caption 11px ───────────────────────────────── */
+  /* â”€â”€ Caption 11px â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   .text-caption          { font-size: 0.6875rem;  line-height: 1.4;  font-weight: 400; }
   .text-caption-bold     { font-size: 0.6875rem;  line-height: 1.4;  font-weight: 700; }
 }
+
+.buyhero { isolation: isolate; }
+.buyhero-bg {
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  top: 145px;
+  left: 50%;
+  width: 100vw;
+  height: 1080px;
+  transform: translateX(-50%);
+  background: url('/hero/background.svg') center top / 100% 100% no-repeat;
+}
+.buyhero-title { letter-spacing: -0.035em; }
+.hero-visual { position: relative; }
+.hero-card-wrap { padding-top: 0; }
+.hero-card-wrap > .hero-card { min-height: 504px; }
+.hero-card [class*="p-5"] { min-height: 504px; align-items: center; }
+.hero-card [class*="aspect-"] { max-height: 300px; }
+.hero-connectors { height: 610px; top: 0; }
+.hero-insights { margin-top: -1px; }
+
+@media (max-width: 1023px) {
+  .hero-card-wrap { max-width: min(800px, 92vw); }
+  .hero-card-wrap > .hero-card {
+    transform: scale(.92);
+    transform-origin: top center;
+    margin-bottom: -40px;
+  }
+  .hero-connectors { display: none; }
+}
+
+@media (max-width: 767px) {
+  .buyhero-title { font-size: 40px; line-height: 1.08; }
+  .buyhero-title span:first-child { max-width: 430px; margin-inline: auto; }
+  .buyhero-bg { top: 80px; height: 820px; background-size: auto 100%; }
+  .hero-card-wrap { max-width: 100%; }
+  .hero-card-wrap > .hero-card {
+    min-height: 390px;
+    transform: scale(.78);
+    transform-origin: top center;
+    width: 128%;
+    margin-left: -14%;
+    margin-bottom: -100px;
+  }
+  .hero-card [class*="p-5"] { min-height: 390px; }
+  .hero-card [class*="aspect-"] { max-height: 200px; }
+  .hero-insights { max-width: 500px; gap: 10px; }
+  .hero-insights > div { min-height: 66px; padding-inline: 10px; }
+}
+
+
+
+
+
