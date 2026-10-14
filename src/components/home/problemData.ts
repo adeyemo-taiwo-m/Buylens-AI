@@ -14,7 +14,8 @@ export const PROBLEM_WAYPOINTS: ProblemWaypoint[] = [
 ];
 
 export const PROBLEM_ASSETS = {
-  scene: "/problem/problem-bg.png",
+  // Version query prevents Next/image and the browser from reusing an older optimized scene.
+  scene: "/problem/problem-bg.png?v=20261015-1",
   headphone: "/problem/headset.png",
   headphoneIcon: "/problem/headset.png",
 } as const;

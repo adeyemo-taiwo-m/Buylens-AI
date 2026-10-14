@@ -6,6 +6,10 @@ import { PROBLEM_REST, PROBLEM_WAYPOINTS, type ProblemWaypoint } from "./problem
 
 type Size = { width: number; height: number };
 const INITIAL_SIZE = { width: 1440, height: 710 };
+const LENS_DIAMETER_RATIO = 0.215;
+const LENS_SQUARE_RATIO = LENS_DIAMETER_RATIO * 1.06;
+const MOBILE_LENS_DIAMETER_RATIO = 0.45;
+const RING_RADIUS_RATIO = 0.472;
 const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
 
 export function useProblemLensController(stageRef: RefObject<HTMLDivElement | null>) {
@@ -13,20 +17,21 @@ export function useProblemLensController(stageRef: RefObject<HTMLDivElement | nu
   const [entered, setEntered] = useState(false);
   const [lensHovered, setLensHovered] = useState(false);
   const reduced = useReducedMotion() === true;
-  const radius = useMotionValue(INITIAL_SIZE.width * 0.1075);
+  const lensSize = useMotionValue(INITIAL_SIZE.width * LENS_SQUARE_RATIO);
+  const ringRadius = useTransform(lensSize, (size) => size * RING_RADIUS_RATIO);
   const targetX = useMotionValue(INITIAL_SIZE.width * PROBLEM_REST.x);
   const targetY = useMotionValue(INITIAL_SIZE.height * PROBLEM_REST.y);
   const springX = useSpring(targetX, { stiffness: 220, damping: 26, mass: 0.8 });
   const springY = useSpring(targetY, { stiffness: 220, damping: 26, mass: 0.8 });
   const x = reduced ? targetX : springX;
   const y = reduced ? targetY : springY;
-  const clipPath = useTransform([x, y, radius], (values) => {
-    const [px, py, r] = values as number[];
-    return `circle(${r}px at ${px}px ${py}px)`;
+  const clipPath = useTransform([x, y, ringRadius], (values) => {
+    const [px, py, ringR] = values as number[];
+    return `circle(${ringR}px at ${px}px ${py}px)`;
   });
-  const lensTransform = useTransform([x, y, radius], (values) => {
-    const [px, py, r] = values as number[];
-    return `translate3d(${px - r}px, ${py - r}px, 0)`;
+  const lensTransform = useTransform([x, y, lensSize], (values) => {
+    const [px, py, size] = values as number[];
+    return `translate3d(${px - size / 2}px, ${py - size / 2}px, 0)`;
   });
   const headphoneX = useMotionValue(0);
   const headphoneY = useMotionValue(0);
@@ -169,13 +174,13 @@ export function useProblemLensController(stageRef: RefObject<HTMLDivElement | nu
     const measure = () => {
       const rect = stage.getBoundingClientRect();
       setStageSize({ width: rect.width, height: rect.height });
-      radius.set(rect.width * (rect.width < 768 ? 0.225 : 0.1075));
+      lensSize.set(rect.width * (rect.width < 768 ? MOBILE_LENS_DIAMETER_RATIO * 1.06 : LENS_SQUARE_RATIO));
     };
     measure();
     const observer = new ResizeObserver(measure);
     observer.observe(stage);
     return () => observer.disconnect();
-  }, [radius, stageRef]);
+  }, [lensSize, stageRef]);
   useEffect(() => {
     const media = window.matchMedia("(pointer: coarse)");
     coarse.current = media.matches;
@@ -205,7 +210,8 @@ export function useProblemLensController(stageRef: RefObject<HTMLDivElement | nu
 
   return {
     stageSize,
-    radius,
+    lensSize,
+    ringRadius,
     clipPath,
     lensTransform,
     parallaxX: reduced ? headphoneX : parallaxX,

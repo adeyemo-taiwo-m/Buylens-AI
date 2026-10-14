@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useTransform } from "framer-motion";
+import { useEffect, useState } from "react";
 import type { useProblemLensController } from "./useProblemLensController";
 
 type ScannerLensProps = {
@@ -9,7 +10,8 @@ type ScannerLensProps = {
 
 export function ScannerLens({ controller }: ScannerLensProps) {
   const {
-    radius,
+    lensSize,
+    ringRadius,
     lensTransform,
     entered,
     lensHovered,
@@ -18,11 +20,24 @@ export function ScannerLens({ controller }: ScannerLensProps) {
     onLensPointerMove,
     onLensPointerUp,
   } = controller;
+  const [debug, setDebug] = useState(false);
+  const ringDiameter = useTransform(ringRadius, (value) => value * 2);
+  const glowWidth = useTransform(ringRadius, (value) => value * 1.6);
+  const glowHeight = useTransform(ringRadius, (value) => value * 0.28);
+  const glowTop = useTransform([lensSize, ringRadius], (values) => {
+    const [size, ringR] = values as number[];
+    return size / 2 + ringR - ringR * 0.14;
+  });
+  const glowBlur = useTransform(ringRadius, (value) => `blur(${value * 0.07}px)`);
+
+  useEffect(() => {
+    setDebug(new URLSearchParams(window.location.search).get("debugLens") === "1");
+  }, []);
 
   return (
     <motion.div
       className="problem-scanner-lens"
-      style={{ width: radius, height: radius, transform: lensTransform, touchAction: "none" }}
+      style={{ width: lensSize, height: lensSize, transform: lensTransform, touchAction: "none" }}
       onPointerDown={onLensPointerDown}
       onPointerMove={onLensPointerMove}
       onPointerUp={onLensPointerUp}
@@ -37,6 +52,14 @@ export function ScannerLens({ controller }: ScannerLensProps) {
       aria-hidden="true"
     >
       <motion.div
+        className="problem-lens-glow"
+        style={{ width: glowWidth, height: glowHeight, top: glowTop, filter: glowBlur }}
+      />
+      <motion.div
+        className="problem-lens-sheen"
+        style={{ width: ringDiameter, height: ringDiameter }}
+      />
+      <motion.div
         className="problem-scanner-frame"
         initial={{ opacity: 0, scale: 1.12 }}
         animate={{
@@ -45,12 +68,52 @@ export function ScannerLens({ controller }: ScannerLensProps) {
         }}
         transition={{ duration: 0.25, ease: "easeOut" }}
       >
-        <span className="problem-bracket problem-bracket-tl" />
-        <span className="problem-bracket problem-bracket-tr" />
-        <span className="problem-bracket problem-bracket-bl" />
-        <span className="problem-bracket problem-bracket-br" />
-        <span className="problem-lens-glass" />
+        <svg
+          className="problem-scanner-svg"
+          viewBox="0 0 1000 1000"
+          width="100%"
+          height="100%"
+          fill="none"
+          aria-hidden="true"
+        >
+          <defs>
+            <linearGradient id="problem-ring-gradient" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stopColor="#7DB0FA" />
+              <stop offset="1" stopColor="#4A8CF0" />
+            </linearGradient>
+            <linearGradient id="problem-bracket-gradient" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stopColor="#60A5FA" />
+              <stop offset="1" stopColor="#3B82F6" />
+            </linearGradient>
+          </defs>
+          <circle
+            cx="500"
+            cy="500"
+            r="472"
+            stroke="url(#problem-ring-gradient)"
+            strokeWidth="9"
+            fill="none"
+          />
+          <g
+            stroke="url(#problem-bracket-gradient)"
+            strokeWidth="33"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            fill="none"
+          >
+            <path d="M17 120 V50 Q17 17 50 17 H120" />
+            <path d="M880 17 H950 Q983 17 983 50 V120" />
+            <path d="M17 880 V950 Q17 983 50 983 H120" />
+            <path d="M983 880 V950 Q983 983 950 983 H880" />
+          </g>
+        </svg>
       </motion.div>
-    </motion.div>
-  );
-}
+      {debug ? (
+        <>
+          <motion.div
+            className="problem-lens-debug-circle"
+            style={{ width: ringDiameter, height: ringDiameter }}
+          />
+          <span className="problem-lens-debug-crosshair problem-lens-debug-crosshair-x" />
+          <span className="problem-lens-debug-crosshair problem-lens-debug-crosshair-y" />
+          <span className="problem-lens-debug-square"

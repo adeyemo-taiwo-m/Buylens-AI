@@ -656,3 +656,360 @@ body {
     padding-inline: 10px;
   }
 }
+
+/* ==========================================================================\n+   The Problem section\n+   ========================================================================== */
+.problem-section {
+  --problem-blue: #2563eb;
+  --problem-blue-light: #5b9bf8;
+  position: relative;
+  min-height: 1060px;
+  overflow: hidden;
+  border: 1px solid #e3ecfa;
+  border-radius: 64px;
+  background:
+    radial-gradient(ellipse 38% 45% at 25% 62%, rgba(147, 189, 255, 0.45), transparent 75%),
+    linear-gradient(180deg, #eef5ff 0%, #f8faff 100%);
+  isolation: isolate;
+}
+
+.problem-copy {
+  position: relative;
+  z-index: 5;
+  padding: 80px 20px 0;
+  text-align: center;
+}
+
+.problem-badge {
+  display: inline-flex;
+  min-width: 119px;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #c9ddfb;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.6);
+  color: #2563eb;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.problem-title {
+  display: flex;
+  flex-direction: column;
+  margin: 26px auto 0;
+  max-width: 1000px;
+  color: #333333;
+  font-size: clamp(32px, 3.34vw, 48px);
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.035em;
+}
+
+.problem-title span:last-child {
+  color: #2563eb;
+  font-weight: 700;
+}
+
+.problem-subtitle {
+  margin: 24px auto 0;
+  color: #4b4b4b;
+  font-size: 19px;
+  line-height: 1.4;
+}
+
+.problem-stage {
+  position: relative;
+  z-index: 1;
+  height: 710px;
+  margin-top: 34px;
+  overflow: hidden;
+  touch-action: pan-y;
+}
+
+.problem-scene-entrance,
+.problem-scene-layer,
+.problem-scene-sharp,
+.problem-scene-art {
+  position: absolute;
+  inset: 0;
+}
+
+.problem-scene-entrance {
+  z-index: 1;
+  pointer-events: none;
+}
+
+.problem-scene-layer {
+  overflow: hidden;
+}
+
+.problem-scene-art {
+  left: 22%;
+  width: 86%;
+  overflow: hidden;
+}
+
+.problem-scene-sharp {
+  overflow: hidden;
+}
+
+.problem-scene-blur {
+  filter: blur(10px);
+  opacity: 0.82;
+}
+
+.problem-scene-sharp {
+  z-index: 1;
+}
+
+.problem-headphone-wrap {
+  position: absolute;
+  z-index: 4;
+  top: 12%;
+  left: 11%;
+  width: min(36vw, 520px);
+  pointer-events: none;
+}
+
+.problem-headphone-float {
+  position: relative;
+}
+
+.problem-headphone {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.problem-floating-label {
+  position: absolute;
+  z-index: 6;
+  display: flex;
+  min-height: 55px;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border: 1px solid #dce8fb;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  pointer-events: none;
+}
+
+.problem-label-a {
+  top: 18%;
+  left: 35%;
+  width: 212px;
+}
+
+.problem-label-b {
+  top: 61%;
+  left: 4.6%;
+  width: 228px;
+}
+
+.problem-label-thumb {
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+  border-radius: 8px;
+  object-fit: cover;
+  object-position: center;
+  background: linear-gradient(135deg, #e3eeff, #b9d5ff);
+}
+
+.problem-label-copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 2px;
+  text-align: left;
+}
+
+.problem-label-copy strong {
+  color: #1f2937;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.problem-label-copy small {
+  color: #6b7a90;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.25;
+}
+
+.problem-scanner-lens {
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  cursor: grab;
+  pointer-events: auto;
+  will-change: transform;
+}
+
+.problem-scanner-lens:active {
+  cursor: grabbing;
+}
+
+.problem-scanner-frame {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.problem-scanner-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.problem-lens-glow {
+  position: absolute;
+  left: 50%;
+  z-index: 0;
+  border-radius: 50%;
+  background: rgba(59, 130, 246, 0.28);
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+
+.problem-lens-sheen {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0) 55%);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+
+.problem-lens-debug-circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 5;
+  border: 1px solid red;
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+
+.problem-lens-debug-crosshair {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 6;
+  background: red;
+  pointer-events: none;
+}
+
+.problem-lens-debug-crosshair-x {
+  width: 18px;
+  height: 1px;
+  transform: translate(-50%, -50%);
+}
+
+.problem-lens-debug-crosshair-y {
+  width: 1px;
+  height: 18px;
+  transform: translate(-50%, -50%);
+}
+
+.problem-lens-debug-square {
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  border: 1px solid #16a34a;
+  pointer-events: none;
+}
+
+@media (max-width: 1023px) {
+  .problem-section {
+    min-height: 900px;
+    border-radius: 48px;
+  }
+
+  .problem-stage {
+    height: min(62vw, 650px);
+  }
+
+  .problem-headphone-wrap {
+    left: 8%;
+    width: min(38vw, 430px);
+  }
+
+  .problem-label-a {
+    left: 37%;
+  }
+}
+
+@media (max-width: 767px) {
+  .problem-section {
+    min-height: 0;
+    margin-inline: 10px;
+    border-radius: 32px;
+  }
+
+  .problem-copy {
+    padding-top: 48px;
+  }
+
+  .problem-title {
+    margin-top: 20px;
+    font-size: clamp(28px, 8vw, 34px);
+    line-height: 1.12;
+  }
+
+  .problem-subtitle {
+    max-width: 340px;
+    margin-top: 18px;
+    font-size: 16px;
+  }
+
+  .problem-stage {
+    height: 720px;
+    margin-top: 18px;
+  }
+
+  .problem-scene-layer {
+    top: 0;
+    height: 100%;
+  }
+
+  .problem-scene-art {
+    top: 42%;
+    height: 58%;
+    left: 0;
+    width: 100%;
+  }
+
+  .problem-headphone-wrap {
+    top: 1%;
+    left: 15%;
+    width: 70%;
+  }
+
+  .problem-label-a {
+    top: 33%;
+    left: 8%;
+    width: 208px;
+  }
+
+  .problem-label-b {
+    top: 35%;
+    right: 6%;
+    left: auto;
+    width: 208px;
+  }
+
+}
