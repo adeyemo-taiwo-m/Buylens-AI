@@ -36,9 +36,8 @@ export function ProgressSteps({ steps, className }: ProgressStepsProps) {
                   <Check className="w-3.5 h-3.5 stroke-[3]" />
                 </div>
               ) : isCurrent ? (
-                <div className="relative flex items-center justify-center">
-                  <span className="animate-ping absolute inline-flex h-3 w-3 rounded-full bg-[#B8F34A] opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#0B1220]" />
+                <div className="relative flex items-center justify-center w-6 h-6 rounded-full border-2 border-[#88CF13]/40 bg-[#F7FEE7]">
+                  <span className="animate-pulse-dot inline-flex rounded-full h-2 w-2 bg-[#88CF13]" />
                 </div>
               ) : (
                 <Circle className="w-3.5 h-3.5 text-[#98A2B3]" />

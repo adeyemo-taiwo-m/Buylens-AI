@@ -73,10 +73,45 @@ export function DecisionCard({
   // SVG Score Ring Calculation (radius 44, circumference 2 * pi * 44 = ~276.46)
   const radius = 44;
   const circumference = 2 * Math.PI * radius;
-  const strokeDashoffset = circumference - (score / 100) * circumference;
+
+  // Animated score counter state & stroke animation
+  const [displayScore, setDisplayScore] = React.useState(0);
+  const [animatedOffset, setAnimatedOffset] = React.useState(circumference);
+
+  React.useEffect(() => {
+    // Check for reduced motion preference
+    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setDisplayScore(score);
+      setAnimatedOffset(circumference - (score / 100) * circumference);
+      return;
+    }
+
+    const duration = 900; // 900ms per Style Guide §12.1
+    const startTime = performance.now();
+
+    const animate = (currentTime: number) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      // Cubic bezier ease-out (0.22, 1, 0.36, 1) approximation
+      const easeOut = 1 - Math.pow(1 - progress, 3);
+
+      const currentScore = Math.round(easeOut * score);
+      setDisplayScore(currentScore);
+
+      const targetOffset = circumference - (score / 100) * circumference;
+      setAnimatedOffset(circumference - easeOut * (circumference - targetOffset));
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      }
+    };
+
+    const animFrame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animFrame);
+  }, [score, circumference]);
 
   return (
-    <div className="relative overflow-hidden rounded-[18px] bg-[#0B1220] text-white p-6 sm:p-10 border border-[rgba(255,255,255,0.08)] shadow-[0_20px_40px_-16px_rgba(11,18,32,0.35),inset_0_1px_0_rgba(255,255,255,0.06)]">
+    <div className="relative overflow-hidden rounded-[18px] bg-[#0B1220] text-white p-6 sm:p-10 border border-[rgba(255,255,255,0.08)] shadow-[0_20px_40px_-16px_rgba(11,18,32,0.35),inset_0_1px_0_rgba(255,255,255,0.06)] animate-fade-up">
       {/* Decorative top hairline with electric lime glow */}
       <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#B8F34A]/50 to-transparent pointer-events-none" />
 
@@ -113,12 +148,12 @@ export function DecisionCard({
                 fill="transparent"
                 strokeLinecap="round"
                 strokeDasharray={circumference}
-                strokeDashoffset={strokeDashoffset}
-                className="transition-all duration-700 ease-out"
+                strokeDashoffset={animatedOffset}
+                className="transition-all duration-300 ease-out"
               />
             </svg>
             <div className="absolute flex flex-col items-center justify-center text-center">
-              <span className="text-3xl font-black text-white tracking-tight">{score}</span>
+              <span className="text-3xl font-black text-white tracking-tight tabular-nums">{displayScore}</span>
               <span className="text-[10px] uppercase font-semibold text-[#A8B3C7]">/ 100</span>
             </div>
           </div>
