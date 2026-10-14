@@ -2,26 +2,26 @@
 
 :root {
   /* â”€â”€ Hero Section Tokens (swap exact Figma hex values here) â”€â”€â”€ */
-  --hero-blue-600: #2563EB;
-  --blue-600: #2563EB;
-  --blue-500: #2F6FEB;
-  --blue-100: #DDEAFF;
-  --blue-50: #EEF5FF;
-  --border-blue: #C9DDFB;
-  --text-dark: #2B2B2B;
-  --hero-blue-500: #2F6FEB;
-  --hero-blue-400: #6FA0F7;
-  --hero-blue-300: #8DB4F5;
-  --hero-blue-200: #7FB0F5;
-  --hero-blue-150: #C9DDFB;
-  --hero-blue-100: #DDEAFF;
-  --hero-blue-75: #D6E6FC;
-  --hero-blue-50: #EEF5FF;
-  --hero-blue-25: #E3EEFF;
-  --hero-text-dark: #2B2B2B;
+  --hero-blue-600: #2563eb;
+  --blue-600: #2563eb;
+  --blue-500: #2f6feb;
+  --blue-100: #ddeaff;
+  --blue-50: #eef5ff;
+  --border-blue: #c9ddfb;
+  --text-dark: #2b2b2b;
+  --hero-blue-500: #2f6feb;
+  --hero-blue-400: #6fa0f7;
+  --hero-blue-300: #8db4f5;
+  --hero-blue-200: #7fb0f5;
+  --hero-blue-150: #c9ddfb;
+  --hero-blue-100: #ddeaff;
+  --hero-blue-75: #d6e6fc;
+  --hero-blue-50: #eef5ff;
+  --hero-blue-25: #e3eeff;
+  --hero-text-dark: #2b2b2b;
   --hero-text-heading: #333333;
-  --hero-text-body: #4B4B4B;
-  --hero-chip-value: #6F9BE8;
+  --hero-text-body: #4b4b4b;
+  --hero-chip-value: #6f9be8;
 
   /* Backgrounds */
   --bg-canvas: #f6f8fc;
@@ -266,8 +266,8 @@
 
   /* Typography */
   --font-sans:
-    var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, sans-serif;
+    var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, sans-serif;
   --font-mono: var(--font-geist-mono), monospace;
 }
 
@@ -295,7 +295,8 @@ body {
 }
 
 @keyframes pulse-dot {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
     opacity: 1;
   }
@@ -324,17 +325,27 @@ body {
 }
 
 .animate-shimmer {
-  background: linear-gradient(90deg, #F2F4F0 0%, #E9ECE6 50%, #F2F4F0 100%);
+  background: linear-gradient(90deg, #f2f4f0 0%, #e9ece6 50%, #f2f4f0 100%);
   background-size: 200% 100%;
   animation: shimmer 1.6s linear infinite;
 }
 
 /* Stagger entrance utility classes */
-.stagger-1 { animation-delay: 80ms; }
-.stagger-2 { animation-delay: 160ms; }
-.stagger-3 { animation-delay: 240ms; }
-.stagger-4 { animation-delay: 320ms; }
-.stagger-5 { animation-delay: 400ms; }
+.stagger-1 {
+  animation-delay: 80ms;
+}
+.stagger-2 {
+  animation-delay: 160ms;
+}
+.stagger-3 {
+  animation-delay: 240ms;
+}
+.stagger-4 {
+  animation-delay: 320ms;
+}
+.stagger-5 {
+  animation-delay: 400ms;
+}
 
 /* Accessible Reduced Motion Support */
 @media (prefers-reduced-motion: reduce) {
@@ -348,7 +359,6 @@ body {
   }
 }
 
-
 /* ==========================================================================
    Typography System â€” Figma text-style tokens (Inter)
    Usage:  className="text-h1-bold"
@@ -357,110 +367,292 @@ body {
 
 @layer components {
   /* â”€â”€ Hero â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-  .text-hero-title       { font-size: 3.9625rem;  line-height: 1.06; font-weight: 400; }
+  .text-hero-title {
+    font-size: 3.9625rem;
+    line-height: 1.06;
+    font-weight: 400;
+  }
 
   /* â”€â”€ H1 â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-  .text-h1               { font-size: 3rem;       line-height: 1.4;  font-weight: 400; }
-  .text-h1-bold          { font-size: 3rem;       line-height: 1.25; font-weight: 700; }
-  .text-h1-semibold      { font-size: 3rem;       line-height: 1.25; font-weight: 600; }
-  .text-h1-medium        { font-size: 3rem;       line-height: 1.25; font-weight: 500; }
+  .text-h1 {
+    font-size: 3rem;
+    line-height: 1.4;
+    font-weight: 400;
+  }
+  .text-h1-bold {
+    font-size: 3rem;
+    line-height: 1.25;
+    font-weight: 700;
+  }
+  .text-h1-semibold {
+    font-size: 3rem;
+    line-height: 1.25;
+    font-weight: 600;
+  }
+  .text-h1-medium {
+    font-size: 3rem;
+    line-height: 1.25;
+    font-weight: 500;
+  }
 
   /* â”€â”€ H2 â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-  .text-h2               { font-size: 2.5rem;     line-height: 1.4;  font-weight: 400; }
-  .text-h2-bold          { font-size: 2.5rem;     line-height: 1.4;  font-weight: 700; }
-  .text-h2-semibold      { font-size: 2.5rem;     line-height: 1.4;  font-weight: 600; }
-  .text-h2-medium        { font-size: 2.5rem;     line-height: 1.4;  font-weight: 500; }
+  .text-h2 {
+    font-size: 2.5rem;
+    line-height: 1.4;
+    font-weight: 400;
+  }
+  .text-h2-bold {
+    font-size: 2.5rem;
+    line-height: 1.4;
+    font-weight: 700;
+  }
+  .text-h2-semibold {
+    font-size: 2.5rem;
+    line-height: 1.4;
+    font-weight: 600;
+  }
+  .text-h2-medium {
+    font-size: 2.5rem;
+    line-height: 1.4;
+    font-weight: 500;
+  }
 
   /* â”€â”€ H3 â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-  .text-h3               { font-size: 2.0625rem;  line-height: 1.4;  font-weight: 400; }
-  .text-h3-bold          { font-size: 2.0625rem;  line-height: 1.4;  font-weight: 700; }
-  .text-h3-semibold      { font-size: 2.0625rem;  line-height: 1.4;  font-weight: 600; }
-  .text-h3-medium        { font-size: 2.0625rem;  line-height: 1.4;  font-weight: 500; }
+  .text-h3 {
+    font-size: 2.0625rem;
+    line-height: 1.4;
+    font-weight: 400;
+  }
+  .text-h3-bold {
+    font-size: 2.0625rem;
+    line-height: 1.4;
+    font-weight: 700;
+  }
+  .text-h3-semibold {
+    font-size: 2.0625rem;
+    line-height: 1.4;
+    font-weight: 600;
+  }
+  .text-h3-medium {
+    font-size: 2.0625rem;
+    line-height: 1.4;
+    font-weight: 500;
+  }
 
   /* â”€â”€ H4 â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-  .text-h4               { font-size: 1.75rem;    line-height: 1.4;  font-weight: 400; }
-  .text-h4-bold          { font-size: 1.75rem;    line-height: 1.4;  font-weight: 700; }
-  .text-h4-semibold      { font-size: 1.75rem;    line-height: 1.25; font-weight: 600; }
-  .text-h4-medium        { font-size: 1.75rem;    line-height: 1.4;  font-weight: 500; }
+  .text-h4 {
+    font-size: 1.75rem;
+    line-height: 1.4;
+    font-weight: 400;
+  }
+  .text-h4-bold {
+    font-size: 1.75rem;
+    line-height: 1.4;
+    font-weight: 700;
+  }
+  .text-h4-semibold {
+    font-size: 1.75rem;
+    line-height: 1.25;
+    font-weight: 600;
+  }
+  .text-h4-medium {
+    font-size: 1.75rem;
+    line-height: 1.4;
+    font-weight: 500;
+  }
 
   /* â”€â”€ H5 â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-  .text-h5-semibold      { font-size: 1.4375rem;  line-height: 1.4;  font-weight: 600; }
-  .text-h5-medium        { font-size: 1.4375rem;  line-height: 1.4;  font-weight: 500; }
+  .text-h5-semibold {
+    font-size: 1.4375rem;
+    line-height: 1.4;
+    font-weight: 600;
+  }
+  .text-h5-medium {
+    font-size: 1.4375rem;
+    line-height: 1.4;
+    font-weight: 500;
+  }
 
   /* â”€â”€ Title 19px â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-  .text-title-1          { font-size: 1.1875rem;  line-height: 1.4;  font-weight: 400; }
-  .text-title-7-bold     { font-size: 1.1875rem;  line-height: 1.4;  font-weight: 700; }
-  .text-title-5-semibold { font-size: 1.1875rem;  line-height: 1.4;  font-weight: 600; }
-  .text-title-3-medium   { font-size: 1.1875rem;  line-height: 1.4;  font-weight: 500; }
+  .text-title-1 {
+    font-size: 1.1875rem;
+    line-height: 1.4;
+    font-weight: 400;
+  }
+  .text-title-7-bold {
+    font-size: 1.1875rem;
+    line-height: 1.4;
+    font-weight: 700;
+  }
+  .text-title-5-semibold {
+    font-size: 1.1875rem;
+    line-height: 1.4;
+    font-weight: 600;
+  }
+  .text-title-3-medium {
+    font-size: 1.1875rem;
+    line-height: 1.4;
+    font-weight: 500;
+  }
 
   /* â”€â”€ Title 16px â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-  .text-title-2          { font-size: 1rem;       line-height: 1.4;  font-weight: 400; }
-  .text-title-8-bold     { font-size: 1rem;       line-height: 1.4;  font-weight: 700; }
-  .text-title-6-semibold { font-size: 1rem;       line-height: 1.4;  font-weight: 600; }
-  .text-title-4-medium   { font-size: 1rem;       line-height: 1.4;  font-weight: 500; }
+  .text-title-2 {
+    font-size: 1rem;
+    line-height: 1.4;
+    font-weight: 400;
+  }
+  .text-title-8-bold {
+    font-size: 1rem;
+    line-height: 1.4;
+    font-weight: 700;
+  }
+  .text-title-6-semibold {
+    font-size: 1rem;
+    line-height: 1.4;
+    font-weight: 600;
+  }
+  .text-title-4-medium {
+    font-size: 1rem;
+    line-height: 1.4;
+    font-weight: 500;
+  }
 
   /* â”€â”€ Body 14px â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-  .text-body             { font-size: 0.875rem;   line-height: 1.4;  font-weight: 400; }
-  .text-body-bold        { font-size: 0.875rem;   line-height: 1.4;  font-weight: 700; }
-  .text-body-semibold    { font-size: 0.875rem;   line-height: 1.4;  font-weight: 600; }
-  .text-body-medium      { font-size: 0.875rem;   line-height: 1.4;  font-weight: 500; }
+  .text-body {
+    font-size: 0.875rem;
+    line-height: 1.4;
+    font-weight: 400;
+  }
+  .text-body-bold {
+    font-size: 0.875rem;
+    line-height: 1.4;
+    font-weight: 700;
+  }
+  .text-body-semibold {
+    font-size: 0.875rem;
+    line-height: 1.4;
+    font-weight: 600;
+  }
+  .text-body-medium {
+    font-size: 0.875rem;
+    line-height: 1.4;
+    font-weight: 500;
+  }
 
   /* â”€â”€ Caption 11px â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-  .text-caption          { font-size: 0.6875rem;  line-height: 1.4;  font-weight: 400; }
-  .text-caption-bold     { font-size: 0.6875rem;  line-height: 1.4;  font-weight: 700; }
+  .text-caption {
+    font-size: 0.6875rem;
+    line-height: 1.4;
+    font-weight: 400;
+  }
+  .text-caption-bold {
+    font-size: 0.6875rem;
+    line-height: 1.4;
+    font-weight: 700;
+  }
 }
 
-.buyhero { isolation: isolate; }
+.buyhero {
+  isolation: isolate;
+}
 .buyhero-bg {
   position: absolute;
   z-index: -1;
   pointer-events: none;
   top: 145px;
-  left: 50%;
+  left: 50vw;
   width: 100vw;
-  height: 1080px;
+  height: 1230px;
   transform: translateX(-50%);
-  background: url('/hero/background.svg') center top / 100% 100% no-repeat;
+  background:
+    radial-gradient(
+      ellipse 78% 58% at 50% 52%,
+      rgba(107, 155, 242, 0.27) 0%,
+      rgba(141, 180, 248, 0.14) 48%,
+      rgba(255, 255, 255, 0) 82%
+    ),
+    url("/hero/background.svg") center top / 100% 100% no-repeat;
 }
-.buyhero-title { letter-spacing: -0.035em; }
-.hero-visual { position: relative; }
-.hero-card-wrap { padding-top: 0; }
-.hero-card-wrap > .hero-card { min-height: 504px; }
-.hero-card [class*="p-5"] { min-height: 504px; align-items: center; }
-.hero-card [class*="aspect-"] { max-height: 300px; }
-.hero-connectors { height: 610px; top: 0; }
-.hero-insights { margin-top: -1px; }
+.buyhero-title {
+  letter-spacing: -0.035em;
+}
+.hero-visual {
+  position: relative;
+  padding-bottom: 72px;
+}
+.hero-card-wrap {
+  padding-top: 0;
+}
+.hero-card-wrap > .hero-card {
+  min-height: 504px;
+}
+.hero-card [class*="p-5"] {
+  min-height: 504px;
+  align-items: center;
+}
+.hero-card [class*="aspect-"] {
+  max-height: 300px;
+}
+.hero-connectors {
+  height: auto;
+  top: 0;
+}
+.hero-insights {
+  margin-top: 54px;
+}
 
 @media (max-width: 1023px) {
-  .hero-card-wrap { max-width: min(800px, 92vw); }
+  .hero-card-wrap {
+    max-width: min(800px, 92vw);
+  }
   .hero-card-wrap > .hero-card {
-    transform: scale(.92);
+    transform: scale(0.92);
     transform-origin: top center;
     margin-bottom: -40px;
   }
-  .hero-connectors { display: none; }
+  .hero-connectors {
+    display: none;
+  }
 }
 
 @media (max-width: 767px) {
-  .buyhero-title { font-size: 40px; line-height: 1.08; }
-  .buyhero-title span:first-child { max-width: 430px; margin-inline: auto; }
-  .buyhero-bg { top: 80px; height: 820px; background-size: auto 100%; }
-  .hero-card-wrap { max-width: 100%; }
+  .hero-visual { padding-bottom: 40px; }
+  .buyhero-title {
+    font-size: 40px;
+    line-height: 1.08;
+  }
+  .buyhero-title span:first-child {
+    max-width: 430px;
+    margin-inline: auto;
+  }
+  .buyhero-bg {
+    top: 80px;
+    height: 960px;
+    background-size: auto 100%;
+  }
+  .hero-card-wrap {
+    max-width: 100%;
+  }
   .hero-card-wrap > .hero-card {
     min-height: 390px;
-    transform: scale(.78);
+    transform: scale(0.78);
     transform-origin: top center;
     width: 128%;
     margin-left: -14%;
     margin-bottom: -100px;
   }
-  .hero-card [class*="p-5"] { min-height: 390px; }
-  .hero-card [class*="aspect-"] { max-height: 200px; }
-  .hero-insights { max-width: 500px; gap: 10px; }
-  .hero-insights > div { min-height: 66px; padding-inline: 10px; }
+  .hero-card [class*="p-5"] {
+    min-height: 390px;
+  }
+  .hero-card [class*="aspect-"] {
+    max-height: 200px;
+  }
+  .hero-insights {
+    max-width: 500px;
+    gap: 10px;
+  }
+  .hero-insights > div {
+    min-height: 66px;
+    padding-inline: 10px;
+  }
 }
-
-
-
-
-

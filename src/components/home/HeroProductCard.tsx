@@ -17,7 +17,7 @@ export function HeroProductCard() {
       {/* â”€â”€ Left: Product Image Gallery â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <div className="flex flex-col items-center gap-2.5 sm:w-[42%] shrink-0">
         {/* Main product visual */}
-        <div className="w-full aspect-[4/3] rounded-2xl bg-gradient-to-br from-[#edf1f8] to-[#dde4ef] flex items-center justify-center overflow-hidden p-3">
+        <div className="w-full aspect-[4/3] rounded-2xl border border-white bg-[#eff6ff] flex items-center justify-center overflow-hidden p-3">
           <Image
             src="/main-laptop.png"
             alt="Aero 14 Pro laptop with Windows display"

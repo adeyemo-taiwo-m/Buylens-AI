@@ -244,12 +244,13 @@ export function MagnifierCard({
           clipPath:       `circle(${lensRadius}px at 50% 50%)`,
           transformOrigin: "50% 50%",
           transform:       `scale(${magnification})`,
+          background: "radial-gradient(circle at 35% 26%, rgba(255,255,255,.98) 0%, rgba(239,247,255,.96) 58%, rgba(219,235,255,.94) 100%)",
         }}
       >
         {children}
       </div>
 
-      {/* â”€â”€ Layer 3 â€” decorative lens visual (ring + handle) â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      {/* â”€â”€ Layer 3 â€” decorative lens ring â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <div
         ref={lensRef}
         aria-hidden="true"
@@ -260,29 +261,14 @@ export function MagnifierCard({
         <div
           className="absolute inset-0 rounded-full"
           style={{
-            border: "2.5px solid rgba(147, 197, 253, 0.55)",
+            border: "3px solid rgba(125, 176, 245, 0.78)",
             boxShadow: [
-              "inset 0 0 24px 4px rgba(147, 197, 253, 0.10)",   // inner glow
-              "0 4px 20px -4px rgba(30, 64, 175, 0.15)",         // soft drop shadow
-              "0 0 0 1px rgba(255, 255, 255, 0.40)",             // thin white rim
+              "inset 0 0 25px 5px rgba(141, 180, 248, 0.24)",
+              "0 0 28px 5px rgba(111, 160, 247, 0.28)",
+              "0 6px 22px -4px rgba(37, 99, 235, 0.22)",
+              "0 0 0 1px rgba(255, 255, 255, 0.62)",
             ].join(", "),
-            background: "radial-gradient(circle at 35% 30%, rgba(255,255,255,0.12) 0%, transparent 60%)",
-          }}
-        />
-
-        {/* Handle â€” rounded rectangle attached at ~45Â° bottom-right */}
-        <div
-          className="absolute"
-          style={{
-            width: 45,
-            height: 230,
-            bottom: -74,
-            right: -64,
-            transform: "rotate(-45deg)",
-            transformOrigin: "top center",
-            borderRadius: 999,
-            background: "linear-gradient(180deg, #60a5fa 0%, #2563eb 45%, #1d4ed8 100%)",
-            boxShadow: "0 4px 14px rgba(37, 99, 235, 0.35)",
+            background: "radial-gradient(circle at 35% 30%, rgba(255,255,255,0.24) 0%, transparent 62%)",
           }}
         />
       </div>
