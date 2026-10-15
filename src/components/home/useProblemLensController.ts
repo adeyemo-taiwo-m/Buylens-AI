@@ -52,7 +52,6 @@ export function useProblemLensController(stageRef: RefObject<HTMLDivElement | nu
   const labelParallaxX = useSpring(labelX, { stiffness: 160, damping: 24, mass: 0.7 });
   const labelParallaxY = useSpring(labelY, { stiffness: 160, damping: 24, mass: 0.7 });
 
-  const returnTimer = useRef<number | null>(null);
   const tourTimer = useRef<number | null>(null);
   const introTimers = useRef<number[]>([]);
   const introPlayed = useRef(false);
@@ -89,10 +88,6 @@ export function useProblemLensController(stageRef: RefObject<HTMLDivElement | nu
   }, [boardLeftPct, boardTopPx, boardWidthPct, clampPoint, stageSize.width, targetX, targetY]);
   const moveToWaypoint = useCallback((waypoint: ProblemWaypoint) => moveToBoardPoint(waypoint.fx, waypoint.fy), [moveToBoardPoint]);
   const moveToRest = useCallback(() => moveToBoardPoint(PROBLEM_REST.fx, PROBLEM_REST.fy), [moveToBoardPoint]);
-  const scheduleRest = useCallback(() => {
-    clearTimer(returnTimer);
-    returnTimer.current = window.setTimeout(moveToRest, 700);
-  }, [moveToRest]);
   const pauseTour = useCallback((duration: number) => {
     clearTimer(tourTimer);
     tourPausedUntil.current = Date.now() + duration;
@@ -130,7 +125,6 @@ export function useProblemLensController(stageRef: RefObject<HTMLDivElement | nu
   }, [stageRef]);
   const onStagePointerEnter = useCallback((event: PointerEvent<HTMLDivElement>) => {
     if (event.pointerType === "touch") return;
-    clearTimer(returnTimer);
     clearSequences();
     stageHovered.current = true;
     if (!entered) setEntered(true);
@@ -158,8 +152,7 @@ export function useProblemLensController(stageRef: RefObject<HTMLDivElement | nu
   const onStagePointerLeave = useCallback((event: PointerEvent<HTMLDivElement>) => {
     if (event.pointerType === "touch") return;
     stageHovered.current = false;
-    scheduleRest();
-  }, [scheduleRest]);
+  }, []);
   const onLensPointerDown = useCallback((event: PointerEvent<HTMLDivElement>) => {
     dragging.current = true;
     clearSequences();
@@ -168,7 +161,6 @@ export function useProblemLensController(stageRef: RefObject<HTMLDivElement | nu
     event.stopPropagation();
   }, [clearSequences, pauseTour]);
   const onLensPointerMove = useCallback((event: PointerEvent<HTMLDivElement>) => {
-    if (!dragging.current) return;
     const point = eventPoint(event);
     if (point) {
       const clamped = clampPoint(point.x, point.y);
@@ -232,7 +224,6 @@ export function useProblemLensController(stageRef: RefObject<HTMLDivElement | nu
   }, [runIntro, stageRef]);
   useEffect(() => () => {
     clearSequences();
-    clearTimer(returnTimer);
   }, [clearSequences]);
 
   return {
