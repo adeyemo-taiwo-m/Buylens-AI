@@ -9,6 +9,8 @@
   --line: #d4e4fb;
   --faq-border: #d4e4fb;
   --faq-icon-soft: #eef4ff;
+  --cta-soft: #e9effc;
+  --cta-soft-border: #d5e3fa;
   --blue-600: #2563eb;
   --blue-500: #2f6feb;
   --blue-100: #ddeaff;
@@ -2339,6 +2341,81 @@ body {
   font-weight: 500;
   letter-spacing: 0.01em;
   line-height: 1;
+}
+
+.section-badge-on-blue {
+  width: 145px;
+  min-width: 145px;
+  height: 36px;
+  padding: 0;
+  border-color: var(--cta-soft-border);
+  background: #eef4ff;
+  color: var(--blue);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+.buy-with-clarity-link {
+  display: inline-flex;
+  width: 432px;
+  height: 58px;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border: 1px solid var(--cta-soft-border);
+  border-radius: 999px;
+  background: var(--cta-soft);
+  color: var(--blue);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1;
+  text-decoration: none;
+  transition: background-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.buy-with-clarity-link:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+.buy-with-clarity-link:active {
+  background: #dce7fc;
+  transform: scale(0.98);
+}
+
+.buy-with-clarity-link.cta-motion-reduced:active {
+  transform: none;
+}
+
+.buy-with-clarity-arrow {
+  transition: transform 180ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .buy-with-clarity-link:not(.cta-motion-reduced):hover {
+    background: #fff;
+    box-shadow: 0 10px 24px rgba(15, 27, 51, 0.18);
+    transform: translateY(-2px);
+  }
+
+  .buy-with-clarity-link:not(.cta-motion-reduced):hover .buy-with-clarity-arrow {
+    transform: translateX(4px);
+  }
+}
+
+@media (max-width: 1023px) {
+  .buy-with-clarity-link {
+    width: 360px;
+  }
+}
+
+@media (max-width: 767px) {
+  .buy-with-clarity-link {
+    width: 100%;
+    height: 54px;
+    font-size: 16px;
+  }
 }
 
 :root {

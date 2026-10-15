@@ -2,12 +2,12 @@
 
 import Link from "next/link";
 import { Header } from "@/components/layout/Header";
-import { Button } from "@/components/ui/Button";
 import { HowItWorksSection } from "@/components/home/HowItWorksSection";
 import { InteractiveLensExperience } from "@/components/home/InteractiveLensExperience";
 import { DecisionFeaturesSection } from "@/components/home/DecisionFeaturesSection";
 import { AnalysisPreviewSection } from "@/components/home/AnalysisPreviewSection";
 import { FaqSection } from "@/components/home/FaqSection";
+import { BuyWithClaritySection } from "@/components/home/BuyWithClaritySection";
 import {
   ArrowRight,
 } from "lucide-react";
@@ -47,26 +47,7 @@ export default function Home() {
         <DecisionFeaturesSection />
         <AnalysisPreviewSection />
         <FaqSection />
-
-        {/* Final CTA Band per PRD Section 21 */}
-        <section className="bg-[#0B1220] text-white py-16 px-6 text-center border-t border-[rgba(255,255,255,0.08)]">
-          <div className="max-w-2xl mx-auto space-y-6">
-            <h2 className="text-3xl font-extrabold tracking-tight">
-              Don&apos;t just buy. Understand first.
-            </h2>
-            <p className="text-sm text-[#A8B3C7] leading-relaxed">
-              Don&apos;t risk your capital on unverified claims. Run a free instant decision report now.
-            </p>
-            <div className="pt-2">
-              <Link href="/app/analyze">
-                <Button variant="accent" size="lg">
-                  <span>Analyze a purchase</span>
-                  <ArrowRight className="h-4 w-4 text-[#0B1220]" />
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </section>
+        <BuyWithClaritySection />
       </main>
 
       {/* Footer */}
