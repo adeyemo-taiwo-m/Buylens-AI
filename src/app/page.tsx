@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/Card";
 import { HowItWorksSection } from "@/components/home/HowItWorksSection";
 import { InteractiveLensExperience } from "@/components/home/InteractiveLensExperience";
 import { DecisionFeaturesSection } from "@/components/home/DecisionFeaturesSection";
+import { AnalysisPreviewSection } from "@/components/home/AnalysisPreviewSection";
 import {
   ArrowRight,
 } from "lucide-react";
@@ -44,6 +45,7 @@ export default function Home() {
         <HowItWorksSection />
 
         <DecisionFeaturesSection />
+        <AnalysisPreviewSection />
         {/* FAQ Section */}
         <section id="faq" className="max-w-4xl mx-auto px-6 py-16 border-t border-[#E4E7EC]">
           <div className="text-center max-w-xl mx-auto mb-12">

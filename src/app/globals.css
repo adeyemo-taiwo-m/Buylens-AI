@@ -2336,6 +2336,46 @@ body {
   line-height: 1;
 }
 
+:root {
+  --promising-bg: #ddf8e6;
+  --risk-bg: #fdf1c9;
+  --question-bg: #dde8fc;
+}
+
+.analysis-layer-furthest,
+.analysis-layer-near {
+  left: 0;
+  right: 0;
+}
+
+@media (max-width: 1023px) {
+  .analysis-layer-furthest {
+    left: -18px !important;
+    right: -18px !important;
+  }
+
+  .analysis-layer-near {
+    left: -10px !important;
+    right: -10px !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .analysis-layer-furthest {
+    left: -18px !important;
+    right: -18px !important;
+  }
+
+  .analysis-layer-near {
+    left: -10px !important;
+    right: -10px !important;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .analysis-copy-control { opacity: 1 !important; }
+}
+
 .decision-features-section {
   position: relative;
   overflow: hidden;
