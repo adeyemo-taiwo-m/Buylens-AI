@@ -6,11 +6,9 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { HowItWorksSection } from "@/components/home/HowItWorksSection";
 import { InteractiveLensExperience } from "@/components/home/InteractiveLensExperience";
+import { DecisionFeaturesSection } from "@/components/home/DecisionFeaturesSection";
 import {
   ArrowRight,
-  ShieldAlert,
-  HelpCircle,
-  TrendingDown,
 } from "lucide-react";
 
 export default function Home() {
@@ -45,50 +43,7 @@ export default function Home() {
 
         <HowItWorksSection />
 
-        {/* The Decision Framework / Features */}
-        <section id="features" className="max-w-5xl mx-auto px-6 py-16 border-t border-[#E4E7EC]">
-          <div className="text-center max-w-xl mx-auto mb-12">
-            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#101828]">
-              The decision framework
-            </h2>
-            <p className="mt-2 text-sm text-[#667085]">
-              Every analysis directly answers the core question: &ldquo;Should I buy this?&rdquo;
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card variant="default" padding="lg" className="space-y-3">
-              <div className="h-10 w-10 rounded-[10px] bg-[#F2F4F0] flex items-center justify-center text-[#101828]">
-                <TrendingDown className="h-5 w-5" />
-              </div>
-              <h3 className="text-base font-bold text-[#101828]">Fair Price Corridor</h3>
-              <p className="text-xs sm:text-sm text-[#667085] leading-relaxed">
-                Identify if a quotation is overpriced, fair, or suspiciously cheap compared to current retail averages.
-              </p>
-            </Card>
-
-            <Card variant="default" padding="lg" className="space-y-3">
-              <div className="h-10 w-10 rounded-[10px] bg-[#F2F4F0] flex items-center justify-center text-[#101828]">
-                <ShieldAlert className="h-5 w-5 text-[#DC2626]" />
-              </div>
-              <h3 className="text-base font-bold text-[#101828]">Hidden Risk Detection</h3>
-              <p className="text-xs sm:text-sm text-[#667085] leading-relaxed">
-                Spot parallel imports, grey-market warranties, and costly unquoted installation accessories.
-              </p>
-            </Card>
-
-            <Card variant="default" padding="lg" className="space-y-3">
-              <div className="h-10 w-10 rounded-[10px] bg-[#F2F4F0] flex items-center justify-center text-[#101828]">
-                <HelpCircle className="h-5 w-5 text-[#0B1220]" />
-              </div>
-              <h3 className="text-base font-bold text-[#101828]">Seller Interrogation Checklist</h3>
-              <p className="text-xs sm:text-sm text-[#667085] leading-relaxed">
-                Get exact, prioritized questions to send directly to the seller to ensure you don&apos;t get shortchanged.
-              </p>
-            </Card>
-          </div>
-        </section>
-
+        <DecisionFeaturesSection />
         {/* FAQ Section */}
         <section id="faq" className="max-w-4xl mx-auto px-6 py-16 border-t border-[#E4E7EC]">
           <div className="text-center max-w-xl mx-auto mb-12">
