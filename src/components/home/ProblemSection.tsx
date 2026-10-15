@@ -5,6 +5,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
 import { PROBLEM_ASSETS } from "./problemData";
 import { useProblemLensController } from "./useProblemLensController";
+import { ProblemBoardConcernList } from "./ProblemBoard";
 import { SceneLayers } from "./SceneLayers";
 import { ScannerLens } from "./ScannerLens";
 
@@ -57,7 +58,7 @@ export function ProblemSection() {
     <section
       id="problem"
       aria-labelledby="problem-title"
-      className="problem-section mx-5"
+      className="problem-section"
     >
       <div className="problem-copy">
         <motion.div
@@ -151,6 +152,8 @@ export function ProblemSection() {
 
         <ScannerLens controller={controller} />
       </div>
+
+      <ProblemBoardConcernList />
     </section>
   );
 }

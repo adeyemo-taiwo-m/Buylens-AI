@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Header } from "@/components/layout/Header";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
-import { InteractiveExampleReport } from "@/components/home/InteractiveExampleReport";
+import { HowItWorksSection } from "@/components/home/HowItWorksSection";
 import { HeroMagnifier } from "@/components/home/HeroMagnifier";
 import { ProblemSection } from "@/components/home/ProblemSection";
 import {
@@ -12,8 +12,6 @@ import {
   ShieldAlert,
   HelpCircle,
   TrendingDown,
-  CheckCircle2,
-  FileText,
 } from "lucide-react";
 
 export default function Home() {
@@ -44,65 +42,13 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="relative z-10 mx-auto mt-10 w-full px-5 pb-16">
+        <section className="relative z-10 mx-auto mt-10 w-full px-5 pb-0">
           <HeroMagnifier />
         </section>
 
         <ProblemSection />
 
-        {/* Interactive Example Report Section per PRD Section 20 & INTERACTIONS.md Section 1.4 */}
-        <section className="max-w-4xl mx-auto px-6 pb-20">
-          <div className="text-center mb-6">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-[#667085]">
-              Explore an Interactive Decision Report
-            </h2>
-          </div>
-          <InteractiveExampleReport />
-        </section>
-
-        {/* How It Works: 3 Steps per PRD Section 19 */}
-        <section id="how-it-works" className="max-w-5xl mx-auto px-6 py-16 border-t border-[#E4E7EC]">
-          <div className="text-center max-w-xl mx-auto mb-14">
-            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#101828]">
-              How it works
-            </h2>
-            <p className="mt-2 text-sm text-[#667085]">
-              Three simple steps to protect your capital before making any significant payment.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card variant="default" padding="lg" className="space-y-3">
-              <div className="text-xs font-bold text-[#0B1220] bg-[#F2F4F0] w-7 h-7 rounded-[8px] flex items-center justify-center">
-                01
-              </div>
-              <h3 className="text-base font-bold text-[#101828]">Give us the listing</h3>
-              <p className="text-xs sm:text-sm text-[#667085] leading-relaxed">
-                Paste information or upload an image from WhatsApp, Jiji, or an in-store quotation.
-              </p>
-            </Card>
-
-            <Card variant="default" padding="lg" className="space-y-3">
-              <div className="text-xs font-bold text-[#0B1220] bg-[#F2F4F0] w-7 h-7 rounded-[8px] flex items-center justify-center">
-                02
-              </div>
-              <h3 className="text-base font-bold text-[#101828]">BuyLens analyzes it</h3>
-              <p className="text-xs sm:text-sm text-[#667085] leading-relaxed">
-                AI evaluates price, value, risks, and missing information against real market data.
-              </p>
-            </Card>
-
-            <Card variant="default" padding="lg" className="space-y-3">
-              <div className="text-xs font-bold text-[#0B1220] bg-[#F2F4F0] w-7 h-7 rounded-[8px] flex items-center justify-center">
-                03
-              </div>
-              <h3 className="text-base font-bold text-[#101828]">Make a smarter decision</h3>
-              <p className="text-xs sm:text-sm text-[#667085] leading-relaxed">
-                Understand what to verify before paying, with ready questions to ask the merchant.
-              </p>
-            </Card>
-          </div>
-        </section>
+        <HowItWorksSection />
 
         {/* The Decision Framework / Features */}
         <section id="features" className="max-w-5xl mx-auto px-6 py-16 border-t border-[#E4E7EC]">

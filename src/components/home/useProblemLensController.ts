@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState, type PointerEvent, type RefObject } from "react";
 import { useMotionValue, useReducedMotion, useSpring, useTransform } from "framer-motion";
-import { PROBLEM_REST, PROBLEM_WAYPOINTS, type ProblemWaypoint } from "./problemData";
+import { getProblemBoardLayout, PROBLEM_BOARD, PROBLEM_REST, PROBLEM_WAYPOINTS, type ProblemWaypoint } from "./problemData";
 
 type Size = { width: number; height: number };
 const INITIAL_SIZE = { width: 1440, height: 710 };
@@ -10,17 +10,27 @@ const LENS_DIAMETER_RATIO = 0.215;
 const LENS_SQUARE_RATIO = LENS_DIAMETER_RATIO * 1.06;
 const MOBILE_LENS_DIAMETER_RATIO = 0.45;
 const RING_RADIUS_RATIO = 0.472;
+const MIN_LENS_Y_PCT = 0.2;
+const INITIAL_BOARD_WIDTH = INITIAL_SIZE.width * PROBLEM_BOARD.widthPct;
+const INITIAL_BOARD_HEIGHT = INITIAL_BOARD_WIDTH * (PROBLEM_BOARD.designHeight / PROBLEM_BOARD.designWidth);
+const INITIAL_REST_X = INITIAL_SIZE.width * PROBLEM_BOARD.leftPct + PROBLEM_REST.fx * INITIAL_BOARD_WIDTH;
+const INITIAL_REST_Y = PROBLEM_BOARD.topPx + PROBLEM_REST.fy * INITIAL_BOARD_HEIGHT;
 const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
 
 export function useProblemLensController(stageRef: RefObject<HTMLDivElement | null>) {
   const [stageSize, setStageSize] = useState<Size>(INITIAL_SIZE);
+  const [boardScale, setBoardScale] = useState((INITIAL_SIZE.width * PROBLEM_BOARD.widthPct) / PROBLEM_BOARD.designWidth);
   const [entered, setEntered] = useState(false);
   const [lensHovered, setLensHovered] = useState(false);
   const reduced = useReducedMotion() === true;
+  const boardLayout = getProblemBoardLayout(stageSize.width);
+  const boardWidthPct = boardLayout.widthPct;
+  const boardLeftPct = boardLayout.leftPct;
+  const boardTopPx = boardLayout.topPx;
   const lensSize = useMotionValue(INITIAL_SIZE.width * LENS_SQUARE_RATIO);
   const ringRadius = useTransform(lensSize, (size) => size * RING_RADIUS_RATIO);
-  const targetX = useMotionValue(INITIAL_SIZE.width * PROBLEM_REST.x);
-  const targetY = useMotionValue(INITIAL_SIZE.height * PROBLEM_REST.y);
+  const targetX = useMotionValue(INITIAL_REST_X);
+  const targetY = useMotionValue(INITIAL_REST_Y);
   const springX = useSpring(targetX, { stiffness: 220, damping: 26, mass: 0.8 });
   const springY = useSpring(targetY, { stiffness: 220, damping: 26, mass: 0.8 });
   const x = reduced ? targetX : springX;
@@ -64,16 +74,21 @@ export function useProblemLensController(stageRef: RefObject<HTMLDivElement | nu
     const { width, height } = stageSize;
     return {
       x: clamp(px, width * 0.45, width * 0.9),
-      y: clamp(py, height * 0.32, height * 0.88),
+      y: clamp(py, height * MIN_LENS_Y_PCT, height * 0.88),
     };
   }, [stageSize]);
-  const moveTo = useCallback((fractionX: number, fractionY: number) => {
-    const point = clampPoint(fractionX * stageSize.width, fractionY * stageSize.height);
+  const moveToBoardPoint = useCallback((fractionX: number, fractionY: number) => {
+    const boardWidth = stageSize.width * boardWidthPct;
+    const boardHeight = boardWidth * (PROBLEM_BOARD.designHeight / PROBLEM_BOARD.designWidth);
+    const point = clampPoint(
+      stageSize.width * boardLeftPct + fractionX * boardWidth,
+      boardTopPx + fractionY * boardHeight,
+    );
     targetX.set(point.x);
     targetY.set(point.y);
-  }, [clampPoint, stageSize.height, stageSize.width, targetX, targetY]);
-  const moveToWaypoint = useCallback((waypoint: ProblemWaypoint) => moveTo(waypoint.x, waypoint.y), [moveTo]);
-  const moveToRest = useCallback(() => moveTo(PROBLEM_REST.x, PROBLEM_REST.y), [moveTo]);
+  }, [boardLeftPct, boardTopPx, boardWidthPct, clampPoint, stageSize.width, targetX, targetY]);
+  const moveToWaypoint = useCallback((waypoint: ProblemWaypoint) => moveToBoardPoint(waypoint.fx, waypoint.fy), [moveToBoardPoint]);
+  const moveToRest = useCallback(() => moveToBoardPoint(PROBLEM_REST.fx, PROBLEM_REST.fy), [moveToBoardPoint]);
   const scheduleRest = useCallback(() => {
     clearTimer(returnTimer);
     returnTimer.current = window.setTimeout(moveToRest, 700);
@@ -174,13 +189,25 @@ export function useProblemLensController(stageRef: RefObject<HTMLDivElement | nu
     const measure = () => {
       const rect = stage.getBoundingClientRect();
       setStageSize({ width: rect.width, height: rect.height });
+      const layout = getProblemBoardLayout(rect.width);
+      setBoardScale((rect.width * layout.widthPct) / PROBLEM_BOARD.designWidth);
       lensSize.set(rect.width * (rect.width < 768 ? MOBILE_LENS_DIAMETER_RATIO * 1.06 : LENS_SQUARE_RATIO));
+      if (!stageHovered.current && !dragging.current) {
+        const boardWidth = rect.width * layout.widthPct;
+        const boardHeight = boardWidth * (PROBLEM_BOARD.designHeight / PROBLEM_BOARD.designWidth);
+        targetX.set(clamp(
+          rect.width * layout.leftPct + PROBLEM_REST.fx * boardWidth,
+          rect.width * 0.45,
+          rect.width * 0.9,
+        ));
+        targetY.set(clamp(layout.topPx + PROBLEM_REST.fy * boardHeight, rect.height * MIN_LENS_Y_PCT, rect.height * 0.88));
+      }
     };
     measure();
     const observer = new ResizeObserver(measure);
     observer.observe(stage);
     return () => observer.disconnect();
-  }, [lensSize, stageRef]);
+  }, [lensSize, stageRef, targetX, targetY]);
   useEffect(() => {
     const media = window.matchMedia("(pointer: coarse)");
     coarse.current = media.matches;
@@ -210,6 +237,9 @@ export function useProblemLensController(stageRef: RefObject<HTMLDivElement | nu
 
   return {
     stageSize,
+    boardScale,
+    boardLeftPct,
+    boardTopPx,
     lensSize,
     ringRadius,
     clipPath,

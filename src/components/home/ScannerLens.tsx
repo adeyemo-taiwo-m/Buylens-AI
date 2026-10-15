@@ -22,16 +22,12 @@ export function ScannerLens({ controller }: ScannerLensProps) {
   } = controller;
   const [debug, setDebug] = useState(false);
   const ringDiameter = useTransform(ringRadius, (value) => value * 2);
-  const glowWidth = useTransform(ringRadius, (value) => value * 1.6);
-  const glowHeight = useTransform(ringRadius, (value) => value * 0.28);
-  const glowTop = useTransform([lensSize, ringRadius], (values) => {
-    const [size, ringR] = values as number[];
-    return size / 2 + ringR - ringR * 0.14;
-  });
-  const glowBlur = useTransform(ringRadius, (value) => `blur(${value * 0.07}px)`);
 
   useEffect(() => {
-    setDebug(new URLSearchParams(window.location.search).get("debugLens") === "1");
+    const frame = window.requestAnimationFrame(() => {
+      setDebug(new URLSearchParams(window.location.search).get("debugLens") === "1");
+    });
+    return () => window.cancelAnimationFrame(frame);
   }, []);
 
   return (
@@ -51,10 +47,6 @@ export function ScannerLens({ controller }: ScannerLensProps) {
       role="presentation"
       aria-hidden="true"
     >
-      <motion.div
-        className="problem-lens-glow"
-        style={{ width: glowWidth, height: glowHeight, top: glowTop, filter: glowBlur }}
-      />
       <motion.div
         className="problem-lens-sheen"
         style={{ width: ringDiameter, height: ringDiameter }}
@@ -116,4 +108,9 @@ export function ScannerLens({ controller }: ScannerLensProps) {
           />
           <span className="problem-lens-debug-crosshair problem-lens-debug-crosshair-x" />
           <span className="problem-lens-debug-crosshair problem-lens-debug-crosshair-y" />
-          <span className="problem-lens-debug-square"
+          <span className="problem-lens-debug-square" />
+        </>
+      ) : null}
+    </motion.div>
+  );
+}
