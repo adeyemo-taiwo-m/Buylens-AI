@@ -3,11 +3,11 @@
 import Link from "next/link";
 import { Header } from "@/components/layout/Header";
 import { Button } from "@/components/ui/Button";
-import { Card } from "@/components/ui/Card";
 import { HowItWorksSection } from "@/components/home/HowItWorksSection";
 import { InteractiveLensExperience } from "@/components/home/InteractiveLensExperience";
 import { DecisionFeaturesSection } from "@/components/home/DecisionFeaturesSection";
 import { AnalysisPreviewSection } from "@/components/home/AnalysisPreviewSection";
+import { FaqSection } from "@/components/home/FaqSection";
 import {
   ArrowRight,
 } from "lucide-react";
@@ -46,46 +46,7 @@ export default function Home() {
 
         <DecisionFeaturesSection />
         <AnalysisPreviewSection />
-        {/* FAQ Section */}
-        <section id="faq" className="max-w-4xl mx-auto px-6 py-16 border-t border-[#E4E7EC]">
-          <div className="text-center max-w-xl mx-auto mb-12">
-            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#101828]">
-              Frequently asked questions
-            </h2>
-            <p className="mt-2 text-sm text-[#667085]">
-              Everything you need to know about independent purchase intelligence with BuyLens AI.
-            </p>
-          </div>
-
-          <div className="space-y-4">
-            <Card variant="default" padding="md" className="space-y-2">
-              <h3 className="text-sm sm:text-base font-bold text-[#101828]">
-                How does BuyLens evaluate fair market pricing?
-              </h3>
-              <p className="text-xs sm:text-sm text-[#667085] leading-relaxed">
-                BuyLens benchmarks your quotation against live and verified price corridors across major Nigerian trade hubs including Computer Village, Alaba International, and authorized distributors.
-              </p>
-            </Card>
-
-            <Card variant="default" padding="md" className="space-y-2">
-              <h3 className="text-sm sm:text-base font-bold text-[#101828]">
-                Does BuyLens earn commission from merchants?
-              </h3>
-              <p className="text-xs sm:text-sm text-[#667085] leading-relaxed">
-                No. BuyLens is 100% independent. We take zero merchant kickbacks, affiliate fees, or sponsored listings. Our only allegiance is to you the buyer.
-              </p>
-            </Card>
-
-            <Card variant="default" padding="md" className="space-y-2">
-              <h3 className="text-sm sm:text-base font-bold text-[#101828]">
-                Can I analyze informal quotes from WhatsApp or Instagram?
-              </h3>
-              <p className="text-xs sm:text-sm text-[#667085] leading-relaxed">
-                Yes! You can paste raw text messages, bulleted quotes, or upload screenshots. BuyLens extracts specifications, detects omitted accessories, and creates an actionable question checklist to send back to the vendor.
-              </p>
-            </Card>
-          </div>
-        </section>
+        <FaqSection />
 
         {/* Final CTA Band per PRD Section 21 */}
         <section className="bg-[#0B1220] text-white py-16 px-6 text-center border-t border-[rgba(255,255,255,0.08)]">

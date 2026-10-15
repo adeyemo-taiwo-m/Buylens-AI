@@ -4,6 +4,11 @@
   /* â”€â”€ Hero Section Tokens (swap exact Figma hex values here) â”€â”€â”€ */
   --hero-blue-600: #2563eb;
   --blue: #2563eb;
+  --ink: #0f1b33;
+  --muted: #6b7280;
+  --line: #d4e4fb;
+  --faq-border: #d4e4fb;
+  --faq-icon-soft: #eef4ff;
   --blue-600: #2563eb;
   --blue-500: #2f6feb;
   --blue-100: #ddeaff;
@@ -2346,6 +2351,39 @@ body {
 .analysis-layer-near {
   left: 0;
   right: 0;
+}
+
+.faq-logo-watermark {
+  right: var(--faq-logo-offset-x);
+  bottom: var(--faq-logo-offset-y);
+}
+
+.faq-section-badge {
+  width: 64px;
+  min-width: 64px;
+  height: 36px;
+}
+
+.faq-logo-tint {
+  opacity: var(--faq-logo-opacity);
+}
+
+@media (max-width: 1439px) {
+  .faq-logo-watermark {
+    --faq-logo-offset-x: -80px;
+    --faq-logo-offset-y: -80px;
+  }
+}
+
+@media (max-width: 767px) {
+  .faq-logo-watermark {
+    --faq-logo-offset-x: -50px;
+    --faq-logo-offset-y: -50px;
+  }
+
+  .faq-logo-tint {
+    --faq-logo-opacity: 0.08;
+  }
 }
 
 @media (max-width: 1023px) {
