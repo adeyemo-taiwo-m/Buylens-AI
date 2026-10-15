@@ -2,12 +2,11 @@
 
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
-import { useRef } from "react";
+import type { RefObject } from "react";
 import { PROBLEM_ASSETS } from "./problemData";
 import { useProblemLensController } from "./useProblemLensController";
 import { ProblemBoardConcernList } from "./ProblemBoard";
 import { SceneLayers } from "./SceneLayers";
-import { ScannerLens } from "./ScannerLens";
 
 function ProblemLabel({
   className,
@@ -49,9 +48,12 @@ function ProblemLabel({
   );
 }
 
-export function ProblemSection() {
-  const stageRef = useRef<HTMLDivElement>(null);
-  const controller = useProblemLensController(stageRef);
+export type ProblemSectionProps = {
+  stageRef: RefObject<HTMLDivElement | null>;
+  controller: ReturnType<typeof useProblemLensController>;
+};
+
+export function ProblemSection({ stageRef, controller }: ProblemSectionProps) {
   const reduced = useReducedMotion();
 
   return (
@@ -150,7 +152,6 @@ export function ProblemSection() {
           delay={0.3}
         />
 
-        <ScannerLens controller={controller} />
       </div>
 
       <ProblemBoardConcernList />

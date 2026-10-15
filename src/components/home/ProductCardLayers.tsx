@@ -2,7 +2,6 @@
 
 import type { ReactNode, RefObject } from "react";
 import { motion } from "framer-motion";
-import { Lens } from "./Lens";
 import type { LensController } from "./useLensController";
 
 type ProductCardLayersProps = {
@@ -37,7 +36,6 @@ export function ProductCardLayers({ cardRef, controller, children }: ProductCard
         />
       </div>
 
-      <Lens controller={controller} />
     </div>
   );
 }

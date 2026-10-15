@@ -1,16 +1,19 @@
 "use client";
 
-import { useRef } from "react";
+import type { RefObject } from "react";
 import { ConnectorLines } from "./ConnectorLines";
 import { HeroProductCard } from "./HeroProductCard";
 import { InsightChips } from "./InsightChips";
 import { ProductCardLayers } from "./ProductCardLayers";
-import { useLensController } from "./useLensController";
+import type { LensController } from "./useLensController";
 
-export function HeroMagnifier() {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const rowRef = useRef<HTMLDivElement>(null);
-  const controller = useLensController(cardRef, rowRef);
+type HeroMagnifierProps = {
+  cardRef: RefObject<HTMLDivElement | null>;
+  rowRef: RefObject<HTMLDivElement | null>;
+  controller: LensController;
+};
+
+export function HeroMagnifier({ cardRef, rowRef, controller }: HeroMagnifierProps) {
 
   return (
     <div className="hero-visual relative mx-auto flex w-full flex-col items-center">

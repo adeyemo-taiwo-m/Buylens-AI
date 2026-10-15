@@ -1,27 +1,50 @@
 "use client";
 
-import { motion, useTransform } from "framer-motion";
-import { useEffect, useState } from "react";
-import type { useProblemLensController } from "./useProblemLensController";
+import { motion, useTransform, type MotionValue } from "framer-motion";
+import { useEffect, useState, type PointerEvent } from "react";
+
+export const SCANNER_RING_RADIUS_RATIO = 0.472;
 
 type ScannerLensProps = {
-  controller: ReturnType<typeof useProblemLensController>;
+  lensSize: MotionValue<number>;
+  ringRadius: MotionValue<number>;
+  lensTransform: MotionValue<string>;
+  anchor: { left: number; top: number };
+  visible: boolean;
+  lensHovered: boolean;
+  setLensHovered: (hovered: boolean) => void;
+  onLensPointerDown: (event: PointerEvent<HTMLDivElement>) => void;
+  onLensPointerMove: (event: PointerEvent<HTMLDivElement>) => void;
+  onLensPointerUp: (event: PointerEvent<HTMLDivElement>) => void;
 };
 
-export function ScannerLens({ controller }: ScannerLensProps) {
-  const {
-    lensSize,
-    ringRadius,
-    lensTransform,
-    entered,
-    lensHovered,
-    setLensHovered,
-    onLensPointerDown,
-    onLensPointerMove,
-    onLensPointerUp,
-  } = controller;
+export function ScannerLens({
+  lensSize,
+  ringRadius,
+  lensTransform,
+  anchor,
+  visible,
+  lensHovered,
+  setLensHovered,
+  onLensPointerDown,
+  onLensPointerMove,
+  onLensPointerUp,
+}: ScannerLensProps) {
   const [debug, setDebug] = useState(false);
+  const [hintDismissed, setHintDismissed] = useState(false);
+  const [coarsePointer, setCoarsePointer] = useState(false);
   const ringDiameter = useTransform(ringRadius, (value) => value * 2);
+
+  useEffect(() => {
+    const media = window.matchMedia("(pointer: coarse)");
+    const updatePointerMode = (event: MediaQueryListEvent) => setCoarsePointer(event.matches);
+    const frame = window.requestAnimationFrame(() => setCoarsePointer(media.matches));
+    media.addEventListener("change", updatePointerMode);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      media.removeEventListener("change", updatePointerMode);
+    };
+  }, []);
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
@@ -32,14 +55,29 @@ export function ScannerLens({ controller }: ScannerLensProps) {
 
   return (
     <motion.div
-      className="problem-scanner-lens"
-      style={{ width: lensSize, height: lensSize, transform: lensTransform, touchAction: "none" }}
-      onPointerDown={onLensPointerDown}
+      className="problem-scanner-lens problem-scanner-lens-shared"
+      style={{
+        left: anchor.left,
+        top: anchor.top,
+        width: lensSize,
+        height: lensSize,
+        transform: lensTransform,
+        touchAction: "none",
+        opacity: visible ? 1 : 0,
+        pointerEvents: visible ? "auto" : "none",
+      }}
+      onPointerDown={(event) => {
+        setHintDismissed(true);
+        onLensPointerDown(event);
+      }}
       onPointerMove={onLensPointerMove}
       onPointerUp={onLensPointerUp}
       onPointerCancel={onLensPointerUp}
       onPointerEnter={(event) => {
-        if (event.pointerType !== "touch") setLensHovered(true);
+        if (event.pointerType !== "touch") {
+          setHintDismissed(true);
+          setLensHovered(true);
+        }
       }}
       onPointerLeave={(event) => {
         if (event.pointerType !== "touch") setLensHovered(false);
@@ -47,6 +85,11 @@ export function ScannerLens({ controller }: ScannerLensProps) {
       role="presentation"
       aria-hidden="true"
     >
+      {visible && !hintDismissed ? (
+        <span className="problem-lens-affordance">
+          {coarsePointer ? "Drag me" : "Hover me"}
+        </span>
+      ) : null}
       <motion.div
         className="problem-lens-sheen"
         style={{ width: ringDiameter, height: ringDiameter }}
@@ -55,7 +98,7 @@ export function ScannerLens({ controller }: ScannerLensProps) {
         className="problem-scanner-frame"
         initial={{ opacity: 0, scale: 1.12 }}
         animate={{
-          opacity: entered ? 1 : 0,
+          opacity: visible ? 1 : 0,
           scale: lensHovered ? 1.05 : 1,
         }}
         transition={{ duration: 0.25, ease: "easeOut" }}

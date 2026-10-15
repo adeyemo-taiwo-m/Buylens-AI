@@ -5,8 +5,7 @@ import { Header } from "@/components/layout/Header";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { HowItWorksSection } from "@/components/home/HowItWorksSection";
-import { HeroMagnifier } from "@/components/home/HeroMagnifier";
-import { ProblemSection } from "@/components/home/ProblemSection";
+import { InteractiveLensExperience } from "@/components/home/InteractiveLensExperience";
 import {
   ArrowRight,
   ShieldAlert,
@@ -42,11 +41,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="relative z-10 mx-auto mt-10 w-full px-5 pb-0">
-          <HeroMagnifier />
-        </section>
-
-        <ProblemSection />
+        <InteractiveLensExperience />
 
         <HowItWorksSection />
 

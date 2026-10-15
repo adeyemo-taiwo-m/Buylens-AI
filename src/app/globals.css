@@ -2211,6 +2211,10 @@ body {
   will-change: transform;
 }
 
+.problem-scanner-lens-shared {
+  position: fixed;
+}
+
 .problem-scanner-lens:active {
   cursor: grabbing;
 }
@@ -2238,6 +2242,37 @@ body {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0) 55%);
   pointer-events: none;
   transform: translate(-50%, -50%);
+}
+
+.problem-lens-affordance {
+  position: absolute;
+  top: 72%;
+  left: 70%;
+  z-index: 8;
+  padding: 6px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 7px;
+  background: #2563eb;
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.24);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translate(0, 0);
+}
+
+.problem-lens-affordance::before {
+  position: absolute;
+  top: -5px;
+  left: 12px;
+  width: 9px;
+  height: 9px;
+  background: #2563eb;
+  content: "";
+  transform: rotate(45deg);
 }
 
 .problem-lens-debug-circle {

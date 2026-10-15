@@ -15,7 +15,7 @@ type Size = { width: number; height: number };
 const DEFAULT_SIZE: Size = { width: 800, height: 504 };
 const DEFAULT_X = 0.62;
 const DEFAULT_Y = 0.4;
-const RETURN_DELAY = 600;
+const HERO_RADIUS_RATIO = 0.17 * 0.8;
 const TOUR_HOLD = 2800;
 
 const clamp = (value: number, min: number, max: number) =>
@@ -31,7 +31,7 @@ export function useLensController(
   const [pinnedId, setPinnedId] = useState<HotspotId | null>(null);
   const reducedMotion = useReducedMotion() === true;
 
-  const radius = useMotionValue(DEFAULT_SIZE.width * 0.17);
+  const radius = useMotionValue(DEFAULT_SIZE.width * HERO_RADIUS_RATIO);
   const targetX = useMotionValue(DEFAULT_SIZE.width * DEFAULT_X);
   const targetY = useMotionValue(DEFAULT_SIZE.height * DEFAULT_Y);
   const springX = useSpring(targetX, { stiffness: 220, damping: 26, mass: 0.8 });
@@ -65,7 +65,6 @@ export function useLensController(
   const cardHovered = useRef(false);
   const dragging = useRef(false);
   const pinnedRef = useRef<HotspotId | null>(null);
-  const returnTimer = useRef<number | null>(null);
   const tourTimer = useRef<number | null>(null);
   const introTimers = useRef<number[]>([]);
   const introPlayed = useRef(false);
@@ -114,12 +113,6 @@ export function useLensController(
     setTarget(cardSize.width * DEFAULT_X, cardSize.height * DEFAULT_Y);
     setActiveId(null);
   }, [cardSize.height, cardSize.width, setTarget]);
-
-  const scheduleDefault = useCallback(() => {
-    clearTimer(returnTimer);
-    if (pinnedRef.current || cardHovered.current) return;
-    returnTimer.current = window.setTimeout(setDefault, RETURN_DELAY);
-  }, [setDefault]);
 
   const pauseTour = useCallback((duration: number) => {
     clearTimer(tourTimer);
@@ -177,7 +170,7 @@ export function useLensController(
       const rect = card.getBoundingClientRect();
       const next = { width: rect.width, height: rect.height };
       setCardSize(next);
-      radius.set(rect.width * 0.17);
+      radius.set(rect.width * HERO_RADIUS_RATIO);
     };
     const measureRow = () => {
       const row = rowRef.current;
@@ -221,7 +214,6 @@ export function useLensController(
 
   useEffect(() => () => {
     clearIntro();
-    clearTimer(returnTimer);
     clearTimer(tourTimer);
   }, [clearIntro]);
 
@@ -239,7 +231,6 @@ export function useLensController(
     pinnedRef.current = null;
     setPinnedId(null);
     setActiveId(null);
-    clearTimer(returnTimer);
   }, [cancelInteractionAnimation]);
 
   const onCardPointerMove = useCallback((event: PointerEvent<HTMLDivElement>) => {
@@ -251,8 +242,7 @@ export function useLensController(
   const onCardPointerLeave = useCallback((event: PointerEvent<HTMLDivElement>) => {
     if (event.pointerType === "touch") return;
     cardHovered.current = false;
-    scheduleDefault();
-  }, [scheduleDefault]);
+  }, []);
 
   const onLensPointerDown = useCallback((event: PointerEvent<HTMLDivElement>) => {
     cancelInteractionAnimation();
@@ -263,7 +253,6 @@ export function useLensController(
   }, [cancelInteractionAnimation, pauseTour]);
 
   const onLensPointerMove = useCallback((event: PointerEvent<HTMLDivElement>) => {
-    if (!dragging.current) return;
     const point = cardPoint(event);
     if (point) setTarget(point.x, point.y);
     event.stopPropagation();
@@ -279,7 +268,6 @@ export function useLensController(
 
   const focusChip = useCallback((id: HotspotId) => {
     cancelInteractionAnimation();
-    clearTimer(returnTimer);
     setActiveId(id);
     setTargetFor(id);
   }, [cancelInteractionAnimation, setTargetFor]);
@@ -288,9 +276,9 @@ export function useLensController(
     if (!coarsePointer.current) focusChip(id);
   }, [focusChip]);
 
-  const onChipLeave = useCallback(() => scheduleDefault(), [scheduleDefault]);
+  const onChipLeave = useCallback(() => {}, []);
   const onChipFocus = useCallback((id: HotspotId) => focusChip(id), [focusChip]);
-  const onChipBlur = useCallback(() => scheduleDefault(), [scheduleDefault]);
+  const onChipBlur = useCallback(() => {}, []);
 
   const onChipClick = useCallback((id: HotspotId) => {
     cancelInteractionAnimation();
