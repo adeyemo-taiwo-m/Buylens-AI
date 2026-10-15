@@ -971,6 +971,7 @@ body {
   display: flex;
   height: 38px;
   align-items: center;
+  gap: 14px;
   border-bottom: 1px solid #e8edf5;
   background: #f8fafd;
 }
@@ -989,18 +990,21 @@ body {
 }
 
 .how-window-address {
-  display: flex;
-  width: 188px;
+  display: inline-flex;
+  width: fit-content;
+  max-width: calc(100% - 100px);
+  flex: 0 0 auto;
   height: 21px;
   align-items: center;
   gap: 6px;
-  margin-left: 18px;
-  padding: 0 9px;
+  margin-left: 0;
+  padding: 0 12px 0 10px;
   border: 1px solid #dfe7f3;
   border-radius: 999px;
   background: #fff;
   color: #5b6b8c;
   font-size: 11px;
+  line-height: 1;
   white-space: nowrap;
 }
 
@@ -1011,6 +1015,17 @@ body {
   flex: 0 0 auto;
   color: #0095ef;
   stroke-width: 2.5;
+}
+
+.how-window-address svg {
+  flex: 0 0 14px;
+}
+
+.how-window-address span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .how-window-body {

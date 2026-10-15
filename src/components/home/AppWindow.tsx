@@ -34,7 +34,7 @@ function WindowChrome() {
       </div>
       <div className="how-window-address">
         <Search aria-hidden="true" />
-        <span>BuyLens AI&nbsp; / &nbsp;Analyze a purchase</span>
+        <span>BuyLens AI / Analyze a purchase</span>
       </div>
     </div>
   );
