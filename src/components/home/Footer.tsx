@@ -202,12 +202,14 @@ export function SocialLinks({
 export function Footer() {
   const reduced = useReducedMotion() === true;
   const footerRef = useRef<HTMLElement>(null);
+  const footerArtRef = useRef<HTMLDivElement>(null);
+  const footerContentRef = useRef<HTMLDivElement>(null);
   const inView = useInView(footerRef, { amount: 0.25, once: true });
   const visible = inView || reduced;
 
   return (
     <footer ref={footerRef} aria-label="Site footer" className="footer-shell">
-      <div className="footer-art-layer" aria-hidden="true">
+      <div ref={footerArtRef} className="footer-art-layer" aria-hidden="true">
         <motion.div
           initial={reduced ? false : { opacity: 0 }}
           animate={{ opacity: visible ? 1 : 0 }}
@@ -224,10 +226,15 @@ export function Footer() {
             className="footer-art-image"
           />
         </motion.div>
-        <FooterLens interactionRootRef={footerRef} />
       </div>
 
-      <div className="footer-content">
+      <FooterLens
+        interactionRootRef={footerRef}
+        artSourceRef={footerArtRef}
+        contentSourceRef={footerContentRef}
+      />
+
+      <div ref={footerContentRef} className="footer-content">
         <FooterBrand reduced={reduced} visible={visible} />
         <div className="footer-groups">
           {FOOTER_LINK_GROUPS.map((group, index) => (

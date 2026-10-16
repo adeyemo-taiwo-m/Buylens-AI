@@ -694,9 +694,17 @@ body {
   inset: 0;
   z-index: 2;
   overflow: visible;
-  pointer-events: auto;
+  pointer-events: none;
   touch-action: pan-y;
   user-select: none;
+}
+
+.footer-lens-portal {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: visible;
+  pointer-events: none;
 }
 
 .footer-lens {
@@ -713,6 +721,16 @@ body {
 
 .footer-lens:active {
   cursor: grabbing;
+}
+
+.footer-lens-hit-target {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.footer-lens-visual {
+  pointer-events: none;
+  cursor: default;
 }
 
 .footer-lens-float {
@@ -740,6 +758,18 @@ body {
   max-width: none;
   pointer-events: none;
   user-select: none;
+}
+
+.footer-lens-content-copy {
+  position: absolute;
+  z-index: 1;
+  overflow: visible;
+  transform-origin: 0 0;
+  pointer-events: none;
+}
+
+.footer-lens-content-copy * {
+  pointer-events: none !important;
 }
 
 .footer-lens-band {
