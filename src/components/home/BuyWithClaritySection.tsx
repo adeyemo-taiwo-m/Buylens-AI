@@ -5,9 +5,10 @@ import { motion, useInView, useReducedMotion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { useRef, type CSSProperties } from "react";
 import { SectionBadge } from "@/components/ui/SectionBadge";
+import { MOTION_EASE } from "@/lib/motion";
 import { CTA_DATA } from "./cta.data";
 
-const EASE = [0.22, 1, 0.36, 1] as const;
+const EASE = MOTION_EASE;
 const ANIMATE_BG = true;
 const ANIMATE_DOTS = true;
 const DOT_SIZE = 1.2;

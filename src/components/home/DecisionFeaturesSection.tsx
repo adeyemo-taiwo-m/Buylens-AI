@@ -7,16 +7,17 @@ import {
   motion,
   useInView,
   useReducedMotion,
-  type Variants,
 } from "framer-motion";
 import { ArrowRight, Check, ChevronDown, ChevronUp, Headphones, Minus, Search } from "lucide-react";
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type PointerEvent, type ReactNode, type RefObject } from "react";
 import { SectionBadge } from "@/components/ui/SectionBadge";
+import { Reveal } from "@/components/ui/Reveal";
+import { MOTION_EASE, REVEAL_VARIANTS } from "@/lib/motion";
 import { PROBLEM_ASSETS } from "./problemData";
 import { DECISION_FEATURES, REPORT_ACCORDION_ROWS } from "./decisionFeaturesData";
 
-const EASE = [0.22, 1, 0.36, 1] as const;
-const revealVariants: Variants = { hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0 } };
+const EASE = MOTION_EASE;
+const revealVariants = REVEAL_VARIANTS;
 
 function useCardSpotlight() {
   const frame = useRef<number | null>(null);
@@ -51,21 +52,17 @@ function useTouchReveal(cardRef: RefObject<HTMLElement | null>) {
 }
 
 function DecisionCard({ children, className = "", delay = 0, cardRef }: { children: ReactNode; className?: string; delay?: number; cardRef?: RefObject<HTMLElement | null> }) {
-  const reduced = useReducedMotion() === true;
   const onPointerMove = useCardSpotlight();
   return (
-    <motion.article
+    <Reveal
+      as="article"
       ref={cardRef}
       className={`decision-card ${className}`}
-      initial={reduced ? false : "hidden"}
-      whileInView={reduced ? undefined : "visible"}
-      viewport={{ once: true, margin: "-15% 0px" }}
-      variants={revealVariants}
-      transition={{ duration: reduced ? 0 : 0.6, delay, ease: EASE }}
+      delay={delay}
       onPointerMove={onPointerMove}
     >
       <div className="decision-card-content">{children}</div>
-    </motion.article>
+    </Reveal>
   );
 }
 

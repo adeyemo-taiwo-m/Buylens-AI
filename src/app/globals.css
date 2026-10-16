@@ -356,6 +356,19 @@ body {
   animation-delay: 400ms;
 }
 
+.motion-reveal,
+.motion-reveal-group {
+  will-change: opacity, transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-reveal,
+  .motion-reveal-group {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
 /* Accessible Reduced Motion Support */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -584,6 +597,19 @@ body {
 }
 .buyhero-title {
   letter-spacing: -0.035em;
+}
+.buyhero-secondary-cta:focus-visible,
+.buyhero-primary-cta:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+.buyhero-primary-cta:focus-visible {
+  outline-color: #2563eb;
+  box-shadow: 0 0 0 2px #fff, 0 8px 22px -8px rgba(47, 111, 235, 0.55);
+}
+@media (hover: hover) and (pointer: fine) {
+  .buyhero-secondary-cta:hover { background: #cfe0fb; }
+  .buyhero-primary-cta:hover { background: #2563eb; transform: translateY(-2px); }
 }
 .hero-visual {
   position: relative;

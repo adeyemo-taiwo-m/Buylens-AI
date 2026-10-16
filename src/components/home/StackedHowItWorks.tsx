@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { AppWindow, type AppWindowKind } from "./AppWindow";
 import { HOW_STEPS } from "./howItWorksData";
 import { StepTracker } from "./StepTracker";
+import { Reveal, RevealGroup } from "@/components/ui/Reveal";
 
 const kindFor = (index: number): AppWindowKind => index === 0 ? "product" : index === 1 ? "priorities" : "report";
 
@@ -54,28 +55,34 @@ export function StackedHowItWorks({ reduced }: { reduced: boolean }) {
   return (
     <div ref={sectionRef} className="how-stacked-inner">
       <div className="how-copy how-stacked-copy">
-        <div className="how-badge">HOW IT WORKS</div>
-        <h2 className="how-title"><span>From Product Research</span><span>To A Clearer Decision.</span></h2>
-        <p className="how-subtitle">Three simple steps to help you understand a product, evaluate the trade-offs and decide what makes sense for you.</p>
+        <RevealGroup trigger="view">
+          <Reveal grouped className="how-badge">HOW IT WORKS</Reveal>
+          <Reveal as="h2" grouped className="how-title"><span>From Product Research</span><span>To A Clearer Decision.</span></Reveal>
+          <Reveal as="p" grouped className="how-subtitle">Three simple steps to help you understand a product, evaluate the trade-offs and decide what makes sense for you.</Reveal>
+        </RevealGroup>
       </div>
-      <StepTracker
-        activeStep={activeStep}
-        progress={scrollYProgress}
-        onSelect={scrollToStep}
-        className="how-stacked-tracker"
-      />
+      <Reveal trigger="view" className="how-stacked-tracker-reveal">
+        <StepTracker
+          activeStep={activeStep}
+          progress={scrollYProgress}
+          onSelect={scrollToStep}
+          className="how-stacked-tracker"
+        />
+      </Reveal>
       <div className="how-stacked-steps">
         {HOW_STEPS.map((step, index) => {
           const active = reduced || index <= activeStep;
           return (
-            <article
+            <Reveal
+              as="article"
               ref={(node) => { stepRefs.current[index] = node; }}
               className={`how-stacked-step${index === activeStep ? " is-active" : ""}`}
               data-how-stack-step={index}
+              trigger="view"
               key={step.id}
             >
               <StackedPreview kind={kindFor(index)} active={active} reduced={reduced} />
-            </article>
+            </Reveal>
           );
         })}
       </div>

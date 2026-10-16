@@ -7,6 +7,7 @@ import { ProblemSection } from "./ProblemSection";
 import { ScannerLens, SCANNER_RING_RADIUS_RATIO } from "./ScannerLens";
 import { useLensController } from "./useLensController";
 import { useProblemLensController } from "./useProblemLensController";
+import { Reveal } from "@/components/ui/Reveal";
 
 type ActiveSection = "hero" | "problem";
 type Anchor = { left: number; top: number };
@@ -122,9 +123,9 @@ export function InteractiveLensExperience() {
 
   return (
     <>
-      <section className="relative z-10 mx-auto mt-10 w-full px-5 pb-0">
+      <Reveal as="section" trigger="load" delay={0.36} className="relative z-10 mx-auto mt-10 w-full px-5 pb-0">
         <HeroMagnifier cardRef={cardRef} rowRef={rowRef} controller={heroController} />
-      </section>
+      </Reveal>
 
       <ProblemSection stageRef={stageRef} controller={problemController} />
 

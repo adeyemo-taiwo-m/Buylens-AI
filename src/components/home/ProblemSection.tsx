@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import type { RefObject } from "react";
+import { Reveal, RevealGroup } from "@/components/ui/Reveal";
+import { MOTION_EASE } from "@/lib/motion";
 import { PROBLEM_ASSETS } from "./problemData";
 import { useProblemLensController } from "./useProblemLensController";
 import { ProblemBoardConcernList } from "./ProblemBoard";
@@ -29,7 +31,7 @@ function ProblemLabel({
       initial={reduced ? false : { opacity: 0, scale: 0.92 }}
       whileInView={reduced ? undefined : { opacity: 1, scale: 1 }}
       viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.45, delay, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.45, delay, ease: MOTION_EASE }}
       animate={reduced ? undefined : { y: [0, -6, 0] }}
     >
       <Image
@@ -63,35 +65,18 @@ export function ProblemSection({ stageRef, controller }: ProblemSectionProps) {
       className="problem-section"
     >
       <div className="problem-copy">
-        <motion.div
-          className="problem-badge"
-          initial={reduced ? false : { opacity: 0, y: 20 }}
-          whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-        >
-          THE PROBLEM
-        </motion.div>
-        <motion.h2
-          id="problem-title"
-          className="problem-title"
-          initial={reduced ? false : { opacity: 0, y: 20 }}
-          whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.5, delay: 0.08, ease: "easeOut" }}
-        >
-          <span>A Good Looking Product Isn’t</span>
-          <span>Always A Good Purchase.</span>
-        </motion.h2>
-        <motion.p
-          className="problem-subtitle"
-          initial={reduced ? false : { opacity: 0, y: 20 }}
-          whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.5, delay: 0.16, ease: "easeOut" }}
-        >
-          You&apos;ve found something you like. But is it actually worth your money?
-        </motion.p>
+        <RevealGroup trigger="view">
+          <Reveal grouped className="problem-badge">
+            THE PROBLEM
+          </Reveal>
+          <Reveal as="h2" grouped id="problem-title" className="problem-title">
+            <span>A Good Looking Product Isn&apos;t</span>
+            <span>Always A Good Purchase.</span>
+          </Reveal>
+          <Reveal as="p" grouped className="problem-subtitle">
+            You&apos;ve found something you like. But is it actually worth your money?
+          </Reveal>
+        </RevealGroup>
       </div>
 
       <div
@@ -117,7 +102,7 @@ export function ProblemSection({ stageRef, controller }: ProblemSectionProps) {
           initial={reduced ? false : { opacity: 0, y: 30 }}
           whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.15 }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.7, ease: MOTION_EASE }}
           animate={reduced ? undefined : { rotate: [0, 1.5, 0, -1.5, 0] }}
         >
           <motion.div
@@ -151,7 +136,6 @@ export function ProblemSection({ stageRef, controller }: ProblemSectionProps) {
           controller={controller}
           delay={0.3}
         />
-
       </div>
 
       <ProblemBoardConcernList />

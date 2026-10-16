@@ -6,10 +6,11 @@ import { motion, useInView, useReducedMotion } from "framer-motion";
 import { ArrowRight, Check, Copy, Search } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { SectionBadge } from "@/components/ui/SectionBadge";
+import { MOTION_EASE } from "@/lib/motion";
 import { ANALYSIS_PREVIEW_DATA, PLAY_ONCE, type AnalysisTooltipItem } from "./analysisPreviewData";
 
 const PRODUCT_IMAGE = "/analysis/solar.png";
-const EASE = [0.22, 1, 0.36, 1] as const;
+const EASE = MOTION_EASE;
 const SCORE = ANALYSIS_PREVIEW_DATA.product.score;
 const PETAL_COUNT = 9;
 const GAUGE_ANGLES = [-80, -60, -40, -20, 0, 20, 40, 60, 80] as const;

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Geist_Mono } from "next/font/google";
+import { MotionProvider } from "@/components/providers/MotionProvider";
 import { ToastProvider } from "@/components/ui/Toast";
 import "./globals.css";
 
@@ -31,7 +32,16 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${geistMono.variable} min-h-full flex flex-col font-sans bg-white text-[#101828] selection:bg-[#0B1220] selection:text-[#B8F34A]`}
       >
-        <ToastProvider>{children}</ToastProvider>
+        <MotionProvider>
+          <ToastProvider>{children}</ToastProvider>
+        </MotionProvider>
+        <noscript>
+          <style
+            dangerouslySetInnerHTML={{
+              __html: ".motion-reveal,.motion-reveal-group{opacity:1!important;transform:none!important}",
+            }}
+          />
+        </noscript>
       </body>
     </html>
   );

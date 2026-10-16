@@ -4,9 +4,10 @@ import { AnimatePresence, motion, useInView, useReducedMotion } from "framer-mot
 import { Minus, Plus } from "lucide-react";
 import { memo, useCallback, useMemo, useRef, useState, type KeyboardEvent, type Ref } from "react";
 import { SectionBadge } from "@/components/ui/SectionBadge";
+import { MOTION_EASE } from "@/lib/motion";
 import { DEFAULT_FAQ_ID, FAQ_ITEMS, type FaqEntry } from "./faq.data";
 
-const EASE = [0.22, 1, 0.36, 1] as const;
+const EASE = MOTION_EASE;
 
 function FaqIcon({ open, reduced }: { open: boolean; reduced: boolean }) {
   return (

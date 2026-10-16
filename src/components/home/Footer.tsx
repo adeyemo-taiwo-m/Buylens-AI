@@ -11,8 +11,9 @@ import {
   type SocialLink,
 } from "./footer.data";
 import { FooterLens } from "./FooterLens";
+import { MOTION_EASE } from "@/lib/motion";
 
-const EASE = [0.22, 1, 0.36, 1] as const;
+const EASE = MOTION_EASE;
 
 function SocialIcon({ platform }: Pick<SocialLink, "platform">) {
   if (platform === "facebook") {

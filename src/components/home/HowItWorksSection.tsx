@@ -6,6 +6,7 @@ import { AppWindow, type AppWindowKind } from "./AppWindow";
 import { HOW_BANDS, HOW_PIN_DISTANCE, HOW_STEPS } from "./howItWorksData";
 import { StackedHowItWorks } from "./StackedHowItWorks";
 import { StepTracker } from "./StepTracker";
+import { Reveal, RevealGroup } from "@/components/ui/Reveal";
 
 const WINDOW_KINDS: AppWindowKind[] = ['product', 'priorities', 'report'];
 
@@ -31,10 +32,12 @@ function WindowStage({ activeStep, reduced }: { activeStep: number; reduced: boo
 
 function HowCopy({ activeStep, progress, onSelect }: { activeStep: number; progress: ReturnType<typeof useScroll>['scrollYProgress']; onSelect: (index: number) => void }) {
   return <div className="how-copy how-pinned-copy">
-    <div className="how-badge">HOW IT WORKS</div>
-    <h2 className="how-title"><span>From Product Research</span><span>To A Clearer Decision.</span></h2>
-    <p className="how-subtitle">Three simple steps to help you understand a product, evaluate the trade-offs and decide what makes sense for you.</p>
-    <StepTracker activeStep={activeStep} progress={progress} onSelect={onSelect} />
+    <RevealGroup trigger="view">
+      <Reveal grouped className="how-badge">HOW IT WORKS</Reveal>
+      <Reveal as="h2" grouped className="how-title"><span>From Product Research</span><span>To A Clearer Decision.</span></Reveal>
+      <Reveal as="p" grouped className="how-subtitle">Three simple steps to help you understand a product, evaluate the trade-offs and decide what makes sense for you.</Reveal>
+      <Reveal grouped><StepTracker activeStep={activeStep} progress={progress} onSelect={onSelect} /></Reveal>
+    </RevealGroup>
     <div className="how-live-region" aria-live="polite">Step {activeStep + 1} of 3: {HOW_STEPS[activeStep].title}</div>
   </div>;
 }
