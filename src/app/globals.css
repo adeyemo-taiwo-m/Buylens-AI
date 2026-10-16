@@ -11,6 +11,7 @@
   --faq-icon-soft: #eef4ff;
   --cta-soft: #e9effc;
   --cta-soft-border: #d5e3fa;
+  --footer-link: #6b7280;
   --blue-600: #2563eb;
   --blue-500: #2f6feb;
   --blue-100: #ddeaff;
@@ -663,6 +664,259 @@ body {
     min-height: 66px;
     padding-inline: 10px;
   }
+}
+
+.footer-shell {
+  position: relative;
+  min-height: 640px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.footer-art-layer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 240px;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.footer-art-image {
+  object-fit: cover;
+  object-position: center bottom;
+}
+
+.footer-content {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  max-width: 1128px;
+  min-height: 0;
+  margin: 0 auto;
+  padding: 40px 20px 56px;
+  justify-content: space-between;
+}
+
+.footer-brand {
+  min-width: 0;
+}
+
+.footer-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.footer-logo-icon {
+  width: 35px;
+  height: 34px;
+  flex: 0 0 auto;
+  border-radius: 8px;
+  object-fit: contain;
+}
+
+.footer-wordmark {
+  display: inline-flex;
+  align-items: baseline;
+  color: #333;
+  font-size: 35px;
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.footer-wordmark-buy,
+.footer-wordmark-ai {
+  color: #333;
+}
+
+.footer-wordmark-lens {
+  color: #2563eb;
+}
+
+.footer-wordmark-ai {
+  margin-left: 6px;
+}
+
+.footer-tagline {
+  margin: 24px 0 0;
+  color: #6b7280;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.footer-heading {
+  color: #0f1b33;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 16px;
+}
+
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  list-style: none;
+  margin: 22px 0 0;
+  padding: 0;
+}
+
+.footer-links li {
+  height: 16px;
+}
+
+.footer-link {
+  display: flex;
+  height: 16px;
+  align-items: center;
+  color: #6b7280;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 16px;
+  text-decoration: none;
+  transition: color 150ms ease;
+}
+
+.footer-link:hover {
+  color: var(--blue);
+}
+
+.footer-focus:focus-visible {
+  border-radius: 4px;
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+.footer-groups {
+  display: grid;
+  grid-template-columns: repeat(2, 140px);
+  column-gap: 48px;
+  row-gap: 36px;
+  margin-top: 40px;
+  flex-shrink: 0;
+}
+
+.footer-groups > nav {
+  min-width: 0;
+}
+
+.footer-socials {
+  grid-column: 1 / -1;
+}
+
+.footer-social-list {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  list-style: none;
+  margin: 18px 0 0;
+  padding: 0;
+}
+
+.footer-social-link {
+  display: inline-flex;
+  width: 20px;
+  height: 20px;
+  align-items: center;
+  justify-content: center;
+  color: var(--blue);
+  transition: color 180ms ease, transform 180ms ease;
+}
+
+.footer-social-link svg {
+  width: 20px;
+  height: 20px;
+}
+
+.footer-social-link:hover {
+  color: #1d4ed8;
+  transform: translateY(-2px) scale(1.08);
+}
+
+.footer-social-link:active {
+  transform: scale(0.96);
+}
+
+.footer-social-link.footer-motion-reduced:hover,
+.footer-social-link.footer-motion-reduced:active {
+  transform: none;
+}
+
+.footer-art-layer + .footer-content {
+  scroll-margin-top: 80px;
+}
+
+@media (min-width: 960px) {
+  .footer-shell {
+    aspect-ratio: 2576 / 946;
+    min-height: 0;
+  }
+
+  .footer-art-layer {
+    inset: 0;
+    height: auto;
+  }
+
+  .footer-art-image {
+    object-position: center bottom;
+  }
+
+  .footer-content {
+    display: flex;
+    min-height: 0;
+    height: 100%;
+    padding: clamp(56px, 5.5556vw, 80px) 0 0;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 0;
+  }
+
+  .footer-groups {
+    display: flex;
+    margin-top: 0;
+    column-gap: 0;
+    row-gap: 0;
+  }
+
+  .footer-brand {
+    margin-right: 80px;
+    flex: 0 1 auto;
+  }
+
+  .footer-tagline {
+    white-space: nowrap;
+  }
+
+  .footer-groups > nav {
+    width: 140px;
+    flex: 0 0 140px;
+  }
+
+  .footer-socials {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 359px) {
+  .footer-groups {
+    grid-template-columns: 140px;
+  }
+
+  .footer-socials {
+    grid-column: auto;
+  }
+}
+
+#how-it-works,
+#see-the-analysis,
+#faq {
+  scroll-margin-top: 80px;
 }
 
 /* ==========================================================================

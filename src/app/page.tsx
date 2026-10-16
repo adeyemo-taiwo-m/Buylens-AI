@@ -8,6 +8,7 @@ import { DecisionFeaturesSection } from "@/components/home/DecisionFeaturesSecti
 import { AnalysisPreviewSection } from "@/components/home/AnalysisPreviewSection";
 import { FaqSection } from "@/components/home/FaqSection";
 import { BuyWithClaritySection } from "@/components/home/BuyWithClaritySection";
+import { Footer } from "@/components/home/Footer";
 import {
   ArrowRight,
 } from "lucide-react";
@@ -50,29 +51,7 @@ export default function Home() {
         <BuyWithClaritySection />
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-[#E4E7EC] bg-white py-8">
-        <div className="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#667085]">
-          <p>Â© {new Date().getFullYear()} BuyLens AI. Know what you&apos;re buying before you pay.</p>
-          <div className="flex items-center gap-6">
-            <Link href="/app" className="hover:text-[#101828] transition-colors">
-              App Home
-            </Link>
-            <Link href="/app/analyze" className="hover:text-[#101828] transition-colors">
-              Analyze
-            </Link>
-            <Link href="/app/history" className="hover:text-[#101828] transition-colors">
-              History
-            </Link>
-            <Link href="/compare" className="hover:text-[#101828] transition-colors">
-              Compare
-            </Link>
-            <Link href="/app/report/demo" className="hover:text-[#101828] transition-colors">
-              Sample Report
-            </Link>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

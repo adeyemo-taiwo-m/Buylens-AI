@@ -2,8 +2,8 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { Button } from "@/components/ui/Button";
+import { BrandLogo } from "@/components/ui/BrandLogo";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -34,14 +34,7 @@ export function TopNavigation({ className }: TopNavigationProps) {
           href="/"
           className="flex items-center shrink-0 hover:opacity-90 transition-opacity"
         >
-          <Image
-            src="/logo.png"
-            alt="BuyLens AI"
-            width={124}
-            height={28}
-            className="h-6 sm:h-7 w-auto object-contain"
-            priority
-          />
+          <BrandLogo size="header" priority />
         </Link>
 
         {/* Center: Navigation Links (Desktop/Tablet) */}
