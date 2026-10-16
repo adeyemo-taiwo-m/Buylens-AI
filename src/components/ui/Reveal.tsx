@@ -1,9 +1,12 @@
 "use client";
 
 import {
+  Children,
+  cloneElement,
   type ElementType,
   forwardRef,
   type HTMLAttributes,
+  isValidElement,
   type ReactNode,
 } from "react";
 import { m, useReducedMotion, type HTMLMotionProps } from "framer-motion";
@@ -28,15 +31,6 @@ type RevealGroupProps = Omit<HTMLAttributes<HTMLDivElement>, "children"> & {
   children: ReactNode;
   delay?: number;
   trigger?: "load" | "view";
-};
-
-const groupVariants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: MOTION_TOKENS.stagger,
-    },
-  },
 };
 
 const motionTag = (tag: RevealTag) => {
@@ -102,30 +96,19 @@ export function RevealGroup({
   trigger = "view",
   ...rest
 }: RevealGroupProps) {
-  const reduced = useReducedMotion() === true;
-  const motionProps = reduced
-    ? { initial: false, animate: "visible" as const }
-    : trigger === "load"
-      ? {
-          initial: "hidden" as const,
-          animate: "visible" as const,
-          transition: { delay, ease: MOTION_EASE },
-        }
-      : {
-          initial: "hidden" as const,
-          whileInView: "visible" as const,
-          viewport: REVEAL_VIEWPORT,
-          transition: { delay, ease: MOTION_EASE },
-        };
-
   return (
-    <m.div
+    <div
       {...(rest as Record<string, unknown>)}
-      {...motionProps}
-      variants={groupVariants}
       className={`motion-reveal-group${className ? ` ${className}` : ""}`}
     >
-      {children}
-    </m.div>
+      {Children.map(children, (child, index) => {
+        if (!isValidElement<RevealProps>(child)) return child;
+        return cloneElement(child, {
+          grouped: false,
+          trigger,
+          delay: delay + index * MOTION_TOKENS.stagger,
+        });
+      })}
+    </div>
   );
 }

@@ -288,6 +288,30 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.bl-button:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+.bl-button:disabled {
+  cursor: not-allowed;
+}
+
+.bl-button:not(:disabled):active {
+  transform: scale(0.98);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .bl-button[data-button-state="default"]:not(:disabled):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px -14px rgba(15, 27, 51, 0.45);
+  }
+
+  .bl-button[data-button-state="default"][data-button-variant="primary"]:not(:disabled):hover {
+    box-shadow: 0 12px 28px -14px rgba(37, 99, 235, 0.7);
+  }
+}
+
 /* ==========================================================================
    Motion System & Keyframe Animations (Style Guide Â§12)
    ========================================================================== */

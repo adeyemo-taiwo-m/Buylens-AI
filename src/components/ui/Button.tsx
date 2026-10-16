@@ -189,11 +189,14 @@ export function Button({
       type={type}
       disabled={isInactive}
       className={cn(
-        "inline-flex items-center justify-center rounded-full transition-all duration-150 select-none cursor-pointer border-0",
+        "bl-button inline-flex items-center justify-center whitespace-nowrap rounded-full select-none cursor-pointer border-0 transition-[background-color,border-color,color,box-shadow,transform,opacity] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)]",
         sizeStyles,
         variantStyles,
         className
       )}
+      data-button-variant={resolvedType}
+      data-button-size={normalizedSize}
+      data-button-state={normalizedState}
       {...props}
     >
       {loading ? (
