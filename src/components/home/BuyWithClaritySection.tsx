@@ -124,7 +124,7 @@ export function BuyWithClaritySection() {
             initial={reduced ? false : hidden}
             animate={contentAnimation}
             transition={{ duration: reduced ? 0 : 0.5, delay: reduced ? 0 : 0.36, ease: EASE }}
-            className="mt-6 max-[767px]:mt-5"
+            className="mt-6 w-full max-w-[432px] max-[767px]:mt-5"
           >
             <Link
               href={CTA_DATA.href}

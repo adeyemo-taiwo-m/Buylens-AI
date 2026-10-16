@@ -10,6 +10,7 @@ import {
   type FooterLinkGroup as FooterLinkGroupData,
   type SocialLink,
 } from "./footer.data";
+import { FooterLens } from "./FooterLens";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -223,6 +224,7 @@ export function Footer() {
             className="footer-art-image"
           />
         </motion.div>
+        <FooterLens />
       </div>
 
       <div className="footer-content">

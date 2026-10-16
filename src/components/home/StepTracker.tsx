@@ -8,6 +8,7 @@ type StepTrackerProps = {
   activeStep: number;
   progress: MotionValue<number>;
   onSelect: (index: number) => void;
+  className?: string;
 };
 
 const HEAD_POINTS = [41, 121, 201];
@@ -18,13 +19,13 @@ const rowTopsFor = (activeStep: number) => {
   return [0, 80, 160];
 };
 
-export function StepTracker({ activeStep, progress, onSelect }: StepTrackerProps) {
+export function StepTracker({ activeStep, progress, onSelect, className }: StepTrackerProps) {
   const headY = useTransform(progress, [0, HOW_BANDS[0], HOW_BANDS[1], HOW_BANDS[2], 1], [15, HEAD_POINTS[0], HEAD_POINTS[1], HEAD_POINTS[2], HEAD_POINTS[2]]);
   const fillHeight = useTransform(headY, (value) => Math.max(0, value - 15));
   const rowTops = rowTopsFor(activeStep);
 
   return (
-    <div className="how-step-tracker" aria-label="How it works steps">
+    <div className={`how-step-tracker${className ? ` ${className}` : ''}`} aria-label="How it works steps">
       <motion.div className="how-step-line-fill" style={{ height: fillHeight }} />
       <div className="how-step-line-dashed" aria-hidden="true" />
       <motion.div className="how-step-line-head" style={{ y: headY }} aria-hidden="true" />

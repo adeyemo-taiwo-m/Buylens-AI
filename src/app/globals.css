@@ -689,6 +689,134 @@ body {
   object-position: center bottom;
 }
 
+.footer-lens-interaction {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: visible;
+  pointer-events: auto;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.footer-lens {
+  position: absolute;
+  z-index: 3;
+  overflow: visible;
+  border-radius: 50%;
+  cursor: grab;
+  pointer-events: auto;
+  touch-action: none;
+  transform-origin: center;
+  will-change: transform;
+}
+
+.footer-lens:active {
+  cursor: grabbing;
+}
+
+.footer-lens-float {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.footer-lens-glass {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  border: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.24), transparent 62%);
+  pointer-events: auto;
+  will-change: box-shadow;
+}
+
+.footer-lens-magnified-art {
+  position: absolute;
+  display: block;
+  max-width: none;
+  pointer-events: none;
+  user-select: none;
+}
+
+.footer-lens-band {
+  position: absolute;
+  top: 0;
+  left: -10%;
+  width: 120%;
+  height: 28%;
+  border-radius: 50% 50% 42% 42%;
+  background: rgba(255, 255, 255, 0.28);
+  pointer-events: none;
+}
+
+.footer-lens-sweep {
+  position: absolute;
+  top: -20%;
+  left: -35%;
+  width: 30%;
+  height: 140%;
+  background: linear-gradient(110deg, transparent 0%, rgba(255, 255, 255, 0.35) 48%, transparent 100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.footer-lens-specular {
+  position: absolute;
+  inset: 7%;
+  border-top: 5px solid rgba(255, 255, 255, 0.86);
+  border-left: 3px solid rgba(255, 255, 255, 0.45);
+  border-radius: 50%;
+  transform: rotate(-32deg);
+  pointer-events: none;
+}
+
+.footer-lens-ring-layer,
+.footer-lens-handle-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 139%;
+  height: 139%;
+  max-width: none;
+  pointer-events: auto;
+  transform-origin: center;
+}
+
+.footer-lens-ring-layer {
+  z-index: 3;
+  clip-path: circle(37% at 36% 36%);
+}
+
+.footer-lens-handle-layer {
+  z-index: 4;
+  clip-path: polygon(59% 54%, 68% 51%, 100% 91%, 91% 100%);
+  cursor: grab;
+  will-change: transform;
+}
+
+.footer-lens-ring-layer img,
+.footer-lens-handle-layer img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: contain;
+  pointer-events: auto;
+  user-select: none;
+}
+
+.footer-lens-handle-layer:active {
+  cursor: grabbing;
+}
+
+.footer-lens-handle-layer img {
+  pointer-events: auto;
+}
+
 .footer-content {
   position: relative;
   z-index: 1;
@@ -699,6 +827,11 @@ body {
   margin: 0 auto;
   padding: 40px 20px 56px;
   justify-content: space-between;
+  pointer-events: none;
+}
+
+.footer-content .footer-focus {
+  pointer-events: auto;
 }
 
 .footer-brand {
@@ -753,32 +886,32 @@ body {
 
 .footer-heading {
   color: #0f1b33;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 500;
-  line-height: 16px;
+  line-height: 20px;
 }
 
 .footer-links {
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 6px;
   list-style: none;
   margin: 22px 0 0;
   padding: 0;
 }
 
 .footer-links li {
-  height: 16px;
+  height: 20px;
 }
 
 .footer-link {
   display: flex;
-  height: 16px;
+  height: 20px;
   align-items: center;
   color: #6b7280;
-  font-size: 11px;
+  font-size: 15px;
   font-weight: 400;
-  line-height: 16px;
+  line-height: 20px;
   text-decoration: none;
   transition: color 150ms ease;
 }
@@ -795,9 +928,11 @@ body {
 
 .footer-groups {
   display: grid;
-  grid-template-columns: repeat(2, 140px);
-  column-gap: 48px;
-  row-gap: 36px;
+  width: 100%;
+  max-width: 420px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: 16px;
+  row-gap: 0;
   margin-top: 40px;
   flex-shrink: 0;
 }
@@ -807,7 +942,7 @@ body {
 }
 
 .footer-socials {
-  grid-column: 1 / -1;
+  grid-column: auto;
 }
 
 .footer-social-list {
@@ -878,7 +1013,10 @@ body {
   }
 
   .footer-groups {
-    display: flex;
+    display: grid;
+    width: 420px;
+    max-width: none;
+    grid-template-columns: repeat(3, 140px);
     margin-top: 0;
     column-gap: 0;
     row-gap: 0;
@@ -897,19 +1035,20 @@ body {
     width: 140px;
     flex: 0 0 140px;
   }
-
-  .footer-socials {
-    grid-column: auto;
-  }
 }
 
-@media (max-width: 359px) {
+@media (max-width: 767px) {
   .footer-groups {
-    grid-template-columns: 140px;
+    display: flex;
+    width: 100%;
+    max-width: 420px;
+    flex-direction: column;
+    gap: 28px;
   }
 
-  .footer-socials {
-    grid-column: auto;
+  .footer-groups > nav {
+    width: 100%;
+    flex: 0 0 auto;
   }
 }
 
@@ -1656,24 +1795,36 @@ body {
   margin-left: auto;
 }
 
+.how-stacked-tracker {
+  width: min(100%, 450px);
+  margin: 36px auto 0;
+}
+
+.how-stacked-tracker .how-step-row {
+  width: 100%;
+}
+
+.how-stacked-tracker .how-step-card {
+  width: calc(100% - 42px);
+}
+
 .how-stacked-steps {
-  margin-top: 56px;
+  margin-top: 24px;
 }
 
 .how-stacked-step {
   position: relative;
-  display: flex;
-  gap: 18px;
+  width: min(100%, 560px);
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .how-stacked-step + .how-stacked-step {
-  margin-top: 48px;
+  margin-top: 56px;
 }
 
 .how-stacked-rail {
-  position: relative;
-  width: 30px;
-  flex: 0 0 30px;
+  display: none;
 }
 
 .how-stacked-rail > span {
@@ -1746,15 +1897,16 @@ body {
 
 .how-stacked-preview {
   width: min(100%, 441px);
-  margin: 24px auto 0;
+  margin: 0 auto;
 }
 
 @media (max-width: 767px) {
   .how-stacked-inner { padding-top: 52px; }
   .how-title { font-size: clamp(32px, 8vw, 40px); white-space: normal; }
   .how-subtitle { font-size: 17px; }
-  .how-stacked-step { gap: 12px; }
-  .how-stacked-card { padding: 16px; }
+  .how-stacked-tracker { margin-top: 28px; }
+  .how-stacked-steps { margin-top: 16px; }
+  .how-stacked-step + .how-stacked-step { margin-top: 40px; }
 }
 
 /* ==========================================================================\n+   The Problem section\n+   ========================================================================== */
@@ -2830,8 +2982,11 @@ body {
 
 .buy-with-clarity-link {
   display: inline-flex;
+  box-sizing: border-box;
   width: 432px;
+  max-width: 100%;
   height: 58px;
+  flex: 0 0 auto;
   align-items: center;
   justify-content: center;
   gap: 12px;
@@ -2843,7 +2998,13 @@ body {
   font-weight: 500;
   line-height: 1;
   text-decoration: none;
+  white-space: nowrap;
   transition: background-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.buy-with-clarity-link > span {
+  min-width: 0;
+  white-space: nowrap;
 }
 
 .buy-with-clarity-link:focus-visible {

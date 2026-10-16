@@ -50,9 +50,9 @@ export function HowItWorksSection() {
 
   useEffect(() => {
     const update = () => {
-      const nextPinned = window.innerWidth >= 1024 && window.innerHeight >= 700 && !reduced;
+      const nextPinned = window.innerWidth >= 1024 && !reduced;
       setPinned(nextPinned);
-      setScale(Math.max(0.86, Math.min(1, window.innerHeight / 816)));
+      setScale(Math.max(0.72, Math.min(1, window.innerHeight / 816)));
     };
     update();
     window.addEventListener('resize', update);
