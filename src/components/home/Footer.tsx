@@ -73,7 +73,7 @@ function FooterLogo() {
   return (
     <span className="footer-logo" aria-hidden="true">
       <Image
-        src="/logo-icon.png"
+        src="/logo-icon.svg"
         alt=""
         width={35}
         height={34}
