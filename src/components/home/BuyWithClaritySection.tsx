@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
@@ -9,14 +8,61 @@ import { SectionBadge } from "@/components/ui/SectionBadge";
 import { CTA_DATA } from "./cta.data";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
-const SHOW_WATERMARK = true;
-const LOGO_OPACITY = 0.1;
-const LOGO_WIDTH = 380;
-const LOGO_OFFSET_X = -135;
-const LOGO_OFFSET_Y = -135;
+const ANIMATE_BG = true;
+const ANIMATE_DOTS = true;
+const DOT_SIZE = 1.2;
+const DOT_GAP = 28;
+const DOT_OPACITY = 0.22;
 
 const hidden = { opacity: 0, y: 20 };
 const shown = { opacity: 1, y: 0 };
+
+function CtaBackground({ reduced, visible }: { reduced: boolean; visible: boolean }) {
+  const backgroundRef = useRef<HTMLDivElement>(null);
+  const backgroundInView = useInView(backgroundRef, { amount: 0.1 });
+  const driftActive = ANIMATE_BG && visible && backgroundInView && !reduced;
+
+  return (
+    <motion.div
+      ref={backgroundRef}
+      aria-hidden="true"
+      initial={reduced ? false : { opacity: 0 }}
+      animate={visible || reduced ? { opacity: 1 } : { opacity: 0 }}
+      transition={{ duration: reduced ? 0 : 0.8, ease: EASE }}
+      className="cta-card-background"
+    >
+      <div className="cta-card-background-base" />
+      <div className={"cta-card-background-bloom" + (driftActive ? " cta-bg-drifting" : "")} />
+      <div className={"cta-card-background-shade" + (driftActive ? " cta-bg-drifting" : "")} />
+      <div className="cta-card-background-side-glow" />
+      <div className="cta-card-background-sweep" />
+    </motion.div>
+  );
+}
+
+function CtaDotGrid({ reduced, visible }: { reduced: boolean; visible: boolean }) {
+  const dotRef = useRef<HTMLDivElement>(null);
+  const dotInView = useInView(dotRef, { amount: 0.1 });
+  const driftActive = ANIMATE_DOTS && visible && dotInView && !reduced;
+
+  return (
+    <motion.div
+      ref={dotRef}
+      aria-hidden="true"
+      initial={reduced ? false : { opacity: 0 }}
+      animate={visible || reduced ? { opacity: 1 } : { opacity: 0 }}
+      transition={{ duration: reduced ? 0 : 0.8, ease: EASE }}
+      className={"cta-card-dot-grid" + (driftActive ? " cta-dot-drifting" : "")}
+      style={
+        {
+          "--cta-dot-size": DOT_SIZE + "px",
+          "--cta-dot-gap": DOT_GAP + "px",
+          "--cta-dot-opacity": DOT_OPACITY,
+        } as CSSProperties
+      }
+    />
+  );
+}
 
 export function BuyWithClaritySection() {
   const reduced = useReducedMotion() === true;
@@ -42,34 +88,10 @@ export function BuyWithClaritySection() {
         transition={{ duration: reduced ? 0 : 0.6, ease: EASE }}
         className="relative mx-auto min-h-[472px] max-w-[1120px] overflow-hidden rounded-[60px] bg-[var(--blue)] px-5 py-12 text-center sm:px-10 sm:py-16 lg:px-10 lg:py-20 min-[768px]:rounded-[44px] min-[1024px]:rounded-[60px]"
       >
-        {SHOW_WATERMARK && (
-          <motion.div
-            aria-hidden="true"
-            initial={reduced ? false : { opacity: 0, x: -40, y: 40 }}
-            animate={
-              visible || reduced
-                ? { opacity: LOGO_OPACITY, x: 0, y: 0 }
-                : { opacity: 0, x: -40, y: 40 }
-            }
-            transition={{ duration: reduced ? 0 : 0.7, delay: reduced ? 0 : 0.65, ease: EASE }}
-            className="pointer-events-none absolute bottom-[var(--cta-logo-offset-y)] left-[var(--cta-logo-offset-x)] z-0 hidden select-none min-[768px]:block"
-            style={{
-              "--cta-logo-offset-x": `${LOGO_OFFSET_X}px`,
-              "--cta-logo-offset-y": `${LOGO_OFFSET_Y}px`,
-              width: `${LOGO_WIDTH}px`,
-            } as CSSProperties}
-          >
-            <Image
-              src="/logo-icon.png"
-              alt=""
-              width={LOGO_WIDTH}
-              height={LOGO_WIDTH}
-              className="block h-auto w-full brightness-0 invert"
-            />
-          </motion.div>
-        )}
+        <CtaBackground reduced={reduced} visible={visible} />
+        <CtaDotGrid reduced={reduced} visible={visible} />
 
-        <div className="relative z-10 mx-auto flex min-h-[312px] flex-col items-center justify-center">
+        <div className="relative z-[1] mx-auto flex min-h-[312px] flex-col items-center justify-center">
           <motion.div
             initial={reduced ? false : hidden}
             animate={contentAnimation}

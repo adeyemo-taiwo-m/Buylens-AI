@@ -214,7 +214,7 @@ export function Footer() {
           className="absolute inset-0"
         >
           <Image
-            src="/footer/footer-bg.webp"
+            src="/footer/footer-hills.svg"
             alt=""
             fill
             aria-hidden="true"

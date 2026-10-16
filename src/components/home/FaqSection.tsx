@@ -1,16 +1,12 @@
 "use client";
 
-import Image from "next/image";
 import { AnimatePresence, motion, useInView, useReducedMotion } from "framer-motion";
 import { Minus, Plus } from "lucide-react";
-import { memo, useCallback, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent, type Ref } from "react";
+import { memo, useCallback, useMemo, useRef, useState, type KeyboardEvent, type Ref } from "react";
 import { SectionBadge } from "@/components/ui/SectionBadge";
 import { DEFAULT_FAQ_ID, FAQ_ITEMS, type FaqEntry } from "./faq.data";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
-const LOGO_OFFSET_X = -100;
-const LOGO_OFFSET_Y = -100;
-const LOGO_OPACITY = 0.12;
 
 function FaqIcon({ open, reduced }: { open: boolean; reduced: boolean }) {
   return (
@@ -138,17 +134,14 @@ export function FaqSection() {
   const reveal = reduced ? { opacity: 1, y: 0 } : visible ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 };
 
   return (
-    <section ref={sectionRef} id="faq" aria-labelledby="faq-heading" style={{ "--faq-logo-offset-x": `${LOGO_OFFSET_X}px`, "--faq-logo-offset-y": `${LOGO_OFFSET_Y}px`, "--faq-logo-opacity": LOGO_OPACITY } as CSSProperties} className="relative overflow-hidden bg-white px-5 py-14 sm:px-8 sm:py-20">
+    <section ref={sectionRef} id="faq" aria-labelledby="faq-heading" className="relative overflow-hidden bg-white px-5 py-14 sm:px-8 sm:py-20">
       <motion.div
         aria-hidden="true"
         initial={reduced ? false : { opacity: 0, x: 40, y: 40, rotate: -12 }}
         animate={visible ? { opacity: 1, x: 0, y: 0, rotate: -8 } : reduced ? { opacity: 1, x: 0, y: 0, rotate: -8 } : { opacity: 0, x: 40, y: 40, rotate: -12 }}
         transition={{ duration: reduced ? 0 : 0.7, delay: reduced ? 0 : 0.45, ease: EASE }}
-        className="faq-logo-watermark pointer-events-none absolute z-0 w-[360px] select-none max-[1439px]:w-[280px] max-[767px]:w-[180px]"
+        className="faq-blue-glow pointer-events-none absolute z-0"
       >
-        <div className="faq-logo-tint">
-          <Image src="/logo-icon.png" alt="" width={360} height={360} className="block h-auto w-full" />
-        </div>
       </motion.div>
       <div className="relative z-10 mx-auto max-w-[936px]">
         <div className="text-center">
