@@ -632,9 +632,15 @@ body {
   box-shadow: 0 0 0 2px #fff, 0 8px 22px -8px rgba(47, 111, 235, 0.55);
 }
 @media (hover: hover) and (pointer: fine) {
-  .buyhero-secondary-cta:hover { background: #cfe0fb; }
+  .buyhero-secondary-cta:hover {
+    background: #CFE2FE;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px -14px rgba(15, 27, 51, 0.45);
+  }
   .buyhero-primary-cta:hover { background: #2563eb; transform: translateY(-2px); }
 }
+
+.buyhero-secondary-cta:active { background: #BFD7FE; }
 .hero-visual {
   position: relative;
   padding-bottom: 72px;
