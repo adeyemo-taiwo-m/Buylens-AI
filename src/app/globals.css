@@ -774,47 +774,16 @@ body {
   pointer-events: none;
 }
 
-.footer-lens-ring-layer,
-.footer-lens-handle-layer {
+.footer-lens-scanner-visual {
   position: absolute;
+  inset: 0;
   top: 0;
   left: 0;
-  width: 139%;
-  height: 139%;
-  max-width: none;
-  pointer-events: auto;
-  transform-origin: center;
-}
-
-.footer-lens-ring-layer {
   z-index: 3;
-  clip-path: circle(37% at 36% 36%);
-}
-
-.footer-lens-handle-layer {
-  z-index: 4;
-  clip-path: polygon(59% 54%, 68% 51%, 100% 91%, 91% 100%);
-  cursor: grab;
-  will-change: transform;
-}
-
-.footer-lens-ring-layer img,
-.footer-lens-handle-layer img {
-  display: block;
   width: 100%;
   height: 100%;
-  max-width: none;
-  object-fit: contain;
-  pointer-events: auto;
-  user-select: none;
-}
-
-.footer-lens-handle-layer:active {
-  cursor: grabbing;
-}
-
-.footer-lens-handle-layer img {
-  pointer-events: auto;
+  overflow: visible;
+  pointer-events: none;
 }
 
 .footer-content {

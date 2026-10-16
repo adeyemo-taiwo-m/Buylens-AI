@@ -10,7 +10,13 @@ import {
   useTransform,
   useVelocity,
 } from "framer-motion";
-import { useCallback, useEffect, useRef, type PointerEvent } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  type PointerEvent,
+  type RefObject,
+} from "react";
 
 const FOOTER_LENS_CONFIG = {
   BASE_MAGNIFICATION: 1.6,
@@ -27,7 +33,6 @@ const FOOTER_LENS_CONFIG = {
 } as const;
 
 const SPRING = { stiffness: 190, damping: 25, mass: 0.72 };
-const TRAIL_SPRING = { stiffness: 125, damping: 21, mass: 0.7 };
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
 
 type FooterArtMetrics = {
@@ -48,11 +53,16 @@ const IDLE_SHADOW = "0 0 0 3px rgba(147, 189, 255, 0.18), 0 18px 40px rgba(37, 9
 const HOVER_SHADOW = "0 0 0 6px rgba(147, 189, 255, 0.35), 0 22px 48px rgba(37, 99, 235, 0.35)";
 const DRAG_SHADOW = "0 0 0 7px rgba(147, 189, 255, 0.42), 0 28px 58px rgba(23, 57, 170, 0.42)";
 
-export function FooterLens() {
+type FooterLensProps = {
+  interactionRootRef?: RefObject<HTMLElement | null>;
+};
+
+export function FooterLens({ interactionRootRef }: FooterLensProps) {
   const reduced = useReducedMotion() === true;
   const artRef = useRef<HTMLDivElement>(null);
   const metricsRef = useRef<FooterArtMetrics | null>(null);
   const artHoveredRef = useRef(false);
+  const contentHoveredRef = useRef(false);
   const lensInsideRef = useRef(false);
   const draggingRef = useRef(false);
   const dragPointerIdRef = useRef<number | null>(null);
@@ -142,17 +152,6 @@ export function FooterLens() {
     return y - radius;
   });
   const lensDiameter = useTransform(baseRadius, (radius) => radius * 2);
-
-  const trailX = useSpring(displayX, TRAIL_SPRING);
-  const trailY = useSpring(displayY, TRAIL_SPRING);
-  const handleOffsetX = useTransform([trailX, displayX], (values: number[]) => {
-    const [trail, current] = values as number[];
-    return reduced ? 0 : trail - current;
-  });
-  const handleOffsetY = useTransform([trailY, displayY], (values: number[]) => {
-    const [trail, current] = values as number[];
-    return reduced ? 0 : trail - current;
-  });
 
   const magnifiedImageWidth = useTransform([imageWidth, magnification], (values: number[]) => {
     const [width, scale] = values as number[];
@@ -253,6 +252,7 @@ export function FooterLens() {
   const onArtPointerEnter = useCallback((event: PointerEvent<HTMLDivElement>) => {
     clearReturnTimer();
     artHoveredRef.current = true;
+    contentHoveredRef.current = false;
     const point = pointFromEvent(event);
     if (!point || draggingRef.current) return;
     pointerX.set(point.x);
@@ -270,12 +270,16 @@ export function FooterLens() {
     setPosition(point.x, point.y);
   }, [pointFromEvent, pointerX, pointerY, setPosition]);
 
-  const onArtPointerLeave = useCallback(() => {
+  const onArtPointerLeave = useCallback((event: PointerEvent<HTMLDivElement>) => {
+    const relatedTarget = event.relatedTarget;
+    const root = interactionRootRef?.current;
+    if (root && relatedTarget instanceof Node && root.contains(relatedTarget)) return;
     artHoveredRef.current = false;
+    contentHoveredRef.current = false;
     lensInsideRef.current = false;
     if (!draggingRef.current) hoverTarget.set(0);
     scheduleReturn();
-  }, [hoverTarget, scheduleReturn]);
+  }, [hoverTarget, interactionRootRef, scheduleReturn]);
 
   const onLensPointerEnter = useCallback(() => {
     clearReturnTimer();
@@ -341,6 +345,52 @@ export function FooterLens() {
       scheduleReturn();
     }
   }, [activateTap, draggingTarget, pointFromEvent, scheduleReturn]);
+
+  useEffect(() => {
+    const root = interactionRootRef?.current;
+    if (!root) return;
+
+    const isArtTarget = (target: EventTarget | null) => {
+      return target instanceof Node && artRef.current?.contains(target) === true;
+    };
+
+    const onRootPointerOver = (event: globalThis.PointerEvent) => {
+      if (isArtTarget(event.target)) return;
+      clearReturnTimer();
+      artHoveredRef.current = true;
+      hoverTarget.set(1);
+      if (!contentHoveredRef.current) {
+        contentHoveredRef.current = true;
+        replaySweep();
+      }
+    };
+
+    const onRootPointerMove = (event: globalThis.PointerEvent) => {
+      if (isArtTarget(event.target)) return;
+      lastPointerRef.current = { clientX: event.clientX, clientY: event.clientY };
+      clearReturnTimer();
+      artHoveredRef.current = true;
+      hoverTarget.set(1);
+    };
+
+    const onRootPointerLeave = () => {
+      contentHoveredRef.current = false;
+      if (draggingRef.current) return;
+      artHoveredRef.current = false;
+      hoverTarget.set(0);
+      scheduleReturn();
+    };
+
+    root.addEventListener("pointerover", onRootPointerOver);
+    root.addEventListener("pointermove", onRootPointerMove);
+    root.addEventListener("pointerleave", onRootPointerLeave);
+
+    return () => {
+      root.removeEventListener("pointerover", onRootPointerOver);
+      root.removeEventListener("pointermove", onRootPointerMove);
+      root.removeEventListener("pointerleave", onRootPointerLeave);
+    };
+  }, [clearReturnTimer, interactionRootRef, replaySweep, scheduleReturn, hoverTarget]);
 
   useEffect(() => {
     const measure = () => {
@@ -448,19 +498,43 @@ export function FooterLens() {
             <motion.div className="footer-lens-sweep" animate={sweepControls} />
             <motion.div className="footer-lens-specular" style={{ opacity: specularOpacity }} />
           </motion.div>
-          <motion.div
-            className="footer-lens-ring-layer"
+          <svg
+            className="footer-lens-scanner-visual"
+            viewBox="0 0 1000 1000"
+            width="100%"
+            height="100%"
+            fill="none"
             aria-hidden="true"
           >
-            <img src="/hero/lens-ring-handle.svg" alt="" draggable={false} />
-          </motion.div>
-          <motion.div
-            className="footer-lens-handle-layer"
-            aria-hidden="true"
-            style={{ x: handleOffsetX, y: handleOffsetY }}
-          >
-            <img src="/hero/lens-ring-handle.svg" alt="" draggable={false} />
-          </motion.div>
+            <defs>
+              <linearGradient id="footer-ring-gradient" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stopColor="#7DB0FA" />
+                <stop offset="1" stopColor="#4A8CF0" />
+              </linearGradient>
+              <linearGradient id="footer-bracket-gradient" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stopColor="#60A5FA" />
+                <stop offset="1" stopColor="#3B82F6" />
+              </linearGradient>
+            </defs>
+            <circle
+              cx="500"
+              cy="500"
+              r="472"
+              stroke="url(#footer-ring-gradient)"
+              strokeWidth="9"
+            />
+            <g
+              stroke="url(#footer-bracket-gradient)"
+              strokeWidth="33"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M17 120 V50 Q17 17 50 17 H120" />
+              <path d="M880 17 H950 Q983 17 983 50 V120" />
+              <path d="M17 880 V950 Q17 983 50 983 H120" />
+              <path d="M983 880 V950 Q983 983 950 983 H880" />
+            </g>
+          </svg>
         </motion.div>
       </motion.div>
     </div>

@@ -224,7 +224,7 @@ export function Footer() {
             className="footer-art-image"
           />
         </motion.div>
-        <FooterLens />
+        <FooterLens interactionRootRef={footerRef} />
       </div>
 
       <div className="footer-content">
