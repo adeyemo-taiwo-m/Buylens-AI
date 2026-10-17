@@ -1,7 +1,7 @@
 import { DecisionReport, ProductCategory, RecommendationVerdict } from "@/types/analysis";
 import { DecisionReportSchema } from "@/lib/validation/analysis";
 
-interface AnalyzeParams {
+export interface AnalyzeParams {
   name: string;
   category: ProductCategory;
   price?: number;
@@ -10,6 +10,7 @@ interface AnalyzeParams {
   description?: string;
   warrantyMonths?: number;
   condition?: string;
+  sampleId?: string;
 }
 
 // Nigerian market baseline benchmarks (in NGN)
@@ -49,7 +50,7 @@ const MARKET_BENCHMARKS: Record<
   },
 };
 
-export async function analyzeProduct(params: AnalyzeParams): Promise<DecisionReport> {
+export async function analyzeProduct(params: AnalyzeParams, options: { throwOnAiFailure?: boolean } = {}): Promise<DecisionReport> {
   const {
     name,
     category,
@@ -67,8 +68,10 @@ export async function analyzeProduct(params: AnalyzeParams): Promise<DecisionRep
       if (parsed.success) {
         return parsed.data as DecisionReport;
       }
+      if (options.throwOnAiFailure) throw new Error("The AI returned an invalid report.");
     } catch (err) {
       console.warn("AI API request failed, falling back to intelligent heuristic engine", err);
+      if (options.throwOnAiFailure) throw err;
     }
   }
 
@@ -80,6 +83,7 @@ export async function analyzeProduct(params: AnalyzeParams): Promise<DecisionRep
     currency,
     sellerPlatform,
     description,
+    sampleId: params.sampleId,
   });
 }
 
@@ -118,8 +122,9 @@ function generateHeuristicReport(params: {
   currency: string;
   sellerPlatform: string;
   description: string;
+  sampleId?: string;
 }): DecisionReport {
-  const { name, category, price, currency, sellerPlatform, description } = params;
+  const { name, category, price, currency, sellerPlatform, description, sampleId } = params;
   const benchmark = MARKET_BENCHMARKS[category] || MARKET_BENCHMARKS.other;
 
   // Calculate pricing comparison
@@ -204,7 +209,8 @@ function generateHeuristicReport(params: {
   ];
 
   return {
-    id: `rep-${Date.now().toString(36)}-${Math.random().toString(36).substring(2, 6)}`,
+    id: globalThis.crypto?.randomUUID?.() ?? `rep-${Date.now().toString(36)}-${Math.random().toString(36).substring(2, 6)}`,
+    ...(sampleId ? { sampleId } : {}),
     createdAt: new Date().toISOString(),
     productName: name,
     category,

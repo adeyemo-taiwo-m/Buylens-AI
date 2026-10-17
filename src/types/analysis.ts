@@ -55,6 +55,7 @@ export interface AlternativeOption {
 
 export interface DecisionReport {
   id: string;
+  sampleId?: string;
   createdAt: string;
   productName: string;
   category: ProductCategory;

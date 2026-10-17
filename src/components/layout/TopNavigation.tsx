@@ -2,8 +2,8 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { Button } from "@/components/ui/Button";
 import { BrandLogo } from "@/components/ui/BrandLogo";
+import { DemoLoginButton } from "@/components/auth/DemoLoginButton";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -52,38 +52,13 @@ export function TopNavigation({ className }: TopNavigationProps) {
 
         {/* Right: Actions */}
         <div className="hidden sm:flex items-center gap-2 sm:gap-3">
-          <Link href="/login">
-            <Button
-              buttonType="Secondary-new"
-              size="Small"
-              className="bg-[#DDEBFE] hover:bg-[#CFE2FE] active:bg-[#BFD7FE] text-[#2563EB] text-xs font-semibold px-4 sm:px-5 h-9 rounded-full shadow-none"
-            >
-              Sign in
-            </Button>
-          </Link>
-
-          <Link href="/analyze">
-            <Button
-              buttonType="Primary"
-              size="Small"
-              className="bg-[#2563EB] hover:bg-[#1D4ED8] active:bg-[#1E40AF] text-white text-xs font-semibold px-4 sm:px-5 h-9 rounded-full shadow-sm"
-            >
-              Get started
-            </Button>
-          </Link>
+          <Link href="/login" className="px-2 text-xs font-medium text-ink-muted transition-colors hover:text-primary-600">Log in</Link>
+          <DemoLoginButton compact className="h-9 px-4 text-xs" />
         </div>
 
         {/* Mobile Action & Hamburger Toggle (< 640px) */}
         <div className="flex sm:hidden items-center gap-2">
-          <Link href="/analyze">
-            <Button
-              buttonType="Primary"
-              size="Small"
-              className="bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-[11px] font-semibold px-3 h-8 rounded-full shadow-sm"
-            >
-              Get started
-            </Button>
-          </Link>
+          <DemoLoginButton compact className="h-8 px-3 text-[11px]" />
 
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -116,24 +91,8 @@ export function TopNavigation({ className }: TopNavigationProps) {
           </nav>
 
           <div className="pt-3 border-t border-[#E2E8F0] flex flex-col gap-2">
-            <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
-              <Button
-                buttonType="Secondary-new"
-                size="Small"
-                className="w-full bg-[#DDEBFE] text-[#2563EB] justify-center h-9"
-              >
-                Sign in
-              </Button>
-            </Link>
-            <Link href="/analyze" onClick={() => setMobileMenuOpen(false)}>
-              <Button
-                buttonType="Primary"
-                size="Small"
-                className="w-full bg-[#2563EB] text-white justify-center h-9"
-              >
-                Get started
-              </Button>
-            </Link>
+            <Link href="/login" onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 text-sm font-medium text-ink-muted">Log in</Link>
+            <DemoLoginButton compact className="h-9 w-full" />
           </div>
         </div>
       )}

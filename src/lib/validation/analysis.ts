@@ -18,10 +18,12 @@ export const ProductInputSchema = z.object({
   description: z.string().optional(),
   warrantyMonths: z.number().nonnegative().optional(),
   condition: z.enum(["brand_new", "foreign_used", "refurbished", "locally_used"]).optional(),
+  sampleId: z.string().optional(),
 });
 
 export const DecisionReportSchema = z.object({
   id: z.string(),
+  sampleId: z.string().optional(),
   createdAt: z.string(),
   productName: z.string(),
   category: z.string(),

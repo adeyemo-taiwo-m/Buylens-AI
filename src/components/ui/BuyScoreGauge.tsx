@@ -12,6 +12,7 @@ type BuyScoreGaugeProps = {
   verdict: string;
   animate?: "once" | false;
   interactive?: boolean;
+  tone?: "positive" | "neutral" | "negative";
 };
 
 const SIZE_WIDTHS: Record<BuyScoreGaugeSize, number> = { sm: 125, md: 170, lg: 217 };
@@ -66,6 +67,7 @@ export function BuyScoreGauge({
   verdict,
   animate = "once",
   interactive = false,
+  tone,
 }: BuyScoreGaugeProps) {
   const reduced = useReducedMotion() === true;
   const gaugeRef = useRef<HTMLDivElement>(null);
@@ -102,7 +104,7 @@ export function BuyScoreGauge({
               initial={{ opacity: 1 }}
               animate={{
                 opacity: 1,
-                stroke: filled ? "var(--primary-600)" : "var(--primary-100)",
+                stroke: filled ? tone === "positive" ? "var(--status-success)" : tone === "neutral" ? "var(--status-warning)" : tone === "negative" ? "var(--status-danger)" : "var(--primary-600)" : "var(--primary-100)",
               }}
               transition={{
                 stroke: { duration: reduced || animate === false ? 0 : 0.18, delay: reduced || animate === false ? 0 : index * 0.035 },

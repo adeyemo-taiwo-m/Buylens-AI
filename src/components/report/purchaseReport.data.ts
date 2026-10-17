@@ -1,6 +1,7 @@
 import type { DecisionReport } from "@/types/analysis";
 import { DEMO_SOLAR_REPORT } from "@/data/demo";
 import { PurchaseReportSchema, type PurchaseReport } from "@/lib/validation/purchaseReport";
+import { getSampleReport } from "@/lib/sample-reports";
 
 export const REPORT_COPY = {
   badge: "PURCHASE REPORT",
@@ -31,20 +32,23 @@ export const REPORT_COPY = {
 export const SCORE_TONE_STYLES = {
   positive: {
     pill: "success" as const,
-    banner: "bg-primary-100",
-    bannerIcon: "bg-primary-600 text-white",
+    banner: "bg-status-success-bg",
+    bannerIcon: "bg-status-success text-white",
+    gauge: "positive" as const,
   },
   neutral: {
     pill: "caution" as const,
-    banner: "bg-primary-100",
-    bannerIcon: "bg-primary-600 text-white",
+    banner: "bg-status-warning-bg",
+    bannerIcon: "bg-status-warning text-white",
+    gauge: "neutral" as const,
   },
   negative: {
     pill: "risk" as const,
-    banner: "bg-primary-100",
-    bannerIcon: "bg-primary-600 text-white",
+    banner: "bg-status-danger-bg",
+    bannerIcon: "bg-status-danger text-white",
+    gauge: "negative" as const,
   },
-} satisfies Record<PurchaseReport["scoreTone"], { pill: "success" | "caution" | "risk"; banner: string; bannerIcon: string }>;
+} satisfies Record<PurchaseReport["scoreTone"], { pill: "success" | "caution" | "risk"; banner: string; bannerIcon: string; gauge: "positive" | "neutral" | "negative" }>;
 
 export const RISK_STYLES = {
   Low: {
@@ -53,9 +57,9 @@ export const RISK_STYLES = {
     pill: "bg-status-success-bg text-status-success-text",
   },
   Medium: {
-    card: "bg-primary-50 border-primary-100",
-    icon: "bg-primary-100 text-primary-600",
-    pill: "bg-primary-100 text-primary-600",
+    card: "bg-status-warning-bg border-status-warning-border",
+    icon: "bg-status-warning-bg text-status-warning-text",
+    pill: "bg-status-warning-bg text-status-warning-text",
   },
   High: {
     card: "bg-status-danger-bg border-status-danger-border",
@@ -135,6 +139,9 @@ function getVerdict(report: DecisionReport, tone: PurchaseReport["scoreTone"]) {
 }
 
 export function toPurchaseReport(report: DecisionReport): PurchaseReport {
+  const cachedSample = getSampleReport(report.sampleId);
+  if (cachedSample) return PurchaseReportSchema.parse({ ...cachedSample, id: report.id, analyzedAt: report.createdAt });
+
   const tone = SCORE_TONES[report.verdict];
   const isDemoSolar = report.id === DEMO_SOLAR_REPORT.id || report.productName.includes("Hybrid Inverter");
   const promising = isDemoSolar

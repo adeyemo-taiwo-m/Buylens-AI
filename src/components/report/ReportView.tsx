@@ -92,6 +92,7 @@ export function ReportView({ report }: ReportViewProps) {
               width={220}
               verdict={report.scoreLabel.toLowerCase()}
               animate="once"
+              tone={scoreTone.gauge}
             />
             <VerdictPill tone={scoreTone.pill} label={report.scoreLabel} className="mt-3 h-8 px-3 text-[13px]" />
           </div>
@@ -129,12 +130,14 @@ export function ReportView({ report }: ReportViewProps) {
               title={REPORT_COPY.promisingTitle}
               items={report.promising}
               imageSrc="/analysis/promising@2x.webp"
+              tone={report.scoreTone}
             />
             <ReportStatusCard
               variant="verify"
               title={REPORT_COPY.verifyTitle}
               items={report.verifyFirst}
               imageSrc="/analysis/risks@2x.webp"
+              tone={report.scoreTone}
             />
           </div>
         </div>

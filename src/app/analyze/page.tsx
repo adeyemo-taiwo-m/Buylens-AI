@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { AnalyzeForm } from "@/components/analyze/AnalyzeForm";
-import { AnalyzeHeader } from "@/components/analyze/AnalyzeHeader";
+import { AnalyzeExperience } from "@/components/analyze/AnalyzeExperience";
 import { DashboardShell } from "@/components/dashboard/DashboardShell";
 import { Reveal } from "@/components/ui/Reveal";
 
@@ -16,11 +15,8 @@ export default function AnalyzePage() {
     <DashboardShell>
       <div className="-mt-2 pb-0 max-[1023px]:mt-0">
         <Reveal trigger="load" delay={0}>
-          <AnalyzeHeader />
-        </Reveal>
-        <Reveal trigger="load" delay={0.27} className="mt-6">
           <Suspense fallback={<AnalyzeFormFallback />}>
-            <AnalyzeForm />
+            <AnalyzeExperience />
           </Suspense>
         </Reveal>
       </div>

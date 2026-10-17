@@ -152,6 +152,18 @@ AI_API_KEY=your-openai-or-gemini-key-here
 > [!NOTE]
 > BuyLens AI includes a **built-in heuristic intelligence engine** calibrated for the Nigerian market. The application is **100% functional out of the box** even without an `AI_API_KEY`.
 
+### Public challenge demo mode
+
+The challenge build uses a shared demo account. Set `DEMO_EMAIL`, `DEMO_PASSWORD`, and a strong `SESSION_SECRET` in the server environment. When `SUPABASE_SERVICE_ROLE_KEY` is available, the first one-click demo login provisions the Supabase Auth user if it does not exist yet.
+
+For durable, visitor-isolated reports, run `supabase/migrations/20261017_demo_reports.sql` in the Supabase SQL editor and set `SUPABASE_REPORTS_TABLE=buylens_demo_reports`. The server filters every report read/write by both the signed demo user and the seven-day `visitor_id` cookie. Without Supabase, the same flow uses a process-local fallback so the demo remains usable locally.
+
+To remove demo reports older than seven days, call the cleanup route from a scheduler:
+
+```bash
+curl -X POST https://your-domain.example/api/cron/cleanup-demo-reports -H "Authorization: Bearer $CRON_SECRET"
+```
+
 ### 4. Run Development Server
 
 ```bash

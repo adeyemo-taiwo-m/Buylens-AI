@@ -19,9 +19,15 @@ export default function ReportDetailPage({ params }: { params: Promise<{ id: str
   useEffect(() => {
     if (isDemo) return;
     const frame = window.requestAnimationFrame(() => {
-      const storedReport = getStoredReports().find((item) => item.id === id) ?? null;
-      setReport(storedReport);
-      setLoading(false);
+      void fetch(`/api/reports/${encodeURIComponent(id)}`, { cache: "no-store" }).then(async (response) => {
+        const body = await response.json().catch(() => ({}));
+        const storedReport = response.ok ? body.report : getStoredReports().find((item) => item.id === id) ?? null;
+        setReport(storedReport);
+        setLoading(false);
+      }).catch(() => {
+        setReport(getStoredReports().find((item) => item.id === id) ?? null);
+        setLoading(false);
+      });
     });
     return () => window.cancelAnimationFrame(frame);
   }, [id, isDemo]);

@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Header } from "@/components/layout/Header";
+import { DemoAuthGate } from "@/components/auth/DemoAuthGate";
 import { DecisionReport } from "@/types/analysis";
 import { getStoredReports, deleteStoredReport } from "@/lib/storage/reports";
 import {
@@ -14,16 +15,32 @@ import {
 } from "lucide-react";
 
 export default function HistoryPage() {
-  const [reports, setReports] = useState<DecisionReport[]>(() => getStoredReports());
+  const [reports, setReports] = useState<DecisionReport[]>([]);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
 
-  const handleDelete = (id: string, e: React.MouseEvent) => {
+  const loadReports = async () => {
+    try {
+      const response = await fetch("/api/reports", { cache: "no-store" });
+      const body = await response.json().catch(() => ({}));
+      setReports(response.ok && Array.isArray(body.reports) ? body.reports : getStoredReports());
+    } catch {
+      setReports(getStoredReports());
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => { void loadReports(); }, []);
+
+  const handleDelete = async (id: string, e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     if (confirm("Are you sure you want to remove this report?")) {
-      deleteStoredReport(id);
-      setReports(getStoredReports());
+      const response = await fetch(`/api/reports?id=${encodeURIComponent(id)}`, { method: "DELETE" });
+      if (!response.ok) deleteStoredReport(id);
+      await loadReports();
     }
   };
 
@@ -52,7 +69,7 @@ export default function HistoryPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-[#F7F8FA] text-[#111318]">
+    <DemoAuthGate><div className="min-h-screen flex flex-col justify-between bg-[#F7F8FA] text-[#111318]">
       <Header />
 
       <main className="flex-1 max-w-5xl mx-auto w-full px-6 py-12">
@@ -107,7 +124,7 @@ export default function HistoryPage() {
         </div>
 
         {/* Reports Listing */}
-        {filteredReports.length === 0 ? (
+        {loading ? <div className="rounded-2xl border border-zinc-200 bg-white p-12 text-center text-sm text-zinc-500">Loading your reports…</div> : filteredReports.length === 0 ? (
           <div className="bg-white rounded-2xl border border-zinc-200 p-12 text-center">
             <FileText className="h-10 w-10 text-zinc-300 mx-auto mb-3" />
             <h3 className="text-base font-semibold text-zinc-900">No reports found</h3>
@@ -178,6 +195,6 @@ export default function HistoryPage() {
       <footer className="border-t border-zinc-200 bg-white py-8 text-center text-xs text-zinc-500">
         BuyLens AI — Independent Purchase Decision Intelligence
       </footer>
-    </div>
+    </div></DemoAuthGate>
   );
 }

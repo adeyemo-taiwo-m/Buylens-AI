@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { DashboardSidebar } from "./DashboardSidebar";
 import { DashboardTopbar } from "./DashboardTopbar";
+import { DemoAuthGate } from "@/components/auth/DemoAuthGate";
 
 export function DashboardShell({ children }: { children: React.ReactNode }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -39,7 +40,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [drawerOpen]);
 
-  return (
+  const shell = (
     <div className="min-h-screen overflow-x-hidden bg-canvas text-ink">
       <a href="#main" className="skip-link">Skip to content</a>
       <div className={drawerOpen ? "fixed inset-0 z-40 bg-[#0F1B33]/40 lg:hidden" : "hidden"} aria-hidden="true" onClick={() => setDrawerOpen(false)} />
@@ -52,4 +53,5 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
       </main>
     </div>
   );
+  return pathname === "/report/demo" ? shell : <DemoAuthGate>{shell}</DemoAuthGate>;
 }

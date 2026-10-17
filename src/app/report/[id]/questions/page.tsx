@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useState } from "react";
+import { use, useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, Check, Copy, Info, MessageSquare } from "lucide-react";
 import { Header } from "@/components/layout/Header";
@@ -10,6 +10,7 @@ import { useToast } from "@/components/ui/Toast";
 import { getStoredReportById } from "@/lib/storage/reports";
 import { DEMO_SOLAR_REPORT } from "@/data/demo";
 import type { DecisionReport } from "@/types/analysis";
+import { DemoAuthGate } from "@/components/auth/DemoAuthGate";
 
 export default function QuestionsForSellerPage({
   params,
@@ -18,8 +19,17 @@ export default function QuestionsForSellerPage({
 }) {
   const { id } = use(params);
   const { toast } = useToast();
-  const [report] = useState<DecisionReport>(() => getStoredReportById(id) || DEMO_SOLAR_REPORT);
+  const isPublicDemo = id === "demo" || id === DEMO_SOLAR_REPORT.id;
+  const [report, setReport] = useState<DecisionReport | null>(isPublicDemo ? DEMO_SOLAR_REPORT : null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (isPublicDemo) return;
+    void fetch(`/api/reports/${encodeURIComponent(id)}`, { cache: "no-store" }).then(async (response) => {
+      const body = await response.json().catch(() => ({}));
+      setReport(response.ok ? body.report : getStoredReportById(id) ?? null);
+    }).catch(() => setReport(getStoredReportById(id) ?? null));
+  }, [id, isPublicDemo]);
 
   const handleCopyQuestion = (questionId: string, text: string) => {
     navigator.clipboard.writeText(text);
@@ -29,6 +39,7 @@ export default function QuestionsForSellerPage({
   };
 
   const handleCopyAll = () => {
+    if (!report) return;
     const questions = report.sellerQuestions.map((question, index) => `${index + 1}. ${question.question}`).join("\n\n");
     navigator.clipboard.writeText(`Hello, concerning the quotation for ${report.productName}:\n\n${questions}\n\nKindly clarify these details so we can proceed. Thanks!`);
     setCopiedId("all");
@@ -36,7 +47,10 @@ export default function QuestionsForSellerPage({
     setTimeout(() => setCopiedId(null), 1200);
   };
 
+  if (!report) return <DemoAuthGate><div className="min-h-screen bg-canvas" aria-label="Loading seller questions" role="status" /></DemoAuthGate>;
+
   return (
+    <DemoAuthGate skip={isPublicDemo}>
     <div className="min-h-screen flex flex-col bg-[#F7F8FA] text-[#111318]">
       <Header />
       <main className="flex-1 px-6 py-12">
@@ -79,5 +93,6 @@ export default function QuestionsForSellerPage({
       </main>
       <footer className="border-t border-zinc-200 bg-white py-6 text-center text-xs text-zinc-500">BuyLens AI — Independent Purchase Decision Support</footer>
     </div>
+    </DemoAuthGate>
   );
 }

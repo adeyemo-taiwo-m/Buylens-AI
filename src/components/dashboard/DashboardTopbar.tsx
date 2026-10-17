@@ -2,11 +2,13 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { ChevronDown, CircleHelp, LogOut, Menu, Settings } from "lucide-react";
 import { BrandLogo } from "@/components/ui/BrandLogo";
 import { DASHBOARD_USER } from "./dashboard.data";
 
 export function DashboardTopbar({ onMenu, menuButtonRef }: { onMenu: () => void; menuButtonRef?: React.RefObject<HTMLButtonElement | null> }) {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
 
   return (
@@ -25,7 +27,7 @@ export function DashboardTopbar({ onMenu, menuButtonRef }: { onMenu: () => void;
           </button>
           {open && <div role="menu" className="absolute right-0 top-[calc(100%+8px)] w-36 rounded-xl border border-[#E9EDF5] bg-white p-1.5 shadow-[0_12px_30px_rgba(15,27,51,0.12)]">
             <Link href="/settings" role="menuitem" onClick={() => setOpen(false)} className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-[#3F4A5B] hover:bg-[#F1F5FC]"><Settings className="h-4 w-4" />Settings</Link>
-            <button type="button" role="menuitem" onClick={() => setOpen(false)} className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-[#3F4A5B] hover:bg-[#F1F5FC]"><LogOut className="h-4 w-4" />Sign out</button>
+            <button type="button" role="menuitem" onClick={() => { setOpen(false); void fetch("/api/auth/logout", { method: "POST" }).finally(() => router.push("/login")); }} className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-[#3F4A5B] hover:bg-[#F1F5FC]"><LogOut className="h-4 w-4" />Sign out</button>
           </div>}
         </div>
       </div>

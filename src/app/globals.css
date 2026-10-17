@@ -157,6 +157,7 @@
 
   /* Animation */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --modal-overlay: rgb(15 27 51 / 40%);
 }
 
 @theme inline {
@@ -286,6 +287,27 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+@keyframes sample-dialog-in {
+  from { opacity: 0; transform: scale(0.98) translateY(8px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes sample-sheet-in {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.sample-modal-backdrop { background-color: var(--modal-overlay); backdrop-filter: blur(2px); }
+.sample-modal-sheet { animation: sample-dialog-in 180ms var(--ease-out) both; }
+
+@media (max-width: 639px) {
+  .sample-modal-sheet { animation-name: sample-sheet-in; max-height: 90vh; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sample-modal-sheet { animation: none; }
 }
 
 .bl-button:focus-visible {

@@ -1,27 +1,26 @@
 import { DecisionReport } from "@/types/analysis";
-import { INITIAL_DEMO_REPORTS, DEMO_SOLAR_REPORT } from "@/data/demo";
+import { DEMO_SOLAR_REPORT } from "@/data/demo";
 
 const STORAGE_KEY = "buylens_reports";
 
 export function getStoredReports(): DecisionReport[] {
   if (typeof window === "undefined") {
-    return INITIAL_DEMO_REPORTS;
+    return [];
   }
 
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_DEMO_REPORTS));
-      return INITIAL_DEMO_REPORTS;
+      return [];
     }
     const parsed = JSON.parse(raw);
     if (Array.isArray(parsed) && parsed.length > 0) {
       return parsed;
     }
-    return INITIAL_DEMO_REPORTS;
+    return [];
   } catch (err) {
     console.error("Failed to load reports from localStorage", err);
-    return INITIAL_DEMO_REPORTS;
+    return [];
   }
 }
 
@@ -29,9 +28,10 @@ export function getStoredReportById(id: string): DecisionReport | undefined {
   const reports = getStoredReports();
   const match = reports.find((r) => r.id === id);
   if (match) return match;
-  // Also match fallback IDs
+  // The public sample report is the only safe fallback. Never return an
+  // arbitrary first report for an unknown id.
   if (id === "demo" || id === "demo-solar") return DEMO_SOLAR_REPORT;
-  return reports[0];
+  return undefined;
 }
 
 export function saveStoredReport(report: DecisionReport): void {

@@ -1,7 +1,7 @@
 import type { LucideIcon } from "lucide-react";
 import { CircleHelp, History, Home, Scale, Search, Settings } from "lucide-react";
 
-export type DashboardTone = "success" | "caution";
+export type DashboardTone = "success" | "caution" | "risk";
 
 export type DashboardAnalysis = {
   id: string;

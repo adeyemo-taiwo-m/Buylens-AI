@@ -1,9 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { motion, useInView, useReducedMotion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
 import { useRef, type CSSProperties } from "react";
+import { DemoLoginButton } from "@/components/auth/DemoLoginButton";
 import { SectionBadge } from "@/components/ui/SectionBadge";
 import { MOTION_EASE } from "@/lib/motion";
 import { CTA_DATA } from "./cta.data";
@@ -127,13 +126,9 @@ export function BuyWithClaritySection() {
             transition={{ duration: reduced ? 0 : 0.5, delay: reduced ? 0 : 0.36, ease: EASE }}
             className="mt-6 w-full max-w-[432px] max-[767px]:mt-5"
           >
-            <Link
-              href={CTA_DATA.href}
-              className={`buy-with-clarity-link ${reduced ? "cta-motion-reduced" : ""}`}
-            >
-              <span>{CTA_DATA.buttonLabel}</span>
-              <ArrowRight aria-hidden="true" className="buy-with-clarity-arrow h-5 w-5 shrink-0" strokeWidth={2} />
-            </Link>
+            <DemoLoginButton className={`buy-with-clarity-link w-full ${reduced ? "cta-motion-reduced" : ""}`}>
+              {CTA_DATA.buttonLabel}
+            </DemoLoginButton>
           </motion.div>
         </div>
       </motion.div>

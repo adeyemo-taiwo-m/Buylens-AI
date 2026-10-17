@@ -1,3 +1,6 @@
-import { ComingSoon } from "@/components/dashboard/ComingSoon";
+import { DemoSettings } from "@/components/auth/DemoSettings";
+import { DashboardShell } from "@/components/dashboard/DashboardShell";
 
-export default function SettingsPage() { return <ComingSoon title="Settings" />; }
+export default function SettingsPage() {
+  return <DashboardShell><DemoSettings /></DashboardShell>;
+}

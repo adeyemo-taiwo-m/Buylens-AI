@@ -14,11 +14,20 @@ import { ANALYZE_COPY, API_CATEGORY_BY_ANALYZE_CATEGORY, type AnalyzeCategory, t
 import { PriceInput } from "./PriceInput";
 import { PriorityCheckboxes } from "./PriorityCheckboxes";
 import { UsageTextarea } from "./UsageTextarea";
+import { AnalysisProgress } from "./AnalysisProgress";
+import { SAMPLE_CATEGORY, type Sample } from "@/lib/samples";
+import { useToast } from "@/components/ui/Toast";
 
 type AnalyzeErrors = Partial<Record<"product" | "price" | "budget" | "link" | "usage" | "image", string>>;
+type AnalyzeFormProps = {
+  sampleRequest?: { sample: Sample; key: number } | null;
+  clearSignal?: number;
+  onSampleApplied?: (sample: Sample) => void;
+};
 
-export function AnalyzeForm() {
+export function AnalyzeForm({ sampleRequest = null, clearSignal = 0, onSampleApplied }: AnalyzeFormProps) {
   const router = useRouter();
+  const { toast } = useToast();
   const searchParams = useSearchParams();
   const [product, setProduct] = useState("");
   const [price, setPrice] = useState("");
@@ -33,6 +42,49 @@ export function AnalyzeForm() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [activeSample, setActiveSample] = useState<Sample | null>(null);
+
+  const resetFields = () => {
+    setProduct("");
+    setPrice("");
+    setBudget("");
+    setLink("");
+    setCategory("");
+    setUsage("");
+    setPriorities([]);
+    setImage(null);
+    setImageError(null);
+    setErrors({});
+    setSubmitted(false);
+    setSubmitError(null);
+    setActiveSample(null);
+  };
+
+  /* eslint-disable react-hooks/set-state-in-effect */
+  useEffect(() => {
+    if (!sampleRequest) return;
+    const { sample } = sampleRequest;
+    setProduct(sample.title);
+    setPrice(String(sample.price));
+    setBudget(String(sample.budget));
+    setLink(sample.listingUrl);
+    setCategory(SAMPLE_CATEGORY);
+    setUsage(sample.useCase);
+    setPriorities([]);
+    setImage(null);
+    setImageError(null);
+    setErrors({});
+    setSubmitted(false);
+    setSubmitError(null);
+    setActiveSample(sample);
+    onSampleApplied?.(sample);
+    requestAnimationFrame(() => document.getElementById("analyze-submit")?.focus());
+  }, [sampleRequest, onSampleApplied]);
+
+  useEffect(() => {
+    if (clearSignal > 0) resetFields();
+  }, [clearSignal]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   // The query values arrive after the Suspense boundary resolves; this is intentionally a one-time prefill.
   /* eslint-disable react-hooks/set-state-in-effect */
@@ -113,23 +165,28 @@ export function AnalyzeForm() {
           categoryLabel: category,
           usage: usage.trim() || undefined,
           priorities,
+          sampleId: activeSample?.id,
           image: image ? { name: image.name, size: image.size, type: image.type } : undefined,
-          description: [usage.trim(), link.trim() ? `Product link: ${link.trim()}` : ""].filter(Boolean).join("\n\n") || undefined,
+          description: [activeSample?.description, activeSample ? `Seller: ${activeSample.sellerName}` : "", activeSample?.notes, usage.trim(), link.trim() ? `Product link: ${link.trim()}` : ""].filter(Boolean).join("\n\n") || undefined,
         }),
       });
-      if (!response.ok) throw new Error("Unable to complete analysis. Please try again.");
-      const report = await response.json();
+      const body = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(body.error || "Unable to complete analysis. Please try again.");
+      const report = body;
       saveStoredReport(report);
       router.push(`/report/${report.id}`);
     } catch (error) {
       setLoading(false);
-      setSubmitError(error instanceof Error ? error.message : "Unable to complete analysis. Please try again.");
+      const message = error instanceof Error ? error.message : "Unable to complete analysis. Please try again.";
+      setSubmitError(message);
+      toast(message, "error");
     }
   };
 
   return (
     <section className="analyze-form-card relative overflow-hidden rounded-[24px] bg-white px-5 py-6 sm:min-h-[788px] sm:px-[26px] sm:py-7">
       <DecorativeArc gradientId="analyze-arc-gradient" />
+      {loading && <AnalysisProgress />}
       <form noValidate onSubmit={submit} className="relative z-10">
         <fieldset disabled={loading} className="min-w-0 border-0 p-0">
           <div className="space-y-[26px]">
@@ -173,8 +230,9 @@ export function AnalyzeForm() {
             </fieldset>
 
             <div className="flex justify-end pt-0">
-              <CtaButton type="submit" variant="primary" loading={loading} trailingIcon={<ArrowRight className="h-5 w-5" />} className="h-[49px] min-w-[218px] whitespace-nowrap">{ANALYZE_COPY.analyzeButton}</CtaButton>
+              <CtaButton id="analyze-submit" type="submit" variant="primary" loading={loading} trailingIcon={<ArrowRight className="h-5 w-5" />} className="h-[49px] min-w-[218px] whitespace-nowrap">{ANALYZE_COPY.analyzeButton}</CtaButton>
             </div>
+            {submitError && <div className="flex flex-wrap items-center justify-end gap-3 rounded-[12px] border border-status-danger-border bg-status-danger-bg px-4 py-3 text-sm text-status-danger-text" role="alert"><span>{submitError}</span><button type="button" onClick={() => setSubmitError(null)} className="font-semibold underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-status-danger focus-visible:ring-offset-2">Try again</button></div>}
           </div>
         </fieldset>
         <div aria-live="polite" className="sr-only">{Object.keys(errors).length > 0 ? ANALYZE_COPY.errorSummary(Object.keys(errors).length) : submitError || ""}</div>
