@@ -65,7 +65,7 @@ export function AnalyzeForm() {
       </svg>
       <div className="relative z-10">
         <h2 className="text-[22px] font-semibold leading-[1.25] text-[#333333] sm:text-[28px]">What are you thinking of buying?</h2>
-        <p className="mt-[7px] text-[11px] leading-[1.4] text-[#5F6B7A]">Get a clearer picture of the value, risks, and details to verify before you pay.</p>
+        <p className="mt-[7px] text-sm leading-[1.4] text-[#5F6B7A]">Get a clearer picture of the value, risks, and details to verify before you pay.</p>
         <form onSubmit={submit} className="mt-6">
           <fieldset disabled={loading}>
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-x-10">

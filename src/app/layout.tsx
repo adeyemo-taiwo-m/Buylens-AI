@@ -30,7 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full">
       <body
-        className={`${inter.variable} ${geistMono.variable} min-h-full flex flex-col font-sans bg-white text-[#101828] selection:bg-[#0B1220] selection:text-[#B8F34A]`}
+        className={`${inter.variable} ${geistMono.variable} min-h-full flex flex-col font-sans bg-white text-[#101828] selection:bg-[#0B1220] selection:text-[#8DB4F5]`}
       >
         <MotionProvider>
           <ToastProvider>{children}</ToastProvider>
