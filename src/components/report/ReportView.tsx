@@ -1,6 +1,6 @@
 "use client";
 
-import { CalendarDays, ShieldAlert, Zap } from "lucide-react";
+import { ShieldAlert, Zap } from "lucide-react";
 import Image from "next/image";
 import { BuyScoreGauge } from "@/components/ui/BuyScoreGauge";
 import { Card } from "@/components/ui/Card";
@@ -54,39 +54,38 @@ export function ReportView({ report }: ReportViewProps) {
           <ProductTile
             src={report.imageUrl}
             alt={report.title}
-            className="h-[132px] w-[132px] rounded-[20px] bg-primary-100"
+            className="h-[125px] w-[125px] rounded-[20px] bg-primary-100"
             imageClassName="p-3"
-            sizes="132px"
+            sizes="125px"
           />
           <div className="min-w-0">
-            <h1 id="report-title" className="max-w-[900px] text-[32px] font-bold leading-[1.12] tracking-[-0.035em] text-ink sm:text-[44px]">
+            <h1 id="report-title" className="max-w-[900px] text-[32px] font-bold leading-[1.12] tracking-[-0.035em] text-ink sm:whitespace-nowrap sm:text-[44px]">
               {report.title}
             </h1>
             <div className="mt-3 flex flex-wrap items-center gap-2 text-base text-ink-muted">
               <Zap className="h-4 w-4 fill-current" aria-hidden="true" />
               <span>{report.category}</span>
               <span aria-hidden="true" className="h-1 w-1 rounded-full bg-current" />
-              <CalendarDays className="h-4 w-4" aria-hidden="true" />
               <time dateTime={report.analyzedAt}>{dateFormatter.format(new Date(report.analyzedAt))}</time>
             </div>
           </div>
         </div>
       </section>
 
-      <Card variant="default" padding="none" className="overflow-hidden rounded-[16px] border-line shadow-sm">
+      <Card variant="default" padding="none" className="overflow-hidden rounded-[16px] border-line p-6 shadow-[0_1px_3px_rgba(16,24,40,0.04)] sm:p-10">
         <div className="grid md:grid-cols-[1fr_1.1fr_1fr]">
-          <div className="flex min-h-[232px] flex-col justify-center border-b border-line px-6 py-8 sm:px-10 md:border-b-0 md:border-r">
-            <span className="text-sm font-medium text-ink-muted">{REPORT_COPY.quotedPrice}</span>
-            <span className="mt-2 text-[42px] font-extrabold leading-none tracking-[-0.035em] text-ink sm:text-[52px]">
+          <div className="relative flex min-h-[232px] flex-col justify-center md:pr-10 md:after:absolute md:after:right-0 md:after:top-1/2 md:after:h-[110px] md:after:w-px md:after:-translate-y-1/2 md:after:bg-line">
+            <span className="text-base font-medium text-ink-muted">{REPORT_COPY.quotedPrice}</span>
+            <span className="mt-2 whitespace-nowrap text-[56px] font-bold leading-none tracking-[-0.035em] tabular-nums text-ink">
               {currencyFormatter.format(report.quotedPrice)}
             </span>
-            <span className="mt-5 inline-flex h-9 items-center justify-center rounded-full bg-primary-50 px-4 text-xs text-ink-muted">
+            <span className="mt-5 inline-flex h-10 w-full items-center justify-center rounded-full bg-primary-50 px-4 text-[13px] text-ink-muted">
               {REPORT_COPY.quotedPriceNote}
             </span>
           </div>
 
-          <div className="flex min-h-[232px] flex-col items-center justify-center border-b border-line px-6 py-7 md:border-b-0 md:border-r">
-            <span className="text-sm font-medium text-ink-muted">{REPORT_COPY.buyScore}</span>
+          <div className="relative flex min-h-[232px] flex-col items-center justify-center px-6 py-7 md:after:absolute md:after:right-0 md:after:top-1/2 md:after:h-[110px] md:after:w-px md:after:-translate-y-1/2 md:after:bg-line">
+            <span className="text-lg font-medium text-ink-muted">{REPORT_COPY.buyScore}</span>
             <BuyScoreGauge
               score={report.buyScore}
               size="lg"
@@ -94,18 +93,18 @@ export function ReportView({ report }: ReportViewProps) {
               verdict={report.scoreLabel.toLowerCase()}
               animate="once"
             />
-            <VerdictPill tone={scoreTone.pill} label={report.scoreLabel} />
+            <VerdictPill tone={scoreTone.pill} label={report.scoreLabel} className="mt-3 h-8 px-3 text-[13px]" />
           </div>
 
-          <div className="flex min-h-[232px] items-center px-5 py-6 sm:px-7">
-            <div className={`w-full rounded-[16px] border p-6 ${riskStyle.card}`}>
+          <div className="flex min-h-[232px] items-center md:pl-10">
+            <div className={`w-full rounded-[20px] border p-6 ${riskStyle.card}`}>
               <div className="flex items-center justify-between gap-3">
-                <span className="text-sm text-ink-muted">{REPORT_COPY.riskAssessment}</span>
+                <span className="text-base text-ink-muted">{REPORT_COPY.riskAssessment}</span>
                 <span className={`flex h-10 w-10 items-center justify-center rounded-full ${riskStyle.icon}`}>
                   <ShieldAlert className="h-5 w-5" aria-hidden="true" />
                 </span>
               </div>
-              <p className="mt-3 text-[32px] font-semibold leading-none tracking-[-0.02em] text-ink">{report.risk.level}</p>
+              <p className="mt-3 text-[40px] font-semibold leading-none tracking-[-0.02em] text-ink">{report.risk.level}</p>
               <span className={`mt-5 inline-flex h-8 items-center gap-2 rounded-full px-3 text-xs font-medium ${riskStyle.pill}`}>
                 <i aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-current" />
                 {report.risk.note}
@@ -113,18 +112,18 @@ export function ReportView({ report }: ReportViewProps) {
             </div>
           </div>
 
-          <div className={`relative col-span-full mx-5 mb-5 overflow-hidden rounded-[10px] border px-5 py-5 sm:mx-10 sm:px-5 ${scoreTone.banner}`}>
-            <div className="relative z-10 flex max-w-[760px] items-start gap-3">
-              <span className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-bold ${scoreTone.bannerIcon}`} aria-hidden="true">!</span>
-              <div>
-                <h2 className="text-lg font-semibold leading-tight text-ink">{report.verdict.title}</h2>
-                <p className="mt-1 text-sm text-ink-muted">{report.verdict.body}</p>
+          <div className={`relative col-span-full mt-6 h-[95px] overflow-hidden rounded-[16px] px-6 py-6 ${scoreTone.banner}`}>
+            <div className="relative z-10 flex min-w-0 max-w-[850px] items-start gap-4 pr-[140px] max-[639px]:pr-[70px]">
+              <span className={`mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-lg font-bold ${scoreTone.bannerIcon}`} aria-hidden="true">!</span>
+              <div className="min-w-0">
+                <h2 className="line-clamp-1 text-[22px] font-semibold leading-tight text-ink">{report.verdict.title}</h2>
+                <p className="mt-1 line-clamp-1 text-base text-ink-muted">{report.verdict.body}</p>
               </div>
             </div>
-            <Image src="/analysis/question.png" alt="" aria-hidden="true" width={150} height={126} sizes="150px" className="pointer-events-none absolute -bottom-10 right-2 h-[112px] w-[130px] object-contain opacity-90 sm:h-[126px] sm:w-[150px]" />
+            <Image src="/analysis/question.png" alt="" aria-hidden="true" width={160} height={111} sizes="130px" className="pointer-events-none absolute bottom-0 right-0 h-[110px] w-[130px] object-contain" />
           </div>
 
-          <div className="col-span-full grid gap-4 px-5 pb-5 sm:px-10 sm:pb-7 md:grid-cols-2">
+          <div className="col-span-full mt-6 grid gap-4 md:grid-cols-2">
             <ReportStatusCard
               variant="promising"
               title={REPORT_COPY.promisingTitle}

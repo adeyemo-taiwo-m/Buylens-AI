@@ -24,7 +24,7 @@ export function AnalyzeForm() {
   const [price, setPrice] = useState("");
   const [budget, setBudget] = useState("");
   const [link, setLink] = useState("");
-  const [category, setCategory] = useState<AnalyzeCategory>("phones-tablets");
+  const [category, setCategory] = useState<AnalyzeCategory>("");
   const [usage, setUsage] = useState("");
   const [priorities, setPriorities] = useState<AnalyzePriority[]>([]);
   const [image, setImage] = useState<File | null>(null);

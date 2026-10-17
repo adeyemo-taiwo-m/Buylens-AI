@@ -12,7 +12,7 @@ const nextConfig: NextConfig = {
       { source: "/app/report/:id/questions", destination: "/report/:id/questions", permanent: true },
       { source: "/app/report/:id/compare", destination: "/compare", permanent: true },
       { source: "/app/report/:id", destination: "/report/:id", permanent: true },
-      { source: "/analysis/:id", destination: "/report/:id", permanent: true },
+      { source: "/analysis/:id((?!.*\\.).*)", destination: "/report/:id", permanent: true },
     ];
   },
 };

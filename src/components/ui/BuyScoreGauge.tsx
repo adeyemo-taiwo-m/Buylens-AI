@@ -1,14 +1,7 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useInView, useReducedMotion } from "framer-motion";
-import { MOTION_EASE } from "@/lib/motion";
-import {
-  BUY_SCORE_GAUGE_ANGLES,
-  BUY_SCORE_GAUGE_PETAL_COUNT,
-  BUY_SCORE_GAUGE_PETAL_PATH,
-  BUY_SCORE_GAUGE_VIEWBOX,
-} from "./gauge.config";
 
 export type BuyScoreGaugeSize = "sm" | "md" | "lg";
 
@@ -22,18 +15,26 @@ type BuyScoreGaugeProps = {
 };
 
 const SIZE_WIDTHS: Record<BuyScoreGaugeSize, number> = { sm: 125, md: 170, lg: 217 };
+const SEGMENT_COUNT = 20;
+const VIEWBOX_WIDTH = 217;
+const VIEWBOX_HEIGHT = 112;
+const CENTER_X = VIEWBOX_WIDTH / 2;
+const CENTER_Y = 99;
+const INNER_RADIUS = 59;
+const OUTER_RADIUS = 76;
+const SEGMENT_ANGLES = Array.from({ length: SEGMENT_COUNT }, (_, index) => 180 + (180 / (SEGMENT_COUNT - 1)) * index);
 
 function useCountUp(target: number, active: boolean, reduced: boolean) {
   const [value, setValue] = useState(reduced || !active ? (active ? target : 0) : 0);
 
   useEffect(() => {
     if (!active) {
-      setValue(0);
-      return;
+      const frame = window.requestAnimationFrame(() => setValue(0));
+      return () => window.cancelAnimationFrame(frame);
     }
     if (reduced) {
-      setValue(target);
-      return;
+      const frame = window.requestAnimationFrame(() => setValue(target));
+      return () => window.cancelAnimationFrame(frame);
     }
 
     let frame = 0;
@@ -50,6 +51,14 @@ function useCountUp(target: number, active: boolean, reduced: boolean) {
   return value;
 }
 
+function pointAt(radius: number, angle: number) {
+  const radians = (angle * Math.PI) / 180;
+  return {
+    x: CENTER_X + radius * Math.cos(radians),
+    y: CENTER_Y + radius * Math.sin(radians),
+  };
+}
+
 export function BuyScoreGauge({
   score,
   size = "md",
@@ -62,64 +71,53 @@ export function BuyScoreGauge({
   const gaugeRef = useRef<HTMLDivElement>(null);
   const inView = useInView(gaugeRef, { amount: 0.4, once: true });
   const active = animate === false || reduced || inView;
-  const displayedScore = useCountUp(Math.max(0, Math.min(100, score)), active, reduced || animate === false);
-  const [hovered, setHovered] = useState(false);
-  const id = useId().replace(/:/g, "");
-  const filledPetals = Math.round((Math.max(0, Math.min(100, score)) / 100) * BUY_SCORE_GAUGE_PETAL_COUNT);
+  const boundedScore = Math.max(0, Math.min(100, score));
+  const displayedScore = useCountUp(boundedScore, active, reduced || animate === false);
+  const filledSegments = Math.round((boundedScore / 100) * SEGMENT_COUNT);
   const gaugeWidth = width ?? SIZE_WIDTHS[size];
 
   return (
-    <div
-      ref={gaugeRef}
-      className="group/gauge relative flex shrink-0 flex-col items-center"
-      style={{ width: gaugeWidth }}
-      onMouseEnter={() => interactive && setHovered(true)}
-      onMouseLeave={() => interactive && setHovered(false)}
-      onFocus={() => interactive && setHovered(true)}
-      onBlur={() => interactive && setHovered(false)}
-    >
+    <div ref={gaugeRef} className="group/gauge relative flex shrink-0 flex-col items-center" style={{ width: gaugeWidth }}>
       <svg
-        viewBox={`0 0 ${BUY_SCORE_GAUGE_VIEWBOX.width} ${BUY_SCORE_GAUGE_VIEWBOX.height}`}
+        viewBox={`0 0 ${VIEWBOX_WIDTH} ${VIEWBOX_HEIGHT}`}
         className="h-auto w-full overflow-visible"
         role="img"
         aria-label={`Buy score ${score} percent, ${verdict}`}
         tabIndex={interactive ? 0 : undefined}
       >
-        <defs>
-          <clipPath id={`buy-score-gauge-clip-${id}`}>
-            <rect x="0" y="0" width="217" height="112" />
-          </clipPath>
-        </defs>
-        <g clipPath={`url(#buy-score-gauge-clip-${id})`}>
-          {BUY_SCORE_GAUGE_ANGLES.map((angle, index) => {
-            const filled = active && index < filledPetals;
-            return (
-              <g key={angle} transform={`translate(108.5 112) rotate(${angle})`}>
-                <motion.path
-                  d={BUY_SCORE_GAUGE_PETAL_PATH}
-                  initial={reduced || animate === false ? { opacity: 1, scale: 1 } : { opacity: 1, scale: 0.9 }}
-                  animate={{
-                    fill: filled ? "var(--primary-600)" : "var(--primary-100)",
-                    opacity: 1,
-                    scale: hovered && interactive && !reduced ? 1.05 : active ? 1 : 0.9,
-                  }}
-                  transition={{
-                    fill: { duration: reduced || animate === false ? 0 : 0.18, delay: reduced || animate === false ? 0 : index * 0.06 },
-                    scale: { duration: reduced || animate === false ? 0 : 0.22, delay: reduced || animate === false ? 0 : index * 0.06, ease: MOTION_EASE },
-                  }}
-                  style={{ transformBox: "fill-box", transformOrigin: "center" }}
-                />
-              </g>
-            );
-          })}
-        </g>
+        {SEGMENT_ANGLES.map((angle, index) => {
+          const inner = pointAt(INNER_RADIUS, angle);
+          const outer = pointAt(OUTER_RADIUS, angle);
+          const filled = active && index < filledSegments;
+          const thickness = 6 + Math.sin((index / (SEGMENT_COUNT - 1)) * Math.PI) * 3;
+
+          return (
+            <motion.line
+              key={angle}
+              x1={inner.x}
+              y1={inner.y}
+              x2={outer.x}
+              y2={outer.y}
+              strokeLinecap="round"
+              initial={{ opacity: 1 }}
+              animate={{
+                opacity: 1,
+                stroke: filled ? "var(--primary-600)" : "var(--primary-100)",
+              }}
+              transition={{
+                stroke: { duration: reduced || animate === false ? 0 : 0.18, delay: reduced || animate === false ? 0 : index * 0.035 },
+              }}
+              strokeWidth={thickness}
+            />
+          );
+        })}
         <text
-          x="108.5"
-          y="101"
+          x={CENTER_X}
+          y="87"
           textAnchor="middle"
           dominantBaseline="middle"
           aria-hidden="true"
-          fontSize={26}
+          fontSize={36}
           fontWeight={600}
           className="fill-ink tabular-nums"
         >
@@ -127,7 +125,7 @@ export function BuyScoreGauge({
         </text>
       </svg>
       {interactive && (
-        <span className="pointer-events-none absolute bottom-[calc(100%+6px)] left-1/2 z-20 w-[220px] -translate-x-1/2 translate-y-1 rounded-[10px] border border-[#E4ECF8] bg-white px-3 py-2 text-center text-xs leading-[1.35] text-[#42516A] opacity-0 shadow-[0_8px_24px_rgba(15,27,51,0.12)] transition duration-150 group-hover/gauge:translate-y-0 group-hover/gauge:opacity-100 group-focus-within/gauge:translate-y-0 group-focus-within/gauge:opacity-100">
+        <span className="pointer-events-none absolute bottom-[calc(100%+6px)] left-1/2 z-20 w-[220px] -translate-x-1/2 translate-y-1 rounded-[10px] border border-line bg-white px-3 py-2 text-center text-xs leading-[1.35] text-ink-muted opacity-0 shadow-[0_8px_24px_rgba(15,27,51,0.12)] transition duration-150 group-hover/gauge:translate-y-0 group-hover/gauge:opacity-100 group-focus-within/gauge:translate-y-0 group-focus-within/gauge:opacity-100">
           How the score works: based on price, specs, reviews and warranty clarity.
         </span>
       )}

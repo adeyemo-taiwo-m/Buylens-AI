@@ -31,18 +31,18 @@ export const REPORT_COPY = {
 export const SCORE_TONE_STYLES = {
   positive: {
     pill: "success" as const,
-    banner: "bg-primary-100 border-primary-200",
+    banner: "bg-primary-100",
     bannerIcon: "bg-primary-600 text-white",
   },
   neutral: {
     pill: "caution" as const,
-    banner: "bg-status-consider-bg border-status-consider-border",
-    bannerIcon: "bg-status-consider text-white",
+    banner: "bg-primary-100",
+    bannerIcon: "bg-primary-600 text-white",
   },
   negative: {
     pill: "risk" as const,
-    banner: "bg-status-danger-bg border-status-danger-border",
-    bannerIcon: "bg-status-danger text-white",
+    banner: "bg-primary-100",
+    bannerIcon: "bg-primary-600 text-white",
   },
 } satisfies Record<PurchaseReport["scoreTone"], { pill: "success" | "caution" | "risk"; banner: string; bannerIcon: string }>;
 
@@ -64,6 +64,15 @@ export const RISK_STYLES = {
   },
 } satisfies Record<PurchaseReport["risk"]["level"], { card: string; icon: string; pill: string }>;
 
+export const CATEGORY_IMAGE_FALLBACKS: Record<DecisionReport["category"], string> = {
+  solar_power: "/analysis/solar.png",
+  computing: "/laptop-1.jpg",
+  smartphones: "/samsung-a56-hd.webp",
+  appliances: "/logo-icon.svg",
+  generators: "/logo-icon.svg",
+  other: "/logo-icon.svg",
+};
+
 export const SELLER_QUESTIONS = [
   "What are the exact inverter & battery models?",
   "What is the battery's cycle-life rating and test conditions?",
@@ -82,7 +91,7 @@ export const NEXT_STEPS = [
     description: "Request an itemized quote covering installation, cabling and mounting.",
   },
   {
-    title: "Confirm the warranty coverage",
+    title: "Confirm warranty terms",
     description: "Get the warranty terms in writing, including what it covers and for how long.",
   },
 ] as const;
@@ -125,12 +134,6 @@ function getVerdict(report: DecisionReport, tone: PurchaseReport["scoreTone"]) {
   return { title: "Pause before you pay.", body: report.verdictSummary };
 }
 
-function getImageUrl(category: string) {
-  if (category === "smartphones") return "/samsung-a56-hd.webp";
-  if (category === "computing") return "/laptop-1.jpg";
-  return "/analysis/solar.png";
-}
-
 export function toPurchaseReport(report: DecisionReport): PurchaseReport {
   const tone = SCORE_TONES[report.verdict];
   const isDemoSolar = report.id === DEMO_SOLAR_REPORT.id || report.productName.includes("Hybrid Inverter");
@@ -146,7 +149,7 @@ export function toPurchaseReport(report: DecisionReport): PurchaseReport {
     id: report.id,
     title: isDemoSolar ? "5kVA Hybrid Inverter + 5kWh Lithium Battery" : report.productName,
     category: CATEGORY_LABELS[report.category] ?? report.category,
-    imageUrl: getImageUrl(report.category),
+    imageUrl: CATEGORY_IMAGE_FALLBACKS[report.category] ?? CATEGORY_IMAGE_FALLBACKS.other,
     analyzedAt: isDemoSolar ? "2026-10-11T00:00:00.000Z" : report.createdAt,
     quotedPrice: report.price,
     currency: "NGN",

@@ -12,7 +12,7 @@ export function ReportEvidenceAccordion({ evidence }: { evidence: PurchaseReport
   const contentId = useId();
 
   return (
-    <section className="overflow-hidden rounded-[16px] border border-line bg-surface shadow-sm">
+    <section className="overflow-hidden rounded-[16px] border border-line bg-surface shadow-[0_1px_3px_rgba(16,24,40,0.04)]">
       <button
         type="button"
         aria-expanded={open}
@@ -20,12 +20,10 @@ export function ReportEvidenceAccordion({ evidence }: { evidence: PurchaseReport
         onClick={() => setOpen((value) => !value)}
         className="flex min-h-[100px] w-full items-center gap-4 px-6 text-left transition-colors hover:bg-primary-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-600 sm:px-8"
       >
-        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] border border-primary-300 bg-primary-50 text-primary-600">
-          <FileText className="h-5 w-5" aria-hidden="true" />
-        </span>
+        <FileText className="h-8 w-8 shrink-0 text-primary-600" aria-hidden="true" />
         <span className="min-w-0 flex-1">
-          <span className="block text-[22px] font-bold leading-tight text-ink">{REPORT_COPY.evidenceTitle}</span>
-          <span className="mt-1 block text-sm text-ink-muted">{REPORT_COPY.evidenceSubtitle}</span>
+          <span className="block text-[22px] font-semibold leading-tight text-ink">{REPORT_COPY.evidenceTitle}</span>
+          <span className="mt-1 block text-base text-ink-muted">{REPORT_COPY.evidenceSubtitle}</span>
         </span>
         <ChevronRight className={`h-5 w-5 shrink-0 text-primary-600 transition-transform duration-200 ${open ? "rotate-90" : ""}`} aria-hidden="true" />
       </button>

@@ -32,27 +32,27 @@ export function ReportQuestionsCard({ report, onCopyAll }: ReportQuestionsCardPr
   };
 
   return (
-    <Card variant="default" padding="lg" className="rounded-[16px] border-line shadow-sm sm:p-10">
+    <Card variant="default" padding="lg" className="rounded-[16px] border-line shadow-[0_1px_3px_rgba(16,24,40,0.04)] sm:p-10">
       <div className="flex flex-col justify-between gap-5 border-b border-line pb-6 sm:flex-row sm:items-center">
         <div>
           <h2 className="text-[28px] font-bold leading-[1.15] text-ink">{REPORT_COPY.questionsTitle}</h2>
-          <p className="mt-2 text-sm text-ink-muted">{REPORT_COPY.questionsSubtitle}</p>
+          <p className="mt-2 text-base text-ink-muted">{REPORT_COPY.questionsSubtitle}</p>
         </div>
-        <Button type="button" variant="primary" size="lg" onClick={copyAll} className="h-12 shrink-0 px-6">
+        <Button type="button" variant="primary" size="lg" onClick={copyAll} className="h-14 w-[240px] max-w-full shrink-0 px-7 text-base font-medium">
           {copiedId === "all" ? "Copied" : REPORT_COPY.copyQuestions}
         </Button>
       </div>
 
       <ol className="divide-y divide-line">
         {report.sellerQuestions.map((question, index) => (
-          <li key={question} className="flex min-h-[66px] items-center gap-3 py-3 text-sm text-ink-muted transition-colors hover:bg-primary-50 sm:gap-4">
+          <li key={question} className="flex min-h-[66px] items-center gap-3 py-3 text-base text-ink-muted transition-colors hover:bg-primary-50 sm:gap-4">
             <span aria-hidden="true" className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-600 text-[11px] font-semibold text-white">{index + 1}</span>
             <span className="min-w-0 flex-1 leading-[1.4]">{question}</span>
             <button
               type="button"
               aria-label={`Copy question ${index + 1}`}
               onClick={() => void copyQuestion(question, index)}
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] bg-primary-50 text-primary-600 transition-colors hover:bg-primary-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:ring-offset-2"
+              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] bg-primary-50 text-primary-600 transition-colors hover:bg-primary-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:ring-offset-2"
             >
               {copiedId === index ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
             </button>

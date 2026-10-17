@@ -40,7 +40,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
   }, [drawerOpen]);
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-[#F6F8FC] text-[#0F1B33]">
+    <div className="min-h-screen overflow-x-hidden bg-canvas text-ink">
       <a href="#main" className="skip-link">Skip to content</a>
       <div className={drawerOpen ? "fixed inset-0 z-40 bg-[#0F1B33]/40 lg:hidden" : "hidden"} aria-hidden="true" onClick={() => setDrawerOpen(false)} />
       <div ref={drawerRef}>
