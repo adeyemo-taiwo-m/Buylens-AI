@@ -739,7 +739,7 @@ body {
 .skip-link { position: fixed; left: 16px; top: 12px; z-index: 100; transform: translateY(-150%); border-radius: 8px; background: #0f1b33; color: #fff; padding: 8px 12px; font-size: 14px; transition: transform 150ms ease; }
 .skip-link:focus { transform: translateY(0); }
 .dashboard-sidebar { border-right: 1px solid #e8edf6; }
-.dashboard-promo { box-sizing: border-box; width: 244px; height: 281px; margin-left: -5px; overflow: visible; background: #eff5fe; padding: 75px 30px 0; }
+.dashboard-promo { box-sizing: border-box; width: 244px; height: auto; margin-left: -5px; overflow: visible; background: #eff5fe; padding: 75px 30px 16px; }
 .dashboard-input { display: block; width: 100%; height: 48px; border: 1px solid #d5dce8; border-radius: 12px; background: #fff; padding: 0 12px; color: #0f1b33; font-size: 15px; outline: none; transition: border-color 150ms ease, box-shadow 150ms ease; }
 .dashboard-input-with-icon { padding-left: 40px; }
 .dashboard-input::placeholder { color: #9aa3b2; }
@@ -803,7 +803,6 @@ body {
 
 @media (min-width: 1024px) and (max-width: 1279px) {
   .dashboard-sidebar { width: 248px; padding-inline: 24px; }
-  .dashboard-sidebar nav { margin-top: 56px; }
   .dashboard-promo { width: 196px; margin-left: 0; padding-inline: 12px; }
   .dashboard-main { margin-left: 248px; padding-inline: 32px; }
   .dashboard-analysis-row { grid-template-columns: minmax(0, 1fr) 320px 24px; column-gap: 24px; }

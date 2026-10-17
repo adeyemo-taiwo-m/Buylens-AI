@@ -62,7 +62,7 @@ export function TopNavigation({ className }: TopNavigationProps) {
             </Button>
           </Link>
 
-          <Link href="/app/analyze">
+          <Link href="/analyze">
             <Button
               buttonType="Primary"
               size="Small"
@@ -75,7 +75,7 @@ export function TopNavigation({ className }: TopNavigationProps) {
 
         {/* Mobile Action & Hamburger Toggle (< 640px) */}
         <div className="flex sm:hidden items-center gap-2">
-          <Link href="/app/analyze">
+          <Link href="/analyze">
             <Button
               buttonType="Primary"
               size="Small"
@@ -125,7 +125,7 @@ export function TopNavigation({ className }: TopNavigationProps) {
                 Sign in
               </Button>
             </Link>
-            <Link href="/app/analyze" onClick={() => setMobileMenuOpen(false)}>
+            <Link href="/analyze" onClick={() => setMobileMenuOpen(false)}>
               <Button
                 buttonType="Primary"
                 size="Small"

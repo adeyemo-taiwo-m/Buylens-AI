@@ -99,7 +99,7 @@ export function BuyScoreGauge({
                   d={BUY_SCORE_GAUGE_PETAL_PATH}
                   initial={reduced || animate === false ? { opacity: 1, scale: 1 } : { opacity: 1, scale: 0.9 }}
                   animate={{
-                    fill: filled ? "#2563EB" : "#D9D9D9",
+                    fill: filled ? "var(--primary-600)" : "var(--primary-100)",
                     opacity: 1,
                     scale: hovered && interactive && !reduced ? 1.05 : active ? 1 : 0.9,
                   }}
@@ -121,7 +121,7 @@ export function BuyScoreGauge({
           aria-hidden="true"
           fontSize={26}
           fontWeight={600}
-          className="fill-[#0F1B33] tabular-nums"
+          className="fill-ink tabular-nums"
         >
           {displayedScore}%
         </text>

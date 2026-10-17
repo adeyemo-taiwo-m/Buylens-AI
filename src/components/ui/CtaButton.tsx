@@ -25,7 +25,7 @@ export function CtaButton({ href, variant = "primary", trailingIcon, loading = f
     </>
   );
   const classes = cn(
-    "app-cta inline-flex h-12 items-center justify-center gap-3 rounded-full px-6 text-base font-medium transition-[background-color,border-color,color,box-shadow,transform] duration-180 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60",
+    "app-cta inline-flex h-12 cursor-pointer items-center justify-center gap-3 rounded-full px-6 text-base font-medium transition-[background-color,border-color,color,box-shadow,transform] duration-180 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60",
     variants[variant],
     className
   );

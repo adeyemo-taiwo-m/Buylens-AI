@@ -1,88 +1,66 @@
 "use client";
 
-import { useState, use } from "react";
-import Link from "next/link";
-import { Header } from "@/components/layout/Header";
+import { use, useEffect, useState } from "react";
+import { CtaButton } from "@/components/ui/CtaButton";
+import { Card } from "@/components/ui/Card";
+import { DashboardShell } from "@/components/dashboard/DashboardShell";
 import { ReportView } from "@/components/report/ReportView";
-import { DecisionReport } from "@/types/analysis";
-import { getStoredReportById } from "@/lib/storage/reports";
+import { toPurchaseReport } from "@/components/report/purchaseReport.data";
 import { DEMO_SOLAR_REPORT } from "@/data/demo";
-import { ArrowLeft, Printer, Share2, Check } from "lucide-react";
+import { getStoredReports } from "@/lib/storage/reports";
+import type { DecisionReport } from "@/types/analysis";
 
-export default function ReportDetailPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+export default function ReportDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
-  const [report] = useState<DecisionReport>(() => {
-    if (id === "demo" || id === DEMO_SOLAR_REPORT.id) return DEMO_SOLAR_REPORT;
-    return getStoredReportById(id) || DEMO_SOLAR_REPORT;
-  });
-  const [copiedLink, setCopiedLink] = useState(false);
+  const isDemo = id === "demo" || id === DEMO_SOLAR_REPORT.id;
+  const [report, setReport] = useState<DecisionReport | null>(isDemo ? DEMO_SOLAR_REPORT : null);
+  const [loading, setLoading] = useState(!isDemo);
 
-  const handlePrint = () => {
-    window.print();
-  };
-
-  const handleShare = () => {
-    navigator.clipboard.writeText(window.location.href);
-    setCopiedLink(true);
-    setTimeout(() => setCopiedLink(false), 2000);
-  };
-
+  useEffect(() => {
+    if (isDemo) return;
+    const frame = window.requestAnimationFrame(() => {
+      const storedReport = getStoredReports().find((item) => item.id === id) ?? null;
+      setReport(storedReport);
+      setLoading(false);
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [id, isDemo]);
 
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-[#F7F8FA] text-[#111318]">
-      <Header />
+    <DashboardShell>
+      {loading ? <ReportLoadingState /> : report ? <ReportView report={toPurchaseReport(report)} /> : <MissingReportState />}
+    </DashboardShell>
+  );
+}
 
-      <main className="flex-1 pb-16">
-        {/* Sub-header navigation toolbar */}
-        <div className="border-b border-zinc-200 bg-white/50 backdrop-blur-sm print:hidden">
-          <div className="max-w-4xl mx-auto px-6 h-12 flex items-center justify-between">
-            <Link
-              href="/history"
-              className="inline-flex items-center gap-1.5 text-xs font-medium text-zinc-600 hover:text-zinc-950 transition-colors"
-            >
-              <ArrowLeft className="h-3.5 w-3.5" />
-              <span>Back to Reports History</span>
-            </Link>
-
-            <div className="flex items-center gap-2">
-              <button
-                onClick={handleShare}
-                className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium rounded-lg border border-zinc-200 bg-white hover:bg-zinc-50 text-zinc-700 transition-colors"
-              >
-                {copiedLink ? (
-                  <>
-                    <Check className="h-3.5 w-3.5 text-emerald-600" />
-                    <span>Link Copied</span>
-                  </>
-                ) : (
-                  <>
-                    <Share2 className="h-3.5 w-3.5 text-zinc-500" />
-                    <span>Share Report</span>
-                  </>
-                )}
-              </button>
-
-              <button
-                onClick={handlePrint}
-                className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium rounded-lg border border-zinc-200 bg-white hover:bg-zinc-50 text-zinc-700 transition-colors"
-              >
-                <Printer className="h-3.5 w-3.5 text-zinc-500" />
-                <span>Print / PDF</span>
-              </button>
-            </div>
-          </div>
+function ReportLoadingState() {
+  return (
+    <div className="mx-auto w-full max-w-[1060px] space-y-6 pb-8" aria-label="Loading purchase report" role="status">
+      <div className="h-9 w-36 animate-pulse rounded-full bg-primary-100" />
+      <div className="flex items-center gap-6">
+        <div className="h-[132px] w-[132px] animate-pulse rounded-[20px] bg-primary-100" />
+        <div className="space-y-3">
+          <div className="h-10 w-[min(70vw,720px)] animate-pulse rounded-lg bg-primary-100" />
+          <div className="h-5 w-64 animate-pulse rounded-lg bg-primary-100" />
         </div>
+      </div>
+      <div className="h-[520px] animate-pulse rounded-[16px] bg-surface" />
+    </div>
+  );
+}
 
-        {report && <ReportView report={report} />}
-      </main>
-
-      <footer className="border-t border-zinc-200 bg-white py-6 text-center text-xs text-zinc-500 print:hidden">
-        BuyLens AI — Independent Purchase Decision Support
-      </footer>
+function MissingReportState() {
+  return (
+    <div className="mx-auto flex min-h-[55vh] w-full max-w-[700px] items-center justify-center py-12">
+      <Card variant="default" padding="lg" className="w-full text-center shadow-sm">
+        <h1 className="text-3xl font-bold text-ink">Purchase report unavailable</h1>
+        <p className="mx-auto mt-3 max-w-[480px] text-sm leading-6 text-ink-muted">
+          This report could not be found. Start a new analysis to create a fresh purchase report.
+        </p>
+        <CtaButton href="/analyze" variant="primary" className="mt-6">
+          Analyze a purchase
+        </CtaButton>
+      </Card>
     </div>
   );
 }

@@ -6,5 +6,5 @@ export const CTA_DATA = {
   },
   subtext: "Understand the value, uncover potential risks, and know what to verify before you pay.",
   buttonLabel: "Analyze a purchase",
-  href: "/app/analyze",
+  href: "/analyze",
 } as const;

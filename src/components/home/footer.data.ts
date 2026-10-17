@@ -12,7 +12,7 @@ export const FOOTER_LINK_GROUPS: FooterLinkGroup[] = [
   {
     title: "Explore",
     links: [
-      { label: "Analyze a Purchase", href: "/app/analyze" },
+      { label: "Analyze a Purchase", href: "/analyze" },
       { label: "How It Works", href: "#how-it-works" },
       { label: "Sample Report", href: "#see-the-analysis" },
       { label: "FAQ", href: "#faq" },

@@ -35,7 +35,7 @@ export default function Home() {
             </Reveal>
             <Reveal grouped className="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Link href="#how-it-works" className="buyhero-secondary-cta inline-flex h-12 w-full max-w-[220px] items-center justify-center gap-2 rounded-full bg-[#DDEBFE] px-6 text-title-4-medium text-[#2563EB] shadow-none transition-[background-color,border-color,color,box-shadow,transform,opacity] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] sm:w-[200px]">See how it works <span aria-hidden="true" className="text-lg">↓</span></Link>
-              <Link href="/app/analyze" className="buyhero-primary-cta inline-flex h-[50px] w-full max-w-[240px] items-center justify-center gap-2 rounded-full bg-[var(--blue-500)] px-6 text-title-4-medium text-white shadow-[0_8px_22px_-8px_rgba(47,111,235,.55)] transition sm:w-[220px]">Analyze a purchase <ArrowRight className="h-[18px] w-[18px]" /></Link>
+              <Link href="/analyze" className="buyhero-primary-cta inline-flex h-[50px] w-full max-w-[240px] items-center justify-center gap-2 rounded-full bg-[var(--blue-500)] px-6 text-title-4-medium text-white shadow-[0_8px_22px_-8px_rgba(47,111,235,.55)] transition sm:w-[220px]">Analyze a purchase <ArrowRight className="h-[18px] w-[18px]" /></Link>
             </Reveal>
           </RevealGroup>
         </section>

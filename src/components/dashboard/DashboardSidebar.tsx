@@ -19,7 +19,7 @@ export function DashboardSidebar({ mobileOpen = false, onNavigate }: DashboardSi
   return (
     <aside
       className={cn(
-        "dashboard-sidebar fixed inset-y-0 left-0 z-50 flex w-[296px] -translate-x-full flex-col bg-white pb-5 pl-[31px] pr-[29px] pt-[43px] transition-transform duration-300 lg:translate-x-0",
+        "dashboard-sidebar fixed inset-y-0 left-0 z-50 flex w-[296px] -translate-x-full flex-col rounded-tr-[32px] bg-white pb-5 pl-[31px] pr-[29px] pt-[43px] transition-transform duration-300 lg:translate-x-0",
         mobileOpen && "translate-x-0"
       )}
       aria-label="Sidebar"
@@ -28,7 +28,7 @@ export function DashboardSidebar({ mobileOpen = false, onNavigate }: DashboardSi
         <BrandLogo size="dashboard" priority />
       </Link>
 
-      <nav aria-label="Main" className="mt-[82px]">
+      <nav aria-label="Main" className="mt-[64px]">
         <div className="space-y-4">
           {DASHBOARD_NAV.slice(0, 4).map((item) => {
             const Icon = item.icon;
@@ -36,7 +36,7 @@ export function DashboardSidebar({ mobileOpen = false, onNavigate }: DashboardSi
             return <SidebarLink key={item.href} item={item} Icon={Icon} active={active} onNavigate={onNavigate} />;
           })}
         </div>
-        <div className="mb-[17px] mt-[15px] h-px bg-[#D9DEE8]" />
+        <div className="my-4 h-px bg-[#D9DEE8]" />
         <div className="space-y-4">
           {DASHBOARD_NAV.slice(4).map((item) => {
             const Icon = item.icon;
@@ -46,7 +46,7 @@ export function DashboardSidebar({ mobileOpen = false, onNavigate }: DashboardSi
         </div>
       </nav>
 
-      <div className="mt-auto">
+      <div className="mt-auto hidden lg:block">
         <div className="dashboard-promo relative rounded-[24px]">
           <motion.div
             aria-hidden="true"
