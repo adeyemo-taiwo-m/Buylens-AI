@@ -28,6 +28,7 @@ export const ANALYZE_COPY = {
   requiredError: "Add a product name or link to continue.",
   priceError: "Enter a valid price.",
   linkError: "Enter a valid link.",
+  usageError: "Keep your description to 300 characters or fewer.",
   errorSummary: (count: number) => `${count} ${count === 1 ? "field needs" : "fields need"} attention.`,
 } as const;
 

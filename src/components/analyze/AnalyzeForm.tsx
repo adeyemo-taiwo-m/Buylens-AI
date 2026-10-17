@@ -62,13 +62,22 @@ export function AnalyzeForm() {
     }
     if (price && Number(price) <= 0) nextErrors.price = ANALYZE_COPY.priceError;
     if (budget && Number(budget) <= 0) nextErrors.budget = ANALYZE_COPY.priceError;
-    if (usage.length > 300) nextErrors.usage = "Keep your description to 300 characters or fewer.";
+    if (usage.length > 300) nextErrors.usage = ANALYZE_COPY.usageError;
     if (imageError) nextErrors.image = imageError;
     return nextErrors;
   };
 
   const validateAfterBlur = () => {
     if (submitted) setErrors(validate());
+  };
+
+  const clearError = (key: keyof AnalyzeErrors) => {
+    setErrors((current) => {
+      if (!(key in current)) return current;
+      const next = { ...current };
+      delete next[key];
+      return next;
+    });
   };
 
   const focusFirstInvalid = (nextErrors: AnalyzeErrors) => {
@@ -127,16 +136,16 @@ export function AnalyzeForm() {
             <FormField label={ANALYZE_COPY.productLabel} htmlFor="analyze-product" error={errors.product}>
               <div className="relative">
                 <Search aria-hidden="true" strokeWidth={1.75} className="pointer-events-none absolute left-[14px] top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-[#7B8494]" />
-                <input id="analyze-product" name="product" autoComplete="off" value={product} onChange={(event) => { setProduct(event.target.value); if (errors.product) setErrors((current) => ({ ...current, product: undefined })); }} onBlur={validateAfterBlur} placeholder={ANALYZE_COPY.productPlaceholder} aria-describedby={errors.product ? "analyze-product-error" : undefined} aria-invalid={Boolean(errors.product)} className={cn("dashboard-input dashboard-input-with-icon", errors.product && "analyze-input-error")} />
+                <input id="analyze-product" name="product" autoComplete="off" value={product} onChange={(event) => { setProduct(event.target.value); clearError("product"); }} onBlur={validateAfterBlur} placeholder={ANALYZE_COPY.productPlaceholder} aria-describedby={errors.product ? "analyze-product-error" : undefined} aria-invalid={Boolean(errors.product)} className={cn("dashboard-input dashboard-input-with-icon", errors.product && "analyze-input-error")} />
               </div>
             </FormField>
 
             <div className="grid grid-cols-1 gap-7 lg:grid-cols-2 lg:gap-x-10">
               <FormField label={ANALYZE_COPY.priceLabel} htmlFor="analyze-price" error={errors.price}>
-                <PriceInput id="analyze-price" name="price" inputMode="numeric" placeholder={ANALYZE_COPY.pricePlaceholder} value={price} onValueChange={setPrice} onBlur={validateAfterBlur} invalid={Boolean(errors.price)} aria-describedby={errors.price ? "analyze-price-error" : undefined} />
+                <PriceInput id="analyze-price" name="price" inputMode="numeric" placeholder={ANALYZE_COPY.pricePlaceholder} value={price} onValueChange={(value) => { setPrice(value); clearError("price"); }} onBlur={validateAfterBlur} invalid={Boolean(errors.price)} aria-describedby={errors.price ? "analyze-price-error" : undefined} />
               </FormField>
               <FormField label={ANALYZE_COPY.budgetLabel} htmlFor="analyze-budget" error={errors.budget}>
-                <PriceInput id="analyze-budget" name="budget" inputMode="numeric" placeholder={ANALYZE_COPY.budgetPlaceholder} value={budget} onValueChange={setBudget} onBlur={validateAfterBlur} invalid={Boolean(errors.budget)} aria-describedby={errors.budget ? "analyze-budget-error" : undefined} />
+                <PriceInput id="analyze-budget" name="budget" inputMode="numeric" placeholder={ANALYZE_COPY.budgetPlaceholder} value={budget} onValueChange={(value) => { setBudget(value); clearError("budget"); }} onBlur={validateAfterBlur} invalid={Boolean(errors.budget)} aria-describedby={errors.budget ? "analyze-budget-error" : undefined} />
               </FormField>
             </div>
 
@@ -144,7 +153,7 @@ export function AnalyzeForm() {
               <FormField label={ANALYZE_COPY.linkLabel} htmlFor="analyze-link" error={errors.link}>
                 <div className="relative">
                   <Link2 aria-hidden="true" strokeWidth={1.75} className="pointer-events-none absolute left-[14px] top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-[#7B8494]" />
-                  <input id="analyze-link" name="link" type="url" value={link} onChange={(event) => setLink(event.target.value)} onBlur={validateAfterBlur} placeholder={ANALYZE_COPY.linkPlaceholder} aria-describedby={errors.link ? "analyze-link-error" : undefined} aria-invalid={Boolean(errors.link)} className={cn("dashboard-input dashboard-input-with-icon", errors.link && "analyze-input-error")} />
+                  <input id="analyze-link" name="link" type="url" value={link} onChange={(event) => { setLink(event.target.value); clearError("link"); }} onBlur={validateAfterBlur} placeholder={ANALYZE_COPY.linkPlaceholder} aria-describedby={errors.link ? "analyze-link-error" : undefined} aria-invalid={Boolean(errors.link)} className={cn("dashboard-input dashboard-input-with-icon", errors.link && "analyze-input-error")} />
                 </div>
               </FormField>
               <FormField label={ANALYZE_COPY.categoryLabel} htmlFor="analyze-category">
@@ -153,10 +162,10 @@ export function AnalyzeForm() {
             </div>
 
             <FormField label={ANALYZE_COPY.usageLabel} htmlFor="analyze-usage" error={errors.usage}>
-              <UsageTextarea value={usage} onValueChange={setUsage} onBlur={validateAfterBlur} invalid={Boolean(errors.usage)} disabled={loading} describedBy={errors.usage ? "analyze-usage-error" : undefined} />
+              <UsageTextarea value={usage} onValueChange={(value) => { setUsage(value); clearError("usage"); }} onBlur={validateAfterBlur} invalid={Boolean(errors.usage)} disabled={loading} describedBy={errors.usage ? "analyze-usage-error" : undefined} />
             </FormField>
 
-            <ImageDropzone file={image} onFileChange={setImage} onErrorChange={(error) => { setImageError(error); setErrors((current) => ({ ...current, image: error || undefined })); }} disabled={loading} />
+            <ImageDropzone file={image} onFileChange={setImage} onErrorChange={(error) => { setImageError(error); if (error) setErrors((current) => ({ ...current, image: error })); else clearError("image"); }} disabled={loading} />
 
             <fieldset className="border-0 p-0">
               <legend className="analyze-label">{ANALYZE_COPY.prioritiesLabel}</legend>
