@@ -79,7 +79,6 @@ export function AnalyzeForm() {
             </Field>
             <div className="flex items-end lg:justify-end"><CtaButton type="submit" variant="primary" loading={loading} trailingIcon={<ArrowRight className="h-5 w-5" />} className="h-[49px] w-full lg:w-[219px]">Analyze a purchase</CtaButton></div>
           </fieldset>
-          {error && <p id="dashboard-form-error" role="alert" className="mt-3 text-xs font-medium text-[#B42318]">{error}</p>}
         </form>
       </div>
     </section>
@@ -87,5 +86,5 @@ export function AnalyzeForm() {
 }
 
 function Field({ label, htmlFor, error, className, children }: { label: string; htmlFor: string; error?: string | null; className?: string; children: React.ReactNode }) {
-  return <div className={className}><label htmlFor={htmlFor} className="mb-2 block text-sm text-[#6B7280]">{label}</label>{children}{error && <p className="mt-2 text-xs text-[#B42318]">{error}</p>}</div>;
+  return <div className={className}><label htmlFor={htmlFor} className="mb-2 block text-sm text-[#6B7280]">{label}</label>{children}{error && <p id="dashboard-form-error" role="alert" className="mt-2 text-xs font-medium text-[#B42318]">{error}</p>}</div>;
 }

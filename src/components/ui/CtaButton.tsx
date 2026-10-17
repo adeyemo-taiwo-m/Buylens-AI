@@ -12,8 +12,8 @@ type CtaButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 const variants: Record<CtaButtonVariant, string> = {
-  primary: "bg-[#2563EB] text-white shadow-[0_4px_12px_rgba(37,99,235,0.12)]",
-  soft: "bg-[#E3ECFC] text-[#2563EB]",
+  primary: "bg-[#2563EB] text-white shadow-[0_8px_22px_-8px_rgba(47,111,235,0.55)]",
+  soft: "bg-[#DDEBFE] text-[#2563EB]",
   ghost: "border border-[#E9EEF7] bg-transparent text-[#2563EB]",
 };
 

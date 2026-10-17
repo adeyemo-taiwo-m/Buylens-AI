@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
@@ -51,12 +52,9 @@ export function DashboardSidebar({ mobileOpen = false, onNavigate }: DashboardSi
             aria-hidden="true"
             animate={reduced ? { y: 0 } : { y: [0, -3, 0] }}
             transition={reduced ? { duration: 0 } : { duration: 5, repeat: Infinity, ease: "easeInOut" }}
-            className="pointer-events-none absolute -top-[49px] left-1/2 h-[133px] w-[150px] -translate-x-1/2"
+            className="pointer-events-none absolute -top-[49px] left-1/2 h-[150px] w-[135px] -translate-x-1/2"
           >
-            <div className="absolute bottom-0 left-[22px] h-[83px] w-[46px] rounded-[9px] bg-[#8DB9F6] shadow-[8px_8px_0_#C9DFFF]" />
-            <div className="absolute bottom-0 left-[72px] h-[108px] w-[42px] rounded-[8px] bg-[#5B95EF] shadow-[8px_8px_0_#C9DFFF]" />
-            <div className="absolute right-[2px] top-[5px] h-[57px] w-[57px] rounded-full border-[7px] border-[#2563EB] bg-white/80" />
-            <div className="absolute right-[15px] top-[14px] h-[18px] w-[10px] rotate-45 rounded-bl-[4px] border-b-[4px] border-r-[4px] border-[#2563EB]" />
+            <Image src="/dashboard/verify-illustration.webp" alt="" fill sizes="135px" className="object-contain" />
           </motion.div>
           <h2 className="text-[24px] font-semibold leading-[1.3] text-[#333333]">Verify before paying</h2>
           <p className="mt-2 text-sm leading-[1.4] text-[#606A79]">Get a clear picture before you pay</p>

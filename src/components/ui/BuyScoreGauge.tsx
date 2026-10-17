@@ -125,7 +125,7 @@ export function BuyScoreGauge({
         </text>
       </svg>
       {interactive && (
-        <span className="pointer-events-none absolute bottom-[calc(100%+6px)] left-1/2 z-20 w-[220px] -translate-x-1/2 translate-y-1 rounded-[10px] border border-[#E4ECF8] bg-white px-3 py-2 text-center text-xs leading-[1.35] text-[#42516A] opacity-0 shadow-[0_8px_24px_rgba(15,27,51,0.12)] transition duration-150 group-hover:translate-y-0 group-hover:opacity-100">
+        <span className="pointer-events-none absolute bottom-[calc(100%+6px)] left-1/2 z-20 w-[220px] -translate-x-1/2 translate-y-1 rounded-[10px] border border-[#E4ECF8] bg-white px-3 py-2 text-center text-xs leading-[1.35] text-[#42516A] opacity-0 shadow-[0_8px_24px_rgba(15,27,51,0.12)] transition duration-150 group-hover/gauge:translate-y-0 group-hover/gauge:opacity-100 group-focus-within/gauge:translate-y-0 group-focus-within/gauge:opacity-100">
           How the score works: based on price, specs, reviews and warranty clarity.
         </span>
       )}
