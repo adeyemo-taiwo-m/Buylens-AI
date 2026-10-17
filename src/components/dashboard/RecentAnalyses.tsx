@@ -15,7 +15,7 @@ export function RecentAnalyses({ analyses, loading = false }: { analyses: Dashbo
   return (
     <section id="recent-analyses" className="scroll-mt-[88px]">
       <div className="flex items-end justify-between gap-4">
-        <div><h2 className="text-[24px] font-semibold leading-[1.25] text-[#333333]">Recent Analyses</h2><p className="mt-1.5 text-[11px] text-[#5F6B7A]">Pick up where you left</p></div>
+        <div><h2 className="text-[24px] font-semibold leading-[1.25] text-[#333333]">Recent Analyses</h2><p className="mt-1.5 text-sm text-[#5F6B7A]">Pick up where you left</p></div>
         <CtaButton href="/history" variant="ghost" trailingIcon={<ArrowRight className="h-5 w-5" />} className="h-12 w-[140px] whitespace-nowrap px-5 max-[520px]:border-0 max-[520px]:px-0 max-[520px]:text-sm">View All</CtaButton>
       </div>
       <div className="mt-4 overflow-hidden rounded-[24px] bg-white">

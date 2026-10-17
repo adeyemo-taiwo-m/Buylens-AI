@@ -52,12 +52,12 @@ export function DashboardSidebar({ mobileOpen = false, onNavigate }: DashboardSi
             aria-hidden="true"
             animate={reduced ? { y: 0 } : { y: [0, -3, 0] }}
             transition={reduced ? { duration: 0 } : { duration: 5, repeat: Infinity, ease: "easeInOut" }}
-            className="pointer-events-none absolute -top-[49px] left-1/2 h-[118px] w-[118px] -translate-x-1/2"
+            className="pointer-events-none absolute -top-[85px] left-1/2 h-[154px] w-[154px] -translate-x-1/2"
           >
-            <Image src="/dashboard/verify-illustration.webp" alt="" fill sizes="135px" className="object-contain" />
+            <Image src="/dashboard/verify-illustration.webp" alt="" fill sizes="180px" className="object-contain" />
           </motion.div>
           <h2 className="text-[24px] font-semibold leading-[1.333] text-[#333333]">Verify before paying</h2>
-          <p className="mt-2 text-sm leading-[1.5] text-[#868B97]">Get a clear picture before you pay</p>
+          <p className="mt-2 text-[11px] leading-[1.5] text-[#868B97]">Get a clear picture before you pay</p>
           <CtaButton href="/analyze" variant="soft" trailingIcon={<ArrowRight className="h-[18px] w-[18px]" />} className="mt-[18px] h-12 w-full whitespace-nowrap border border-[#D3E5F7] bg-[#DBE8FC] px-0 text-[15px]">
             Analyze a purchase
           </CtaButton>
