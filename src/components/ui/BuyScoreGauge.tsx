@@ -119,7 +119,9 @@ export function BuyScoreGauge({
           textAnchor="middle"
           dominantBaseline="middle"
           aria-hidden="true"
-          className="fill-[#0F1B33] text-[26px] font-semibold tabular-nums"
+          fontSize={26}
+          fontWeight={600}
+          className="fill-[#0F1B33] tabular-nums"
         >
           {displayedScore}%
         </text>

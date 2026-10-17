@@ -36,6 +36,6 @@ export const DECISION_FEATURES = {
   ],
   historyProducts: [
     { id: "headphones", src: "/problem/headset.png", title: "Wireless Headphone", detail: "A product you are considering" },
-    { id: "laptop", src: "/main-laptop.png", title: "HP Laptop", detail: "A product you are considering" },
+    { id: "laptop", src: "/main-laptop.webp", title: "HP Laptop", detail: "A product you are considering" },
   ],
 } as const;

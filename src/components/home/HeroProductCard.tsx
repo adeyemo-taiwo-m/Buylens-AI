@@ -19,7 +19,7 @@ export function HeroProductCard() {
         {/* Main product visual */}
         <div className="w-full aspect-[4/3] rounded-2xl border border-white bg-[#eff6ff] flex items-center justify-center overflow-hidden p-3">
           <Image
-            src="/main-laptop.png"
+            src="/main-laptop.webp"
             alt=""
             aria-hidden="true"
             width={480}

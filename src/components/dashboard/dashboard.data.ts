@@ -13,6 +13,7 @@ export type DashboardAnalysis = {
   tone: DashboardTone;
   image: string;
   fallbackImage?: string;
+  placeholder?: "phone" | "generic";
 };
 
 export const DASHBOARD_USER = {
@@ -50,8 +51,7 @@ export const DASHBOARD_ANALYSES: DashboardAnalysis[] = [
     score: 82,
     verdict: "Worth considering",
     tone: "success",
-    image: "/analysis/inverter-battery.webp",
-    fallbackImage: "/analysis/solar.png",
+    image: "/analysis/solar.png",
   },
   {
     id: "galaxy-a56",
@@ -61,7 +61,7 @@ export const DASHBOARD_ANALYSES: DashboardAnalysis[] = [
     score: 52,
     verdict: "Proceed with Caution",
     tone: "caution",
-    image: "/dashboard/samsung-a56.webp",
-    fallbackImage: "/main-laptop.png",
+    image: "/samsung-a56-hd.webp",
+    placeholder: "phone",
   },
 ];
