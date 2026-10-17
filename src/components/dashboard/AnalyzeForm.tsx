@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowRight, Link2, Search } from "lucide-react";
 import { CtaButton } from "@/components/ui/CtaButton";
+import { DecorativeArc } from "@/components/ui/DecorativeArc";
 
 const formatNaira = (value: string) => value ? new Intl.NumberFormat("en-NG", { style: "currency", currency: "NGN", maximumFractionDigits: 0 }).format(Number(value)) : "";
 
@@ -36,33 +37,16 @@ export function AnalyzeForm() {
 
     setError(null);
     setLoading(true);
-    try {
-      const response = await fetch("/api/analyze", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: trimmedProduct || "Product from link",
-          price: price ? Number(price) : undefined,
-          description: trimmedLink,
-          link: trimmedLink,
-          category: "other",
-        }),
-      });
-      if (!response.ok) throw new Error("Unable to complete analysis. Please try again.");
-      const report = await response.json();
-      router.push(`/report/${report.id}`);
-    } catch (submitError) {
-      setLoading(false);
-      setError(submitError instanceof Error ? submitError.message : "Unable to complete analysis. Please try again.");
-    }
+    const params = new URLSearchParams();
+    if (trimmedProduct) params.set("product", trimmedProduct);
+    if (price) params.set("price", price);
+    if (trimmedLink) params.set("link", trimmedLink);
+    router.push(`/analyze?${params.toString()}`);
   };
 
   return (
     <section className="dashboard-form-card relative overflow-hidden rounded-[24px] bg-white px-5 py-6 sm:h-[301px] sm:px-[26px] sm:py-7">
-      <svg aria-hidden="true" className="pointer-events-none absolute -right-[153px] -top-[210px] h-[290px] w-[290px]" viewBox="0 0 290 290" fill="none">
-        <defs><linearGradient id="dashboard-arc-gradient" x1="43" y1="35" x2="255" y2="260" gradientUnits="userSpaceOnUse"><stop stopColor="#2563EB" /><stop offset="1" stopColor="#2563EB" stopOpacity="0" /></linearGradient></defs>
-        <circle cx="145" cy="145" r="137" stroke="url(#dashboard-arc-gradient)" strokeWidth="16" />
-      </svg>
+      <DecorativeArc gradientId="dashboard-arc-gradient" />
       <div className="relative z-10">
         <h2 className="text-[22px] font-semibold leading-[1.25] text-[#333333] sm:text-[28px]">What are you thinking of buying?</h2>
         <p className="mt-[7px] text-sm leading-[1.4] text-[#5F6B7A]">Get a clearer picture of the value, risks, and details to verify before you pay.</p>
