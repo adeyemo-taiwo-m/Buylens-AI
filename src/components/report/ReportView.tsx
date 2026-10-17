@@ -120,7 +120,7 @@ export function ReportView({ report }: ReportViewProps) {
                 <p className="mt-1 line-clamp-1 text-base text-ink-muted">{report.verdict.body}</p>
               </div>
             </div>
-            <Image src="/analysis/question.png" alt="" aria-hidden="true" width={160} height={111} sizes="130px" className="pointer-events-none absolute bottom-0 right-0 h-[110px] w-[130px] object-contain" />
+            <Image src="/analysis/questions@2x.webp" alt="" aria-hidden="true" width={160} height={111} sizes="130px" className="pointer-events-none absolute bottom-0 right-0 h-[110px] w-[130px] object-contain" />
           </div>
 
           <div className="col-span-full mt-6 grid gap-4 md:grid-cols-2">
@@ -128,13 +128,13 @@ export function ReportView({ report }: ReportViewProps) {
               variant="promising"
               title={REPORT_COPY.promisingTitle}
               items={report.promising}
-              imageSrc="/analysis/promise.png"
+              imageSrc="/analysis/promising@2x.webp"
             />
             <ReportStatusCard
               variant="verify"
               title={REPORT_COPY.verifyTitle}
               items={report.verifyFirst}
-              imageSrc="/analysis/risks.png"
+              imageSrc="/analysis/risks@2x.webp"
             />
           </div>
         </div>
