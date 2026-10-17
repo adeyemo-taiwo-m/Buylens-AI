@@ -10,7 +10,7 @@ export function DashboardTopbar({ onMenu, menuButtonRef }: { onMenu: () => void;
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="fixed left-0 right-0 top-0 z-40 flex h-[72px] items-center justify-between bg-white px-5 lg:left-[296px] lg:justify-end lg:px-10">
+    <header className="fixed left-0 right-0 top-0 z-40 flex h-[72px] items-center justify-between bg-white px-5 lg:justify-end lg:px-10">
       <div className="flex items-center gap-3 lg:hidden">
         <button ref={menuButtonRef} type="button" onClick={onMenu} aria-label="Open navigation" className="flex h-9 w-9 items-center justify-center rounded-full bg-[#E3ECFC] text-[#2563EB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2"><Menu className="h-[18px] w-[18px]" /></button>
         <Link href="/dashboard" aria-label="BuyLens AI"><BrandLogo size="header" /></Link>
