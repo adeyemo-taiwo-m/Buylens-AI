@@ -763,7 +763,15 @@ body {
 .dashboard-sidebar { border-right: 1px solid #e8edf6; }
 .dashboard-promo { box-sizing: border-box; width: 244px; height: auto; margin-left: -5px; overflow: visible; background: #eff5fe; padding: 75px 30px 16px; }
 .dashboard-input { display: block; width: 100%; height: 48px; border: 1px solid #d5dce8; border-radius: 12px; background: #fff; padding: 0 12px; color: #0f1b33; font-size: 15px; outline: none; transition: border-color 150ms ease, box-shadow 150ms ease; }
-.dashboard-input-with-icon { padding-left: 40px; }
+.dashboard-input-with-icon { padding-left: 44px; }
+.auth-password-input { padding-right: 44px; }
+.auth-login-input { font-size: 15px; }
+.auth-login-input:focus { border-color: var(--primary-600); box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary-600) 24%, transparent); }
+.auth-login-input.auth-input-error { border-color: var(--status-danger); }
+.auth-login-input.auth-input-error:focus { border-color: var(--status-danger); box-shadow: 0 0 0 2px color-mix(in srgb, var(--status-danger) 24%, transparent); }
+.auth-login-input:-webkit-autofill,
+.auth-login-input:-webkit-autofill:hover,
+.auth-login-input:-webkit-autofill:focus { -webkit-text-fill-color: var(--text-primary); -webkit-box-shadow: 0 0 0 1000px var(--bg-surface) inset; box-shadow: 0 0 0 1000px var(--bg-surface) inset; caret-color: var(--text-primary); transition: background-color 9999s ease-out; }
 .dashboard-input::placeholder { color: #9aa3b2; }
 .dashboard-input:hover { border-color: #bfd0ea; }
 .dashboard-input:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15); }

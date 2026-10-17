@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState, type RefObject } from "react";
+import { createPortal } from "react-dom";
 import { Bolt, Check, Sparkles, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SAMPLES, type Sample } from "@/lib/samples";
@@ -15,6 +16,7 @@ export function SampleModal({ open, triggerRef, onClose, onSelect }: SampleModal
 
   useEffect(() => {
     if (!open) return;
+    const trigger = triggerRef.current;
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     closeRef.current?.focus();
@@ -28,11 +30,11 @@ export function SampleModal({ open, triggerRef, onClose, onSelect }: SampleModal
       if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
     };
     document.addEventListener("keydown", onKeyDown);
-    return () => { document.body.style.overflow = previousOverflow; document.removeEventListener("keydown", onKeyDown); triggerRef.current?.focus(); };
+    return () => { document.body.style.overflow = previousOverflow; document.removeEventListener("keydown", onKeyDown); trigger?.focus(); };
   }, [open, onClose, triggerRef]);
 
   if (!open) return null;
-  return (
+  return createPortal(
     <div className="sample-modal-backdrop fixed inset-0 z-[80] flex items-end justify-center p-0 sm:items-center sm:p-6" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}>
       <div ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="sample-modal-title" aria-describedby="sample-modal-description" className="sample-modal-sheet w-full max-w-[880px] overflow-y-auto rounded-t-[24px] bg-surface p-5 shadow-lg sm:max-h-[90vh] sm:rounded-[24px] sm:p-8">
         <div className="flex items-start justify-between gap-5">
@@ -42,7 +44,8 @@ export function SampleModal({ open, triggerRef, onClose, onSelect }: SampleModal
         <div className="mt-7 grid gap-4 sm:grid-cols-3">{SAMPLES.map((sample) => <SampleCard key={sample.id} sample={sample} onSelect={onSelect} />)}</div>
         <div className="mt-6 flex flex-col items-center justify-between gap-3 border-t border-line pt-5 text-sm text-ink-muted sm:flex-row"><span>Or close this and enter your own listing.</span><button type="button" onClick={onClose} className="rounded-full px-4 py-2 font-medium text-primary-600 transition-colors hover:bg-primary-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:ring-offset-2">Enter my own</button></div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
 

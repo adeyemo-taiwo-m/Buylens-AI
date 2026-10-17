@@ -38,7 +38,7 @@ export function TopNavigation({ className }: TopNavigationProps) {
         </Link>
 
         {/* Center: Navigation Links (Desktop/Tablet) */}
-        <nav className="hidden md:flex items-center gap-7 lg:gap-9 text-xs sm:text-sm font-medium text-[#334155]">
+        <nav className="hidden md:flex items-center gap-7 lg:gap-9 text-[13px] sm:text-sm font-medium text-[#334155]">
           {navLinks.map((link) => (
             <Link
               key={link.label}
@@ -52,13 +52,13 @@ export function TopNavigation({ className }: TopNavigationProps) {
 
         {/* Right: Actions */}
         <div className="hidden sm:flex items-center gap-2 sm:gap-3">
-          <Link href="/login" className="px-2 text-xs font-medium text-ink-muted transition-colors hover:text-primary-600">Log in</Link>
-          <DemoLoginButton compact className="h-9 px-4 text-xs" />
+          <Link href="/login" className="px-2 text-[13px] font-medium text-ink-muted transition-colors hover:text-primary-600">Log in</Link>
+          <DemoLoginButton compact className="h-9 px-4 text-[13px]" />
         </div>
 
         {/* Mobile Action & Hamburger Toggle (< 640px) */}
         <div className="flex sm:hidden items-center gap-2">
-          <DemoLoginButton compact className="h-8 px-3 text-[11px]" />
+          <DemoLoginButton compact className="h-8 px-3 text-[13px]" />
 
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}

@@ -13,9 +13,8 @@ export function AnalyzeHeader({ onTrySample, triggerRef }: { onTrySample?: () =>
             <span className="font-bold text-[#2563EB]">{ANALYZE_COPY.headlineAccent}</span>
           </h1>
           <p className="mt-2 text-base leading-[1.5] text-[#737373] sm:text-[19px]">{ANALYZE_COPY.subtext}</p>
-          <p className="mt-2 text-sm text-ink-muted">No listing handy? Pick a sample to see how BuyLens AI works.</p>
         </div>
-        {onTrySample && <button ref={triggerRef} type="button" onClick={onTrySample} className="inline-flex h-11 w-full shrink-0 items-center justify-center gap-2 rounded-full border border-primary-200 bg-white px-5 text-sm font-medium text-primary-600 transition-colors hover:bg-primary-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:ring-offset-2 sm:w-auto"><Sparkles className="h-4 w-4" aria-hidden="true" />Try a sample</button>}
+        {onTrySample && <button ref={triggerRef} type="button" onClick={onTrySample} className="inline-flex h-11 w-full shrink-0 cursor-pointer items-center justify-center gap-2 rounded-full border border-primary-200 bg-white px-5 text-sm font-medium text-primary-600 transition-colors hover:bg-primary-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:ring-offset-2 sm:w-auto"><Sparkles className="h-4 w-4" aria-hidden="true" />Try a sample</button>}
       </div>
     </header>
   );

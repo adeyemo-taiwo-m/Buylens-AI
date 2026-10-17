@@ -30,11 +30,8 @@ export default function Home() {
               Make smarter purchase decisions with AI that helps you evaluate products, uncover trade-offs, and understand whether something is truly worth your money.
             </Reveal>
             <Reveal grouped className="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <div className="flex w-full max-w-[240px] flex-col items-center gap-1.5 sm:w-[220px]">
-                <DemoLoginButton className="buyhero-primary-cta h-[50px] w-full px-6 text-title-4-medium" />
-                <span className="text-xs text-ink-muted">No sign-up needed.</span>
-              </div>
-              <Link href="#how-it-works" className="buyhero-secondary-cta inline-flex h-12 w-full max-w-[220px] items-center justify-center gap-2 rounded-full border border-primary-200 bg-white px-6 text-title-4-medium text-primary-600 shadow-none transition-colors hover:bg-primary-50 active:scale-[0.98] sm:w-[200px]">See how it works <span aria-hidden="true" className="text-lg">↓</span></Link>
+              <Link href="#how-it-works" className="buyhero-secondary-cta order-2 inline-flex h-12 w-full max-w-[220px] items-center justify-center gap-2 rounded-full border border-primary-200 bg-white px-6 text-title-4-medium text-primary-600 shadow-none transition-colors hover:bg-primary-50 active:scale-[0.98] sm:order-1 sm:w-[200px]">See how it works <span aria-hidden="true" className="text-lg">↓</span></Link>
+              <DemoLoginButton className="buyhero-primary-cta order-1 h-[50px] w-full max-w-[240px] px-6 text-title-4-medium sm:order-2 sm:w-[220px]" />
             </Reveal>
           </RevealGroup>
         </section>
