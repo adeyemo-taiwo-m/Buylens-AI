@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 
-type BrandLogoSize = "header" | "footer";
+type BrandLogoSize = "header" | "footer" | "dashboard";
 
 type BrandLogoProps = {
   size?: BrandLogoSize;
@@ -13,6 +13,7 @@ type BrandLogoProps = {
 const sizes: Record<BrandLogoSize, { icon: number; className: string; wordmark: string }> = {
   header: { icon: 28, className: "h-6 w-6 sm:h-7 sm:w-7", wordmark: "text-[18px] sm:text-[20px]" },
   footer: { icon: 35, className: "h-[34px] w-[35px]", wordmark: "text-[35px]" },
+  dashboard: { icon: 28, className: "h-7 w-7", wordmark: "text-[24px]" },
 };
 
 export function BrandLogo({ size = "header", alt = "BuyLens AI", priority = false, className }: BrandLogoProps) {

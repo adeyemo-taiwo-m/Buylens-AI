@@ -6,37 +6,15 @@ import { motion, useInView, useReducedMotion } from "framer-motion";
 import { ArrowRight, Check, Copy, Search } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { SectionBadge } from "@/components/ui/SectionBadge";
+import { BuyScoreGauge } from "@/components/ui/BuyScoreGauge";
+import { ProductTile } from "@/components/ui/ProductTile";
+import { VerdictPill } from "@/components/ui/VerdictPill";
 import { MOTION_EASE } from "@/lib/motion";
 import { ANALYSIS_PREVIEW_DATA, PLAY_ONCE, type AnalysisTooltipItem } from "./analysisPreviewData";
 
 const PRODUCT_IMAGE = "/analysis/solar.png";
 const EASE = MOTION_EASE;
 const SCORE = ANALYSIS_PREVIEW_DATA.product.score;
-const PETAL_COUNT = 9;
-const GAUGE_ANGLES = [-80, -60, -40, -20, 0, 20, 40, 60, 80] as const;
-
-type GaugePoint = { x: number; y: number };
-
-function createGaugePetalPath() {
-  const points: GaugePoint[] = [
-    { x: -7, y: -48 },
-    { x: -11.5, y: -108 },
-    { x: 11.5, y: -108 },
-    { x: 7, y: -48 },
-  ];
-  const cornerRadii = [4, 7, 7, 4];
-  const moveAlong = (from: GaugePoint, to: GaugePoint, distance: number) => {
-    const length = Math.hypot(to.x - from.x, to.y - from.y);
-    const ratio = Math.min(distance / length, 0.45);
-    return { x: from.x + (to.x - from.x) * ratio, y: from.y + (to.y - from.y) * ratio };
-  };
-  const before = points.map((point, index) => moveAlong(point, points[(index + points.length - 1) % points.length], cornerRadii[index]));
-  const after = points.map((point, index) => moveAlong(point, points[(index + 1) % points.length], cornerRadii[index]));
-  const format = (point: GaugePoint) => `${point.x.toFixed(2)} ${point.y.toFixed(2)}`;
-  return [`M ${format(after[0])}`, `L ${format(before[1])}`, `Q ${format(points[1])} ${format(after[1])}`, `L ${format(before[2])}`, `Q ${format(points[2])} ${format(after[2])}`, `L ${format(before[3])}`, `Q ${format(points[3])} ${format(after[3])}`, `L ${format(before[0])}`, `Q ${format(points[0])} ${format(after[0])}`, "Z"].join(" ");
-}
-
-const GAUGE_PETAL_PATH = createGaugePetalPath();
 
 function useCountUp(target: number, active: boolean, reduced: boolean, duration = 900) {
   const [value, setValue] = useState(reduced ? target : 0);
@@ -86,57 +64,7 @@ async function copyText(value: string) {
 }
 
 function ProductVisual() {
-  const [missing, setMissing] = useState(false);
-
-  return (
-    <div className="relative flex h-[171px] w-[152px] shrink-0 items-center justify-center overflow-hidden rounded-[20px] bg-[#F1F6FE] max-[1023px]:h-[96px] max-[1023px]:w-[96px]">
-      {!missing ? (
-        <Image src={PRODUCT_IMAGE} alt="5kVA hybrid inverter and lithium battery" fill sizes="(max-width: 1023px) 96px, 152px" className="object-contain" onError={() => setMissing(true)} />
-      ) : (
-        <div aria-hidden="true" className="flex flex-col items-center justify-center text-center text-[#2563EB]">
-          <div className="flex items-end gap-1.5">
-            <span className="h-14 w-9 rounded-[5px] border-2 border-[#8DB9F6] bg-white shadow-[3px_3px_0_#C9DFFF] max-[1023px]:h-9 max-[1023px]:w-6" />
-            <span className="h-11 w-8 rounded-[4px] border-2 border-[#8DB9F6] bg-white shadow-[3px_3px_0_#C9DFFF] max-[1023px]:h-7 max-[1023px]:w-5" />
-          </div>
-          <span className="mt-3 text-[11px] font-bold tracking-[0.08em] max-[1023px]:mt-1 max-[1023px]:text-[7px]">5KVA SYSTEM</span>
-        </div>
-      )}
-    </div>
-  );
-}
-
-function BuyScoreGauge({ active, reduced, score }: { active: boolean; reduced: boolean; score: number }) {
-  const [hovered, setHovered] = useState(false);
-  const filledPetals = Math.round((score / 100) * PETAL_COUNT);
-
-  return (
-    <div className="group/gauge relative mt-4 flex flex-col items-center" onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} onFocus={() => setHovered(true)} onBlur={() => setHovered(false)}>
-      <svg viewBox="0 0 217 112" className="h-auto w-[217px] max-w-full overflow-hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2563EB]" tabIndex={0} role="img" aria-label={`Buy score ${SCORE} percent, worth considering`}>
-        <defs>
-          <clipPath id="buy-score-gauge-clip"><rect x="0" y="0" width="217" height="112" /></clipPath>
-        </defs>
-        <g clipPath="url(#buy-score-gauge-clip)">
-          {GAUGE_ANGLES.map((angle, index) => {
-            const filled = active && index < filledPetals;
-            return (
-              <g key={angle} transform={`translate(108.5 112) rotate(${angle})`}>
-                <motion.path
-                  d={GAUGE_PETAL_PATH}
-                  className={filled ? "fill-[#2563EB]" : "fill-[#D9D9D9]"}
-                  initial={reduced ? false : { opacity: 1, scale: 0.9 }}
-                  animate={{ fill: filled ? "#2563EB" : "#D9D9D9", opacity: 1, scale: hovered && !reduced ? 1.05 : active ? 1 : 0.9 }}
-                  transition={{ fill: { duration: reduced ? 0 : 0.18, delay: reduced ? 0 : index * 0.08 }, opacity: { duration: reduced ? 0 : 0.18 }, scale: { duration: reduced ? 0 : 0.22, delay: reduced ? 0 : (hovered ? index * 0.04 : index * 0.08), ease: EASE } }}
-                  style={{ transformBox: "fill-box", transformOrigin: "center" }}
-                />
-              </g>
-            );
-          })}
-        </g>
-      </svg>
-      <span aria-hidden="true" className="pointer-events-none absolute bottom-[10px] z-10 text-[26px] font-medium leading-none tabular-nums text-[#0F1B33]">{score}%</span>
-      <span className="pointer-events-none absolute bottom-[calc(100%+6px)] left-1/2 z-20 w-[220px] -translate-x-1/2 translate-y-1 rounded-[10px] border border-[#E4ECF8] bg-white px-3 py-2 text-center text-xs leading-[1.35] text-[#42516A] opacity-0 shadow-[0_8px_24px_rgba(15,27,51,0.12)] transition duration-150 group-hover/gauge:translate-y-0 group-hover/gauge:opacity-100 group-focus-within/gauge:translate-y-0 group-focus-within/gauge:opacity-100">How the score works: based on price, specs, reviews and warranty clarity.</span>
-    </div>
-  );
+  return <ProductTile src={PRODUCT_IMAGE} alt="5kVA hybrid inverter and lithium battery" className="h-[171px] w-[152px] rounded-[20px] max-[1023px]:h-[96px] max-[1023px]:w-[96px]" imageClassName="p-0" sizes="(max-width: 1023px) 96px, 152px" />;
 }
 
 function CornerBrackets({ armed, expanded, reduced }: { armed: boolean; expanded: boolean; reduced: boolean }) {
@@ -231,7 +159,6 @@ export function AnalysisPreviewSection() {
   const [cardHovered, setCardHovered] = useState(false);
   const [openTooltip, setOpenTooltip] = useState<string | null>(null);
   const active = reduced || hasPlayed;
-  const score = useCountUp(SCORE, active, reduced);
   const price = useCountUp(ANALYSIS_PREVIEW_DATA.product.price, active, reduced);
 
   useEffect(() => {
@@ -258,9 +185,9 @@ export function AnalysisPreviewSection() {
             <div className="pointer-events-none absolute inset-0 z-[1] overflow-hidden rounded-[24px]"><motion.span aria-hidden="true" animate={active ? { top: ["-2%", "102%"], opacity: [0, 0.9, 0] } : { top: "-2%", opacity: 0 }} transition={{ duration: reduced ? 0 : 0.9, delay: reduced ? 0 : 0.55, ease: "easeInOut" }} className="absolute left-0 h-[2px] w-full bg-[rgba(37,99,235,0.35)] shadow-[0_0_14px_2px_rgba(37,99,235,0.28)]" /></div>
 
             <motion.div initial={reduced ? false : { opacity: 0, y: 18 }} animate={active ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }} transition={{ duration: reduced ? 0 : 0.55, delay: reduced ? 0 : 0.78, ease: EASE }} className="relative z-10 flex min-h-[171px] items-center gap-2.5 max-[1023px]:flex-wrap max-[767px]:min-h-0">
-              <div className="flex min-w-0 flex-1 items-center gap-2.5 max-[1023px]:basis-[calc(100%-200px)] max-[767px]:basis-full"><ProductVisual /><div className="min-w-0"><h3 className="max-w-[580px] text-[28px] font-semibold leading-[1.25] tracking-[-0.025em] text-[#0F1B33] max-[1023px]:text-[22px]">{ANALYSIS_PREVIEW_DATA.product.name}</h3><p className="mt-1.5 text-sm text-[#5F6B7A]">{ANALYSIS_PREVIEW_DATA.product.category}</p><span className="mt-2 inline-flex h-5 w-[132px] items-center justify-center gap-1.5 rounded-full bg-[#DCF7E6] px-0 text-xs font-medium text-[#22A55A]"><i className="h-[5px] w-[5px] rounded-full bg-[#22A55A]" />{ANALYSIS_PREVIEW_DATA.product.verdict}</span></div></div>
+              <div className="flex min-w-0 flex-1 items-center gap-2.5 max-[1023px]:basis-[calc(100%-200px)] max-[767px]:basis-full"><ProductVisual /><div className="min-w-0"><h3 className="max-w-[580px] text-[28px] font-semibold leading-[1.25] tracking-[-0.025em] text-[#0F1B33] max-[1023px]:text-[22px]">{ANALYSIS_PREVIEW_DATA.product.name}</h3><p className="mt-1.5 text-sm text-[#5F6B7A]">{ANALYSIS_PREVIEW_DATA.product.category}</p><VerdictPill tone="success" size="sm" label={ANALYSIS_PREVIEW_DATA.product.verdict} className="mt-2" /></div></div>
               <div className="mx-6 h-[100px] w-px shrink-0 bg-[#E4ECF8] max-[1023px]:hidden" />
-              <div className="flex w-[250px] shrink-0 flex-col items-center justify-center max-[1023px]:w-[190px] max-[767px]:mt-5 max-[767px]:w-full"><span className="text-base font-medium text-[#0F1B33]">Buy Score</span><BuyScoreGauge active={active} reduced={reduced} score={score} /></div>
+              <div className="flex w-[250px] shrink-0 flex-col items-center justify-center max-[1023px]:w-[190px] max-[767px]:mt-5 max-[767px]:w-full"><span className="text-base font-medium text-[#0F1B33]">Buy Score</span><div className="mt-4"><BuyScoreGauge score={SCORE} size="lg" verdict={ANALYSIS_PREVIEW_DATA.product.verdict} animate="once" interactive /></div></div>
             </motion.div>
 
             <div className="my-[50px] h-px bg-[#E4ECF8] max-[1023px]:my-7" />
