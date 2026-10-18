@@ -665,7 +665,7 @@ body {
 .buyhero-secondary-cta:active { background: #BFD7FE; }
 .hero-visual {
   position: relative;
-  padding-bottom: 72px;
+  padding-bottom: 32px;
 }
 .hero-card-wrap {
   padding-top: 0;
@@ -703,7 +703,7 @@ body {
 }
 
 @media (max-width: 767px) {
-  .hero-visual { padding-bottom: 40px; }
+  .hero-visual { padding-bottom: 24px; }
   .buyhero-title {
     font-size: 40px;
     line-height: 1.08;
@@ -2123,6 +2123,9 @@ body {
   --problem-blue: #2563eb;
   --problem-blue-light: #5b9bf8;
   position: relative;
+  width: 100%;
+  max-width: none;
+  margin-inline: 0;
   min-height: 1060px;
   overflow: hidden;
   border: 1px solid #e3ecfa;
