@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-export type CtaButtonVariant = "primary" | "soft" | "ghost";
+export type CtaButtonVariant = "primary" | "soft" | "ghost" | "outline";
 
 type CtaButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   href?: string;
@@ -15,6 +15,7 @@ const variants: Record<CtaButtonVariant, string> = {
   primary: "bg-[#2563EB] text-white shadow-[0_8px_22px_-8px_rgba(47,111,235,0.55)]",
   soft: "bg-[#DDEBFE] text-[#2563EB]",
   ghost: "border border-[#E9EEF7] bg-transparent text-[#2563EB]",
+  outline: "border border-primary-600 bg-surface text-primary-600 hover:bg-primary-50",
 };
 
 export function CtaButton({ href, variant = "primary", trailingIcon, loading = false, className, children, disabled, ...props }: CtaButtonProps) {

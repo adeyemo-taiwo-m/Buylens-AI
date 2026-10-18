@@ -13,6 +13,8 @@ type BuyScoreGaugeProps = {
   animate?: "once" | false;
   interactive?: boolean;
   tone?: "positive" | "neutral" | "negative";
+  fromScore?: number;
+  animationDuration?: number;
 };
 
 const SIZE_WIDTHS: Record<BuyScoreGaugeSize, number> = { sm: 125, md: 170, lg: 217 };
@@ -25,12 +27,12 @@ const INNER_RADIUS = 59;
 const OUTER_RADIUS = 76;
 const SEGMENT_ANGLES = Array.from({ length: SEGMENT_COUNT }, (_, index) => 180 + (180 / (SEGMENT_COUNT - 1)) * index);
 
-function useCountUp(target: number, active: boolean, reduced: boolean) {
-  const [value, setValue] = useState(reduced || !active ? (active ? target : 0) : 0);
+function useCountUp(target: number, active: boolean, reduced: boolean, start = 0, durationMs = 700) {
+  const [value, setValue] = useState(reduced || !active ? (active ? target : start) : start);
 
   useEffect(() => {
     if (!active) {
-      const frame = window.requestAnimationFrame(() => setValue(0));
+      const frame = window.requestAnimationFrame(() => setValue(start));
       return () => window.cancelAnimationFrame(frame);
     }
     if (reduced) {
@@ -41,13 +43,13 @@ function useCountUp(target: number, active: boolean, reduced: boolean) {
     let frame = 0;
     const startedAt = performance.now();
     const tick = (now: number) => {
-      const progress = Math.min((now - startedAt) / 700, 1);
-      setValue(Math.round(target * (1 - Math.pow(1 - progress, 3))));
+      const progress = Math.min((now - startedAt) / durationMs, 1);
+      setValue(Math.round(start + (target - start) * (1 - Math.pow(1 - progress, 3))));
       if (progress < 1) frame = window.requestAnimationFrame(tick);
     };
     frame = window.requestAnimationFrame(tick);
     return () => window.cancelAnimationFrame(frame);
-  }, [active, reduced, target]);
+  }, [active, durationMs, reduced, start, target]);
 
   return value;
 }
@@ -68,15 +70,20 @@ export function BuyScoreGauge({
   animate = "once",
   interactive = false,
   tone,
+  fromScore = 0,
+  animationDuration = 0.7,
 }: BuyScoreGaugeProps) {
   const reduced = useReducedMotion() === true;
   const gaugeRef = useRef<HTMLDivElement>(null);
   const inView = useInView(gaugeRef, { amount: 0.4, once: true });
   const active = animate === false || reduced || inView;
   const boundedScore = Math.max(0, Math.min(100, score));
-  const displayedScore = useCountUp(boundedScore, active, reduced || animate === false);
+  const boundedFromScore = Math.max(0, Math.min(100, fromScore));
+  const displayedScore = useCountUp(boundedScore, active, reduced || animate === false, boundedFromScore, animationDuration * 1000);
   const filledSegments = Math.round((boundedScore / 100) * SEGMENT_COUNT);
+  const fromFilledSegments = Math.round((boundedFromScore / 100) * SEGMENT_COUNT);
   const gaugeWidth = width ?? SIZE_WIDTHS[size];
+  const filledColor = tone === "positive" ? "var(--status-success)" : tone === "neutral" ? "var(--status-warning)" : tone === "negative" ? "var(--status-danger)" : "var(--primary-600)";
 
   return (
     <div ref={gaugeRef} className="group/gauge relative flex shrink-0 flex-col items-center" style={{ width: gaugeWidth }}>
@@ -90,7 +97,8 @@ export function BuyScoreGauge({
         {SEGMENT_ANGLES.map((angle, index) => {
           const inner = pointAt(INNER_RADIUS, angle);
           const outer = pointAt(OUTER_RADIUS, angle);
-          const filled = active && index < filledSegments;
+          const targetStroke = index < filledSegments ? filledColor : "var(--primary-100)";
+          const fromStroke = index < fromFilledSegments ? filledColor : "var(--primary-100)";
           const thickness = 6 + Math.sin((index / (SEGMENT_COUNT - 1)) * Math.PI) * 3;
 
           return (
@@ -101,13 +109,13 @@ export function BuyScoreGauge({
               x2={outer.x}
               y2={outer.y}
               strokeLinecap="round"
-              initial={{ opacity: 1 }}
+              initial={{ opacity: 1, stroke: fromStroke }}
               animate={{
                 opacity: 1,
-                stroke: filled ? tone === "positive" ? "var(--status-success)" : tone === "neutral" ? "var(--status-warning)" : tone === "negative" ? "var(--status-danger)" : "var(--primary-600)" : "var(--primary-100)",
+                stroke: active ? targetStroke : fromStroke,
               }}
               transition={{
-                stroke: { duration: reduced || animate === false ? 0 : 0.18, delay: reduced || animate === false ? 0 : index * 0.035 },
+                stroke: { duration: reduced || animate === false ? 0 : animationDuration, delay: reduced || animate === false ? 0 : index * (animationDuration > 0.3 ? 0.02 : 0.035) },
               }}
               strokeWidth={thickness}
             />

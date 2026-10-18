@@ -1,6 +1,6 @@
 "use client";
 
-import { ShieldAlert, Zap } from "lucide-react";
+import { Zap } from "lucide-react";
 import Image from "next/image";
 import { BuyScoreGauge } from "@/components/ui/BuyScoreGauge";
 import { Card } from "@/components/ui/Card";
@@ -13,7 +13,8 @@ import { ReportActionCard } from "./ReportActionCard";
 import { ReportEvidenceAccordion } from "./ReportEvidenceAccordion";
 import { ReportQuestionsCard } from "./ReportQuestionsCard";
 import { ReportStatusCard } from "./ReportStatusCard";
-import { REPORT_COPY, RISK_STYLES, SCORE_TONE_STYLES } from "./purchaseReport.data";
+import { RiskCard } from "./RiskCard";
+import { REPORT_COPY, SCORE_TONE_STYLES } from "./purchaseReport.data";
 
 type ReportViewProps = {
   report: PurchaseReport;
@@ -34,7 +35,6 @@ const currencyFormatter = new Intl.NumberFormat("en-NG", {
 export function ReportView({ report }: ReportViewProps) {
   const { toast } = useToast();
   const scoreTone = SCORE_TONE_STYLES[report.scoreTone];
-  const riskStyle = RISK_STYLES[report.risk.level];
 
   const copyAllQuestions = async () => {
     const content = report.sellerQuestions.map((question, index) => `${index + 1}. ${question}`).join("\n");
@@ -98,19 +98,7 @@ export function ReportView({ report }: ReportViewProps) {
           </div>
 
           <div className="flex min-h-[232px] items-center md:pl-10">
-            <div className={`w-full rounded-[20px] border p-6 ${riskStyle.card}`}>
-              <div className="flex items-center justify-between gap-3">
-                <span className="text-base text-ink-muted">{REPORT_COPY.riskAssessment}</span>
-                <span className={`flex h-10 w-10 items-center justify-center rounded-full ${riskStyle.icon}`}>
-                  <ShieldAlert className="h-5 w-5" aria-hidden="true" />
-                </span>
-              </div>
-              <p className="mt-3 text-[40px] font-semibold leading-none tracking-[-0.02em] text-ink">{report.risk.level}</p>
-              <span className={`mt-5 inline-flex h-8 items-center gap-2 rounded-full px-3 text-xs font-medium ${riskStyle.pill}`}>
-                <i aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-current" />
-                {report.risk.note}
-              </span>
-            </div>
+            <RiskCard risk={report.risk} />
           </div>
 
           <div className={`relative col-span-full mt-6 h-[95px] overflow-hidden rounded-[16px] px-6 py-6 ${scoreTone.banner}`}>

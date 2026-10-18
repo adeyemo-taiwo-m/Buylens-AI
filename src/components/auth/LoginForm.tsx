@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, Check, Copy, Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { CtaButton } from "@/components/ui/CtaButton";
@@ -14,6 +15,12 @@ type FieldErrors = { email?: string; password?: string };
 export function LoginForm({ email, password }: { email: string; password: string }) {
   const router = useRouter();
   const { toast } = useToast();
+  const reduced = useReducedMotion() === true;
+  const enter = (delay: number) => ({
+    initial: reduced ? false : { opacity: 0, y: 12 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: reduced ? 0 : 0.35, delay: reduced ? 0 : delay },
+  });
   const [formEmail, setFormEmail] = useState("");
   const [formPassword, setFormPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -82,39 +89,39 @@ export function LoginForm({ email, password }: { email: string; password: string
 
   return (
     <Card padding="none" className="w-full max-w-[440px] rounded-[20px] border-line p-6 shadow-sm sm:p-8">
-      <div className="text-center">
+      <motion.div {...enter(0)} className="text-center">
         <h1 className="text-[28px] font-bold leading-tight tracking-tight text-ink">Welcome back</h1>
         <p className="mt-2 text-sm text-ink-muted">Access your saved purchase reports and checklists.</p>
-      </div>
+      </motion.div>
 
-      <div className="mt-6 rounded-[16px] border border-primary-200 bg-primary-50 p-5">
+      <motion.div {...enter(0.06)} className="mt-6 rounded-[16px] border border-primary-200 bg-primary-50 p-5">
         <p className="text-base font-semibold text-primary-800">Shared demo account</p>
         <p className="mt-2 text-sm text-ink-muted">Use these credentials or try one-click login.</p>
         <dl className="mt-4 space-y-2">
           <CredentialRow label="Email" value={email} copied={copied === "email"} onCopy={() => void handleCopy(email, "email")} />
           <CredentialRow label="Password" value={password} copied={copied === "password"} onCopy={() => void handleCopy(password, "password")} />
         </dl>
-        <DemoLoginButton fullWidth className="mt-5 h-12 w-full sm:w-auto" />
-      </div>
+        <DemoLoginButton fullWidth className="mt-5 h-12 w-full" />
+      </motion.div>
 
-      <div className="my-5 flex items-center gap-3 text-[13px] text-ink-muted" aria-hidden="true">
+      <motion.div {...enter(0.12)} className="my-5 flex items-center gap-3 text-[13px] text-ink-muted" aria-hidden="true">
         <span className="h-px flex-1 bg-line" />
         <span>or enter manually</span>
         <span className="h-px flex-1 bg-line" />
-      </div>
+      </motion.div>
 
       <form onSubmit={handleLogin} noValidate>
         <div className="space-y-3">
-          <div>
+          <motion.div {...enter(0.18)}>
             <label htmlFor="login-email" className="mb-2 block text-[13px] font-semibold uppercase tracking-[0.08em] text-ink-muted">Email address</label>
             <div className="relative">
               <Mail aria-hidden="true" className="pointer-events-none absolute left-4 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-ink-faint" />
               <input id="login-email" name="email" type="email" required autoComplete="off" value={formEmail} onChange={(event) => { setFormEmail(event.target.value); clearFieldError("email"); }} placeholder="you@example.com" aria-invalid={Boolean(fieldErrors.email)} aria-describedby={fieldErrors.email ? "login-email-error" : undefined} className={`auth-login-input dashboard-input dashboard-input-with-icon pl-11${fieldErrors.email ? " auth-input-error" : ""}`} />
             </div>
             {fieldErrors.email && <p id="login-email-error" className="mt-2 text-[13px] text-status-danger-text" role="alert">{fieldErrors.email}</p>}
-          </div>
+          </motion.div>
 
-          <div>
+          <motion.div {...enter(0.24)}>
             <label htmlFor="login-password" className="mb-2 block text-[13px] font-semibold uppercase tracking-[0.08em] text-ink-muted">Password</label>
             <div className="relative">
               <Lock aria-hidden="true" className="pointer-events-none absolute left-4 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-ink-faint" />
@@ -124,16 +131,18 @@ export function LoginForm({ email, password }: { email: string; password: string
               </button>
             </div>
             {fieldErrors.password && <p id="login-password-error" className="mt-2 text-[13px] text-status-danger-text" role="alert">{fieldErrors.password}</p>}
-          </div>
+          </motion.div>
         </div>
 
-        {error && <p className="mt-5 rounded-[12px] border border-status-danger-border bg-status-danger-bg px-3 py-2.5 text-[13px] text-status-danger-text" role="alert">{error}</p>}
-        <CtaButton type="submit" loading={loading} trailingIcon={<ArrowRight className="h-4 w-4" />} className="mt-5 h-12 w-full">Sign in</CtaButton>
+        {error && <motion.p {...enter(0.27)} className="mt-5 rounded-[12px] border border-status-danger-border bg-status-danger-bg px-3 py-2.5 text-[13px] text-status-danger-text" role="alert">{error}</motion.p>}
+        <motion.div {...enter(0.3)}>
+          <CtaButton type="submit" variant="outline" loading={loading} trailingIcon={<ArrowRight className="h-4 w-4" />} className="mt-5 h-12 w-full">Sign in</CtaButton>
+        </motion.div>
       </form>
 
-      <div className="mt-4 text-center text-[13px] text-ink-muted">
+      <motion.div {...enter(0.36)} className="mt-4 text-center text-[13px] text-ink-muted">
         Need an account? <button type="button" onClick={() => toast("Sign-up is coming soon. Use the demo account to explore BuyLens AI.", "info")} className="font-semibold text-primary-600 underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:ring-offset-1">Sign-up is coming soon</button>
-      </div>
+      </motion.div>
     </Card>
   );
 }
