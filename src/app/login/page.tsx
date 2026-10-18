@@ -14,7 +14,7 @@ export default async function LoginPage() {
 
   return (
     <div className="min-h-dvh overflow-x-hidden bg-canvas text-ink lg:grid lg:h-dvh lg:grid-cols-[55%_45%]">
-      <div className="box-border hidden h-dvh min-h-0 px-5 pb-5 pl-5 pr-0 pt-5 lg:block xl:px-6 xl:pb-6 xl:pl-6 xl:pr-0 xl:pt-6">
+      <div className="box-border hidden h-dvh min-h-0 bg-surface p-4 lg:block lg:p-5 xl:p-6">
         <LoginPreviewPanel />
       </div>
       <section className="relative flex min-h-dvh flex-col bg-surface lg:h-dvh lg:min-h-0 lg:overflow-y-auto">

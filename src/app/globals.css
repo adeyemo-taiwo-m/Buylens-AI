@@ -772,6 +772,16 @@ body {
 .auth-login-input:-webkit-autofill,
 .auth-login-input:-webkit-autofill:hover,
 .auth-login-input:-webkit-autofill:focus { -webkit-text-fill-color: var(--text-primary); -webkit-box-shadow: 0 0 0 1000px var(--bg-surface) inset; box-shadow: 0 0 0 1000px var(--bg-surface) inset; caret-color: var(--text-primary); transition: background-color 9999s ease-out; }
+.login-report-glass {
+  border: 1px solid rgb(255 255 255 / 72%);
+  background: rgb(255 255 255 / 72%);
+  box-shadow: 0 24px 70px rgb(37 99 235 / 10%), inset 0 1px 0 rgb(255 255 255 / 82%);
+  -webkit-backdrop-filter: blur(20px) saturate(115%);
+  backdrop-filter: blur(20px) saturate(115%);
+}
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .login-report-glass { background: rgb(255 255 255 / 94%); }
+}
 .dashboard-input::placeholder { color: #9aa3b2; }
 .dashboard-input:hover { border-color: #bfd0ea; }
 .dashboard-input:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15); }

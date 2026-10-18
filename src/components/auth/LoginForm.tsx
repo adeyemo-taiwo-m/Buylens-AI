@@ -88,9 +88,9 @@ export function LoginForm({ email, password }: { email: string; password: string
   };
 
   return (
-    <Card padding="none" className="w-full max-w-[440px] rounded-[20px] border-line p-6 shadow-sm sm:p-8">
+    <Card variant="ghost" padding="none" className="w-full max-w-[440px] p-6 sm:p-8">
       <motion.div {...enter(0)} className="text-center">
-        <h1 className="text-[28px] font-bold leading-tight tracking-tight text-ink">Welcome back</h1>
+        <h1 className="text-[28px] font-medium leading-tight tracking-tight text-ink">Welcome back</h1>
         <p className="mt-2 text-sm text-ink-muted">Access your saved purchase reports and checklists.</p>
       </motion.div>
 

@@ -11,19 +11,19 @@ const sample1Questions = [
 ];
 
 const sample2Questions = [
-  "Can you share your verified business registration and physical shop address?",
-  "What are the exact brand, model numbers and serial numbers of every component?",
-  "Can I inspect and test the system before making any payment?",
-  "What written warranty and refund terms will be included on the invoice?",
-  "Can delivery and installation happen before the balance is paid?",
+  "Can you confirm the exact ProBook model number and processor generation?",
+  "What is the battery health, and can I test it unplugged before paying?",
+  "Is the laptop brand new, refurbished or locally used?",
+  "What warranty is included, and where can I get support if there is a fault?",
+  "Can I inspect the screen, keyboard, ports and charger before delivery?",
 ];
 
 const sample3Questions = [
-  "Can you provide the Felicity Solar inverter and battery model numbers before purchase?",
-  "Will the 5-year warranty cards be issued and stamped at the time of purchase?",
-  "Does the quoted installation include all cabling, mounting and commissioning?",
-  "Can I inspect the showroom stock and test the system before paying?",
-  "Can you share the battery's cycle-life test report and service process?",
+  "What is the exact TV model number and panel type?",
+  "Can I inspect the screen for dead pixels, lines or backlight issues before delivery?",
+  "Does the warranty cover the panel, and how are claims handled?",
+  "Are wall mounting, delivery and setup included in the quoted price?",
+  "Can you provide a receipt and confirm the return policy for a damaged unit?",
 ];
 
 const nextSteps = [
@@ -60,42 +60,42 @@ export const SAMPLE_REPORTS: Record<string, PurchaseReport> = {
     evidence: evidence("The quoted amount sits within the expected competitive range for this type of setup."),
     nextSteps,
   },
-  "solar-kit-too-good": {
-    id: "solar-kit-too-good",
-    title: "Complete 10kVA Solar Power System, Brand New, Original",
-    category: "Solar & Power",
-    imageUrl: "/analysis/solar.png",
+  "laptop-probook": {
+    id: "laptop-probook",
+    title: "HP ProBook 440 G10 Core i5, 16GB RAM, 512GB SSD",
+    category: "Laptops & Computers",
+    imageUrl: "/main-laptop.webp",
     analyzedAt: "2026-10-17T00:00:00.000Z",
-    quotedPrice: 450000,
+    quotedPrice: 780000,
     currency: "NGN",
-    buyScore: 28,
-    scoreLabel: "High risk, avoid for now",
-    scoreTone: "negative",
-    risk: { level: "High", note: "Multiple red flags" },
-    verdict: { title: "Pause before you pay.", body: "The price and payment terms create too much avoidable risk." },
-    promising: ["Product type matches your description"],
-    verifyFirst: ["Price is far below typical market range", "Seller is new and has no verifiable address", "Full upfront payment with no refund", "No brand, model or warranty stated"],
+    buyScore: 78,
+    scoreLabel: "Worth considering",
+    scoreTone: "positive",
+    risk: { level: "Medium", note: "More information needed" },
+    verdict: { title: "A capable laptop, with a few checks first.", body: "Confirm battery health, condition and warranty coverage before you pay." },
+    promising: ["Processor, memory and SSD are clearly listed", "Configuration suits everyday work and study"],
+    verifyFirst: ["Battery health is not stated", "Warranty coverage is unclear"],
     sellerQuestions: sample2Questions,
-    evidence: evidence("The quote is materially below the market baseline and asks for irreversible upfront payment."),
+    evidence: evidence("The quoted amount is plausible for a mid-range business laptop with these specifications."),
     nextSteps,
   },
-  "inverter-documented": {
-    id: "inverter-documented",
-    title: "Felicity Solar 5kVA 48V Hybrid Inverter with 10kWh LiFePO4 Battery",
-    category: "Solar & Power",
+  "smart-tv-55": {
+    id: "smart-tv-55",
+    title: "55-inch 4K UHD Smart LED TV with 3-Year Warranty",
+    category: "TVs & Electronics",
     imageUrl: "/analysis/solar.png",
     analyzedAt: "2026-10-17T00:00:00.000Z",
-    quotedPrice: 1650000,
+    quotedPrice: 650000,
     currency: "NGN",
-    buyScore: 90,
-    scoreLabel: "Strong buy",
-    scoreTone: "positive",
-    risk: { level: "Low", note: "Key details confirmed" },
-    verdict: { title: "A well-documented listing.", body: "The key purchase details are clear; complete the final checks before paying." },
-    promising: ["Brand and model clearly stated", "5-year written warranty on both units", "Installation included in price", "Physical showroom for inspection"],
-    verifyFirst: ["Confirm the warranty card is issued at purchase", "Check the battery's cycle-life test report"],
+    buyScore: 74,
+    scoreLabel: "Worth considering",
+    scoreTone: "neutral",
+    risk: { level: "Medium", note: "Check the details" },
+    verdict: { title: "Check the panel before you pay.", body: "The feature set looks good, but inspect the screen and confirm warranty terms." },
+    promising: ["4K resolution and smart features are listed", "Screen size fits a typical living room"],
+    verifyFirst: ["Panel condition and inspection policy are unclear", "Warranty claim process is not stated"],
     sellerQuestions: sample3Questions,
-    evidence: evidence("The listing includes a named product, showroom, written warranty and installation scope."),
+    evidence: evidence("The listed features are clear, but the screen condition and after-sales terms need confirmation."),
     nextSteps,
   },
 };
@@ -106,7 +106,10 @@ export function getSampleReport(id: string | undefined): PurchaseReport | undefi
 
 export function sampleReportToDecisionReport(sample: Sample, id = createReportId()): DecisionReport {
   const cached = SAMPLE_REPORTS[sample.id];
-  const category: ProductCategory = "solar_power";
+  const category: ProductCategory = sample.id === "laptop-probook" ? "computing" : sample.id === "smart-tv-55" ? "other" : "solar_power";
+  const marketAverage = sample.id === "laptop-probook" ? 850000 : sample.id === "smart-tv-55" ? 700000 : 920000;
+  const differencePercent = sample.id === "laptop-probook" ? -8.2 : sample.id === "smart-tv-55" ? -7.1 : -7.6;
+  const fairPriceRange: [number, number] = sample.id === "laptop-probook" ? [700000, 950000] : sample.id === "smart-tv-55" ? [580000, 780000] : [780000, 950000];
   return {
     id,
     sampleId: sample.id,
@@ -121,10 +124,10 @@ export function sampleReportToDecisionReport(sample: Sample, id = createReportId
     confidenceScore: cached.scoreTone === "negative" ? 91 : 88,
     infoCompletenessScore: cached.scoreTone === "negative" ? 42 : cached.buyScore >= 88 ? 96 : 64,
     priceAssessment: {
-      marketAverage: sample.id === "solar-kit-too-good" ? 4800000 : sample.id === "inverter-documented" ? 1750000 : 920000,
-      differencePercent: sample.id === "solar-kit-too-good" ? -90.6 : sample.id === "inverter-documented" ? -5.7 : -7.6,
-      fairPriceRange: sample.id === "solar-kit-too-good" ? [4000000, 5400000] : sample.id === "inverter-documented" ? [1500000, 2000000] : [780000, 950000],
-      verdict: sample.id === "solar-kit-too-good" ? "underpriced" : "fair",
+      marketAverage,
+      differencePercent,
+      fairPriceRange,
+      verdict: "fair",
       commentary: cached.evidence[1]?.note ?? "Market comparison based on the supplied purchase details.",
     },
     valueAssessment: {

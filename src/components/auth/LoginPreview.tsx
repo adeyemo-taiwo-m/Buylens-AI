@@ -59,8 +59,8 @@ const FALLBACK_REPORT: PurchaseReport = {
 const PREVIEW_SAMPLES = SAMPLES.length > 0 ? SAMPLES : [FALLBACK_SAMPLE];
 const SHORT_NAMES: Record<string, string> = {
   "inverter-5kva": "Inverter + battery",
-  "solar-kit-too-good": "Solar kit",
-  "inverter-documented": "Felicity system",
+  "laptop-probook": "Work laptop",
+  "smart-tv-55": "55\" Smart TV",
 };
 
 export function LoginPreviewPanel() {
@@ -125,7 +125,7 @@ export function LoginPreviewPanel() {
     <section className="relative isolate hidden h-full min-h-0 transform-gpu overflow-hidden rounded-[24px] border border-line bg-surface px-8 py-10 shadow-sm lg:flex lg:flex-col lg:items-center lg:justify-center lg:px-12 xl:rounded-[32px] xl:px-16" aria-label="Interactive sample report preview">
       <LoginWaveBackground />
       <LoginPanelBackground />
-      <Link href="/" className="absolute left-8 top-8 z-20 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:ring-offset-2 xl:left-12">
+      <Link href="/" className="absolute left-1/2 top-8 z-20 -translate-x-1/2 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:ring-offset-2">
         <BrandLogo size="header" priority />
       </Link>
 
@@ -136,7 +136,7 @@ export function LoginPreviewPanel() {
           <motion.p initial={reduced ? false : { opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reduced ? 0 : 0.35, delay: reduced ? 0 : 0.12 }} className="relative z-10 mt-3 max-w-[500px] text-base leading-6 text-ink-muted">Pick a listing and watch BuyLens AI judge it. Then try it yourself.</motion.p>
         </div>
         <motion.div initial={reduced ? false : { opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reduced ? 0 : 0.35, delay: reduced ? 0 : 0.18 }} className="relative mt-8 w-full max-w-[520px]">
-          <motion.div animate={reduced ? { y: 0 } : { y: [0, -4, 0, 4, 0] }} transition={reduced ? { duration: 0 } : { duration: 6, ease: "easeInOut", repeat: Infinity }} role="img" aria-label={`Sample report: ${activeReport.title}, buy score ${activeReport.buyScore} percent, ${activeReport.scoreLabel}, ${activeReport.risk.level} risk`} className="relative min-h-[550px] rounded-[24px] border border-line bg-surface p-5 text-left shadow-sm sm:p-6">
+          <motion.div animate={reduced ? { y: 0 } : { y: [0, -4, 0, 4, 0] }} transition={reduced ? { duration: 0 } : { duration: 6, ease: "easeInOut", repeat: Infinity }} role="img" aria-label={`Sample report: ${activeReport.title}, buy score ${activeReport.buyScore} percent, ${activeReport.scoreLabel}, ${activeReport.risk.level} risk`} className="login-report-glass relative min-h-[550px] rounded-[24px] p-5 text-left sm:p-6">
             <div className="flex items-start justify-between gap-4">
               <div className="min-w-0">
                 <h2 className="line-clamp-2 text-[18px] font-semibold leading-6 text-ink">{activeReport.title}</h2>
