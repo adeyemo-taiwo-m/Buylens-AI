@@ -52,7 +52,7 @@ export function LoginPanelBackground() {
   if (!isLargeScreen) return null;
 
   return (
-    <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0">
+    <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-[1]">
       <PlasmaWave
         {...PLASMA_LOGIN_CONFIG}
         mouseInteraction={!isCoarsePointer && !prefersReducedMotion}

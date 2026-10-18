@@ -6,6 +6,7 @@ import { AlertTriangle, CheckCircle2, Info, Sparkles, Zap } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { BrandLogo } from "@/components/ui/BrandLogo";
 import { LoginPanelBackground } from "@/components/auth/LoginPanelBackground";
+import { LoginWaveBackground } from "@/components/auth/LoginWaveBackground";
 import { BuyScoreGauge } from "@/components/ui/BuyScoreGauge";
 import { VerdictPill } from "@/components/ui/VerdictPill";
 import { ReportStatusCard } from "@/components/report/ReportStatusCard";
@@ -121,18 +122,20 @@ export function LoginPreviewPanel() {
   };
 
   return (
-    <section className="login-preview-grid relative isolate hidden min-h-screen overflow-hidden rounded-tr-[32px] rounded-br-[32px] bg-gradient-to-b from-primary-50 via-primary-50 to-surface px-8 py-10 lg:flex lg:flex-col lg:items-center lg:justify-center lg:px-12 xl:px-16" aria-label="Interactive sample report preview">
+    <section className="relative isolate hidden h-full min-h-0 transform-gpu overflow-hidden rounded-[24px] border border-line bg-surface px-8 py-10 shadow-sm lg:flex lg:flex-col lg:items-center lg:justify-center lg:px-12 xl:rounded-[32px] xl:px-16" aria-label="Interactive sample report preview">
+      <LoginWaveBackground />
       <LoginPanelBackground />
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(circle_at_50%_16%,rgba(255,255,255,0.82)_0%,rgba(255,255,255,0.42)_45%,transparent_82%)]" />
       <Link href="/" className="absolute left-8 top-8 z-20 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:ring-offset-2 xl:left-12">
         <BrandLogo size="header" priority />
       </Link>
 
       <div className="relative z-10 flex w-full max-w-[620px] flex-col items-center text-center">
-        <motion.h1 initial={reduced ? false : { opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reduced ? 0 : 0.35, delay: reduced ? 0 : 0.06 }} className="mt-5 max-w-[520px] text-[36px] leading-[1.08] tracking-[-0.035em] text-[var(--hero-text-heading)]"><span className="font-medium">Know before </span><span className="font-semibold text-primary-600">you pay.</span></motion.h1>
-        <motion.p initial={reduced ? false : { opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reduced ? 0 : 0.35, delay: reduced ? 0 : 0.12 }} className="mt-3 max-w-[500px] text-base leading-6 text-ink-muted">Pick a listing and watch BuyLens AI judge it. Then try it yourself.</motion.p>
+        <div className="relative z-10 flex flex-col items-center">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-[-48px] top-[-28px] z-[2] h-[184px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.5)_0%,transparent_72%)]" />
+          <motion.h1 initial={reduced ? false : { opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reduced ? 0 : 0.35, delay: reduced ? 0 : 0.06 }} className="relative z-10 mt-5 max-w-[520px] text-[36px] leading-[1.08] tracking-[-0.035em] text-[var(--hero-text-heading)]"><span className="font-medium">Know before </span><span className="font-semibold text-primary-600">you pay.</span></motion.h1>
+          <motion.p initial={reduced ? false : { opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reduced ? 0 : 0.35, delay: reduced ? 0 : 0.12 }} className="relative z-10 mt-3 max-w-[500px] text-base leading-6 text-ink-muted">Pick a listing and watch BuyLens AI judge it. Then try it yourself.</motion.p>
+        </div>
         <motion.div initial={reduced ? false : { opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reduced ? 0 : 0.35, delay: reduced ? 0 : 0.18 }} className="relative mt-8 w-full max-w-[520px]">
-          <div className="pointer-events-none absolute inset-8 rounded-[32px] bg-primary-200/30 blur-3xl" aria-hidden="true" />
           <motion.div animate={reduced ? { y: 0 } : { y: [0, -4, 0, 4, 0] }} transition={reduced ? { duration: 0 } : { duration: 6, ease: "easeInOut", repeat: Infinity }} role="img" aria-label={`Sample report: ${activeReport.title}, buy score ${activeReport.buyScore} percent, ${activeReport.scoreLabel}, ${activeReport.risk.level} risk`} className="relative min-h-[550px] rounded-[24px] border border-line bg-surface p-5 text-left shadow-sm sm:p-6">
             <div className="flex items-start justify-between gap-4">
               <div className="min-w-0">

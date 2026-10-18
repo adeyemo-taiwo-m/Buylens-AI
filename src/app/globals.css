@@ -301,7 +301,6 @@ body {
 
 .sample-modal-backdrop { background-color: var(--modal-overlay); backdrop-filter: blur(2px); }
 .sample-modal-sheet { animation: sample-dialog-in 180ms var(--ease-out) both; }
-.login-preview-grid { background-image: radial-gradient(circle, color-mix(in srgb, var(--primary-600) 12%, transparent) 1px, transparent 1px); background-size: 22px 22px; }
 
 @media (max-width: 639px) {
   .sample-modal-sheet { animation-name: sample-sheet-in; max-height: 90vh; }
