@@ -20,6 +20,9 @@ export const metadata: Metadata = {
   title: "BuyLens AI — Know What You're Buying Before You Pay",
   description:
     "BuyLens AI analyzes product information, highlights risks and missing details, and helps you make more informed purchase decisions.",
+  icons: {
+    icon: [{ url: "/logo-icon.svg", type: "image/svg+xml" }],
+  },
 };
 
 export default function RootLayout({
