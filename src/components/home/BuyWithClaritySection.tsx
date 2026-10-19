@@ -2,8 +2,9 @@
 
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useRef, type CSSProperties } from "react";
-import { DemoLoginButton } from "@/components/auth/DemoLoginButton";
+import { ArrowRight } from "lucide-react";
 import { SectionBadge } from "@/components/ui/SectionBadge";
+import { CtaButton } from "@/components/ui/CtaButton";
 import { MOTION_EASE } from "@/lib/motion";
 import { CTA_DATA } from "./cta.data";
 
@@ -126,9 +127,9 @@ export function BuyWithClaritySection() {
             transition={{ duration: reduced ? 0 : 0.5, delay: reduced ? 0 : 0.36, ease: EASE }}
             className="mt-6 w-full max-w-[432px] max-[767px]:mt-5"
           >
-            <DemoLoginButton className={`buy-with-clarity-link w-full ${reduced ? "cta-motion-reduced" : ""}`}>
+            <CtaButton href={CTA_DATA.href} trailingIcon={<ArrowRight className="h-4 w-4" />} className={`buy-with-clarity-link w-full ${reduced ? "cta-motion-reduced" : ""}`}>
               {CTA_DATA.buttonLabel}
-            </DemoLoginButton>
+            </CtaButton>
           </motion.div>
         </div>
       </motion.div>

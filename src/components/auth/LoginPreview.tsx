@@ -1,10 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import Link from "next/link";
 import { AlertTriangle, CheckCircle2, Info, Sparkles, Zap } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { BrandLogo } from "@/components/ui/BrandLogo";
 import { LoginPanelBackground } from "@/components/auth/LoginPanelBackground";
 import { LoginWaveBackground } from "@/components/auth/LoginWaveBackground";
 import { BuyScoreGauge } from "@/components/ui/BuyScoreGauge";
@@ -125,9 +123,6 @@ export function LoginPreviewPanel() {
     <section className="relative isolate hidden h-full min-h-0 transform-gpu overflow-hidden rounded-[24px] border border-line bg-surface px-8 py-10 shadow-sm lg:flex lg:flex-col lg:items-center lg:justify-center lg:px-12 xl:rounded-[32px] xl:px-16" aria-label="Interactive sample report preview">
       <LoginWaveBackground />
       <LoginPanelBackground />
-      <Link href="/" className="absolute left-1/2 top-8 z-20 -translate-x-1/2 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:ring-offset-2">
-        <BrandLogo size="header" priority />
-      </Link>
 
       <div className="relative z-10 flex w-full max-w-[620px] flex-col items-center text-center">
         <div className="relative z-10 flex flex-col items-center">

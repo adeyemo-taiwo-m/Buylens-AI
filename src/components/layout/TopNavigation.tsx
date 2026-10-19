@@ -3,8 +3,8 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { BrandLogo } from "@/components/ui/BrandLogo";
-import { DemoLoginButton } from "@/components/auth/DemoLoginButton";
-import { Menu, X } from "lucide-react";
+import { CtaButton } from "@/components/ui/CtaButton";
+import { ArrowRight, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface TopNavigationProps {
@@ -53,12 +53,12 @@ export function TopNavigation({ className }: TopNavigationProps) {
         {/* Right: Actions */}
         <div className="hidden sm:flex items-center gap-2 sm:gap-3">
           <Link href="/login" className="px-2 text-[13px] font-medium text-ink-muted transition-colors hover:text-primary-600">Log in</Link>
-          <DemoLoginButton compact className="h-9 px-4 text-[13px]" />
+          <CtaButton href="/login" trailingIcon={<ArrowRight className="h-4 w-4" />} className="h-9 px-4 text-[13px]">Analyze a purchase</CtaButton>
         </div>
 
         {/* Mobile Action & Hamburger Toggle (< 640px) */}
         <div className="flex sm:hidden items-center gap-2">
-          <DemoLoginButton compact className="h-8 px-3 text-[13px]" />
+          <CtaButton href="/login" trailingIcon={<ArrowRight className="h-4 w-4" />} className="h-8 px-3 text-[13px]">Analyze a purchase</CtaButton>
 
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -92,7 +92,7 @@ export function TopNavigation({ className }: TopNavigationProps) {
 
           <div className="pt-3 border-t border-[#E2E8F0] flex flex-col gap-2">
             <Link href="/login" onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 text-sm font-medium text-ink-muted">Log in</Link>
-            <DemoLoginButton compact className="h-9 w-full" />
+            <CtaButton href="/login" trailingIcon={<ArrowRight className="h-4 w-4" />} className="h-9 w-full">Analyze a purchase</CtaButton>
           </div>
         </div>
       )}

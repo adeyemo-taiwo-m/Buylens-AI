@@ -5,6 +5,6 @@ export const CTA_DATA = {
     secondLine: "Take A Closer Look.",
   },
   subtext: "Understand the value, uncover potential risks, and know what to verify before you pay.",
-  buttonLabel: "Try the demo",
-  href: "/analyze",
+  buttonLabel: "Analyze a purchase",
+  href: "/login",
 } as const;

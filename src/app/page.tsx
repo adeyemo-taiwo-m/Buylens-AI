@@ -8,7 +8,7 @@ import { AnalysisPreviewSection } from "@/components/home/AnalysisPreviewSection
 import { FaqSection } from "@/components/home/FaqSection";
 import { BuyWithClaritySection } from "@/components/home/BuyWithClaritySection";
 import { Footer } from "@/components/home/Footer";
-import { DemoLoginButton } from "@/components/auth/DemoLoginButton";
+import { CtaButton } from "@/components/ui/CtaButton";
 import { Reveal, RevealGroup } from "@/components/ui/Reveal";
 
 export default function Home() {
@@ -32,7 +32,7 @@ export default function Home() {
             </Reveal>
             <Reveal grouped className="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Link href="#how-it-works" className="buyhero-secondary-cta order-2 inline-flex h-12 w-full max-w-[240px] items-center justify-center gap-2 rounded-full border border-primary-200 bg-white px-6 text-title-4-medium text-primary-600 shadow-none transition-colors hover:bg-primary-50 active:scale-[0.98] sm:order-1 sm:w-[200px]">See how it works <ArrowRight aria-hidden="true" className="h-4 w-4 rotate-90" /></Link>
-              <DemoLoginButton containerClassName="w-full max-w-[240px] sm:w-auto sm:max-w-none" className="buyhero-primary-cta order-1 h-[50px] w-full max-w-[240px] px-6 text-title-4-medium text-white sm:order-2 sm:w-[220px]" />
+              <CtaButton href="/login" trailingIcon={<ArrowRight className="h-4 w-4" />} className="buyhero-primary-cta order-1 h-[50px] w-full max-w-[240px] px-6 text-title-4-medium text-white sm:order-2 sm:w-[220px]">Analyze a purchase</CtaButton>
             </Reveal>
           </RevealGroup>
         </section>

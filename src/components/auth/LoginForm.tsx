@@ -90,13 +90,13 @@ export function LoginForm({ email, password }: { email: string; password: string
   return (
     <Card variant="ghost" padding="none" className="w-full max-w-[440px] p-6 sm:p-8">
       <motion.div {...enter(0)} className="text-center">
-        <h1 className="text-[28px] font-medium leading-tight tracking-tight text-ink">Welcome back</h1>
-        <p className="mt-2 text-sm text-ink-muted">Access your saved purchase reports and checklists.</p>
+        <h1 className="text-[28px] font-medium leading-tight tracking-tight text-ink">Choose how to <span className="text-primary-600">continue</span></h1>
+        <p className="mt-2 text-sm text-ink-muted">Try the demo or sign in to access your saved purchase reports.</p>
       </motion.div>
 
       <motion.div {...enter(0.06)} className="mt-6 rounded-[16px] border border-primary-200 bg-primary-50 p-5">
-        <p className="text-base font-semibold text-primary-800">Shared demo account</p>
-        <p className="mt-2 text-sm text-ink-muted">Use these credentials or try one-click login.</p>
+        <p className="text-base font-semibold text-primary-800">Try the demo</p>
+        <p className="mt-2 text-sm text-ink-muted">Explore BuyLens AI with a shared account, or use the credentials below.</p>
         <dl className="mt-4 space-y-2">
           <CredentialRow label="Email" value={email} copied={copied === "email"} onCopy={() => void handleCopy(email, "email")} />
           <CredentialRow label="Password" value={password} copied={copied === "password"} onCopy={() => void handleCopy(password, "password")} />
@@ -106,7 +106,7 @@ export function LoginForm({ email, password }: { email: string; password: string
 
       <motion.div {...enter(0.12)} className="my-5 flex items-center gap-3 text-[13px] text-ink-muted" aria-hidden="true">
         <span className="h-px flex-1 bg-line" />
-        <span>or enter manually</span>
+        <span>or sign in</span>
         <span className="h-px flex-1 bg-line" />
       </motion.div>
 
