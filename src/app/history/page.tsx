@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Header } from "@/components/layout/Header";
 import { DemoAuthGate } from "@/components/auth/DemoAuthGate";
 import { DecisionReport } from "@/types/analysis";
-import { getStoredReports, deleteStoredReport } from "@/lib/storage/reports";
+import { getStoredReports, mergeReports, deleteStoredReport } from "@/lib/storage/reports";
 import {
   Search,
   Trash2,
@@ -21,12 +21,14 @@ export default function HistoryPage() {
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
 
   const loadReports = async () => {
+    const localReports = getStoredReports();
     try {
       const response = await fetch("/api/reports", { cache: "no-store" });
       const body = await response.json().catch(() => ({}));
-      setReports(response.ok && Array.isArray(body.reports) ? body.reports : getStoredReports());
+      const serverReports = response.ok && Array.isArray(body.reports) ? body.reports : [];
+      setReports(mergeReports(serverReports, localReports));
     } catch {
-      setReports(getStoredReports());
+      setReports(localReports);
     } finally {
       setLoading(false);
     }
@@ -34,12 +36,12 @@ export default function HistoryPage() {
 
   useEffect(() => { void loadReports(); }, []);
 
-  const handleDelete = async (id: string, e: React.MouseEvent) => {
+  const handleDelete = async (id: string, e: React.MouseEvent, sampleId?: string) => {
     e.preventDefault();
     e.stopPropagation();
     if (confirm("Are you sure you want to remove this report?")) {
-      const response = await fetch(`/api/reports?id=${encodeURIComponent(id)}`, { method: "DELETE" });
-      if (!response.ok) deleteStoredReport(id);
+      await fetch(`/api/reports?id=${encodeURIComponent(id)}`, { method: "DELETE" });
+      deleteStoredReport(id, sampleId);
       await loadReports();
     }
   };
@@ -178,7 +180,7 @@ export default function HistoryPage() {
                     <div>{getVerdictBadge(report.verdict)}</div>
 
                     <button
-                      onClick={(e) => handleDelete(report.id, e)}
+                      onClick={(e) => handleDelete(report.id, e, report.sampleId)}
                       className="p-2 text-zinc-400 hover:text-rose-600 rounded-lg hover:bg-rose-50 transition-colors"
                       title="Delete report"
                     >

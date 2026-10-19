@@ -11,6 +11,7 @@ import { RecentAnalyses } from "./RecentAnalyses";
 import { InsightBanner } from "./InsightBanner";
 import { DASHBOARD_COPY, DASHBOARD_USER, type DashboardAnalysis } from "./dashboard.data";
 import type { DecisionReport } from "@/types/analysis";
+import { getStoredReports, mergeReports } from "@/lib/storage/reports";
 
 function toDashboardAnalysis(report: DecisionReport): DashboardAnalysis {
   const tone = report.verdict === "HIGH_RISK" || report.verdict === "DO_NOT_BUY" ? "risk" : report.verdict === "STRONG_BUY" ? "success" : "caution";
@@ -24,11 +25,22 @@ export function DashboardClient() {
   const [analyses, setAnalyses] = useState<DashboardAnalysis[]>([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    void fetch("/api/reports", { cache: "no-store" }).then(async (response) => {
-      const body = await response.json().catch(() => ({}));
-      setAnalyses(response.ok && Array.isArray(body.reports) ? body.reports.map(toDashboardAnalysis) : []);
-      setLoading(false);
-    }).catch(() => { setAnalyses([]); setLoading(false); });
+    let cancelled = false;
+    const loadReports = async () => {
+      const localReports = getStoredReports();
+      try {
+        const response = await fetch("/api/reports", { cache: "no-store" });
+        const body = await response.json().catch(() => ({}));
+        const serverReports = response.ok && Array.isArray(body.reports) ? body.reports : [];
+        if (!cancelled) setAnalyses(mergeReports(serverReports, localReports).map(toDashboardAnalysis));
+      } catch {
+        if (!cancelled) setAnalyses(localReports.map(toDashboardAnalysis));
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    };
+    void loadReports();
+    return () => { cancelled = true; };
   }, []);
   const reveal = (delay: number) => ({ initial: reduced ? false : { opacity: 0, y: 16 }, animate: { opacity: 1, y: 0 }, transition: { duration: reduced ? 0 : 0.6, delay: reduced ? 0 : delay, ease: MOTION_EASE } });
 

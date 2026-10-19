@@ -47,8 +47,8 @@ export async function POST(req: NextRequest) {
 
     if (sample && report.sampleId !== sample.id) report = { ...report, sampleId: sample.id };
     if (!/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(report.id)) report = { ...report, id: globalThis.crypto.randomUUID() };
-    await saveDemoReport(report, session);
-    return NextResponse.json(report, { status: 200 });
+    const savedReport = await saveDemoReport(report, session);
+    return NextResponse.json(savedReport, { status: 200 });
   } catch (err) {
     console.error("API /api/analyze execution error:", err);
     return NextResponse.json(

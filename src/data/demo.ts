@@ -2,6 +2,7 @@ import { DecisionReport } from "@/types/analysis";
 
 export const DEMO_SOLAR_REPORT: DecisionReport = {
   id: "rep-demo-solar",
+  sampleId: "inverter-5kva",
   createdAt: new Date().toISOString(),
   productName: "5kVA Hybrid Inverter + 5kWh Lithium LiFePO4 Battery System",
   category: "solar_power",
